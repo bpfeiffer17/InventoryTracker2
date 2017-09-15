@@ -11,6 +11,11 @@ namespace InventoryTracker.Controllers
         // GET: AssetType
         public ActionResult Index()
         {
+            return View("Browse");
+        }
+
+        public ActionResult Browse()
+        {
             return View();
         }
     }
