@@ -1,0 +1,17 @@
+﻿[
+  {
+    "assetTypeId": 1,
+    "name": "Hard Drive",
+    "description": "A storage device that is in computers."
+  },
+  {
+    "assetTypeId": 2,
+    "name": "Computer",
+    "description": "A smart piece of machinery"
+  },
+  {
+    "assetTypeId": 3,
+    "name": "Soft Drive",
+    "description": "A storage device that is in computers that is softer than your traditional hard drive."
+  }
+]
