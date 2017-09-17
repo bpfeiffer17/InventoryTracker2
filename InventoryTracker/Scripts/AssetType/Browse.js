@@ -3,19 +3,25 @@
  * and then executes the code inside the callback function.
  */
 $(document).ready(function () {
-    //What do we want to do when the page is loaded?
-    //We want to gather asset types from the db
+    /**
+     * Retrieve assets from db and add them to the asset types table
+     */
     $.get('/Scripts/DummyData/AssetTypes.json', function (data, status) {
+        //For every asset in the returned data
         for (var assetType of data) {
+            //Create a row
             var row = $('<tr></tr>');
+            //Create a name and description column
             var nameCol = $('<td>' + assetType.name + '</td>');
             var descCol = $('<td>' + assetType.description + '</td>');
+            var editCol = $('<a href="/AssetType/Edit/' + assetType.assetTypeId + '">Edit</a>');
+            //Append those columns to the row
             row.append(nameCol);
             row.append(descCol);
+            row.append(editCol);
+            //Append the row to the tables body
             $('#assetTypesTable tbody').append(row);
         }
         $('#assetTypesTable').DataTable();
     });
-    //Display those assets types in a table
-    //Give the user options for those asset types
 });

@@ -191,6 +191,7 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\AssetType\Browse.cshtml" />
     <Content Include="Views\Asset\Browse.cshtml" />
+    <Content Include="Views\AssetType\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
