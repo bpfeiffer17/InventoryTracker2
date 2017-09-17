@@ -14,6 +14,7 @@ $(document).ready(function () {
             row.append(descCol);
             $('#assetTypesTable tbody').append(row);
         }
+        $('#assetTypesTable').DataTable();
     });
     //Display those assets types in a table
     //Give the user options for those asset types
