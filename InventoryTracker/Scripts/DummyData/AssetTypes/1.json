@@ -1,0 +1,21 @@
+﻿{
+  "assetTypeId": 1,
+  "name": "Hard Drive",
+  "description": "A storage device that is in computers.",
+  "properties": [
+    {
+      "propertyId": 1,
+      "name": "Name",
+      "type": "String",
+      "unit": null,
+      "dropDownId": null
+    },
+    {
+      "propertyId": 2,
+      "name": "Description",
+      "type": "String",
+      "unit": null,
+      "dropDownId": null
+    }
+  ]
+}

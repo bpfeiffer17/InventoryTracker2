@@ -2,6 +2,32 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-Asset Detail for @ViewBag.id
+@section Scripts
+{
+    <script src="@Url.Content("~/Scripts/AssetType/Edit.js")"></script>
+}
+
+<script> var assetTypeId = @ViewBag.id; </script>
+<div>
+    <label>Name:</label>
+    <input 
+           id="assetTypeName"
+           class="form-control"/>
+</div>
+<div>
+    <label>Description:</label>
+    <input 
+           id="assetTypeDescription"
+           class="form-control"/>
+</div>
+<div>
+    <label>Properties:</label>
+</div>
+<div>
+    <button id="addPropButton">Add New</button>
+</div>
+<div id="propertiesDiv">
+
+</div>
 
 
