@@ -166,6 +166,7 @@
     </Content>
     <Content Include="Scripts\DummyData\AssetTypes.json" />
     <Content Include="Scripts\DummyData\AssetTypes\1.json" />
+    <Content Include="Scripts\DummyData\DropDowns.json" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
