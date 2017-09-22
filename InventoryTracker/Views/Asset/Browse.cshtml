@@ -1,8 +1,29 @@
 ﻿@{
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Browse Assets";
+}
+  @section Scripts
+    {
+        <script src="@Url.Content("~/Scripts/Asset/Browse.js")"></script>
+        <script src="@Url.Content("~/Scripts/DataTables/datatables.js")"></script>
+
+    }
+
+    @section Styles {
+    <link href="@Url.Content("~/Scripts/DataTables/datatables.css")" rel="stylesheet" type="text/css" />
 }
 
 <h1>Browse Assets</h1>
-<p>This is a test sentence</p>
-
-
+<!--Begin Assets Table-->
+<table id="assetsTable">
+    <thead>
+        <tr>
+            <th> Asset Type</th>
+	        <th> Name</th>
+		    <th> Description</th>
+		</tr>
+	</thead>
+	<tbody>
+	</tbody>
+		
+</table>
+<!--End Assets Table-->

@@ -1,3 +1,20 @@
-﻿{
-
-}
+﻿[
+  {
+    "assetId": 1,
+    "assetType": "Hard Drive",
+    "name": "Seagull brand hard drive",
+    "description": "A storage device that is in computers."
+  },
+  {
+    "assetId": 2,
+    "assetType": "Computer",
+      "name": "Dell Supersonic 350p",
+      "description": "its really fast... not really"
+  },
+  {
+    "assetId": 3,
+    "assetType": "Moniter",
+    "name": "Viewsonic Moniter",
+    "description": "storage device for visible pixels"
+  }
+]
