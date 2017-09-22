@@ -16,6 +16,20 @@
       "type": "String",
       "unit": null,
       "dropDownId": null
+    },
+    {
+      "propertyId": 3,
+      "name": "Available",
+      "type": "Drop Down",
+      "unit": null,
+      "dropDownId": 1
+    },
+    {
+      "propertyId": 4,
+      "name": "Storage",
+      "type": "Number",
+      "unit": "GB",
+      "dropDownId": null
     }
   ]
 }

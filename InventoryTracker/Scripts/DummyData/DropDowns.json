@@ -1,0 +1,12 @@
+﻿[
+  {
+    "dropDownId": 1,
+    "name": "Yes/No",
+    "values": ["Yes", "No"]
+  },
+  {
+    "dropDownId": 2,
+    "name": "Brand",
+    "values": ["Samsung", "Windows", "Toshiba"]
+  }
+]

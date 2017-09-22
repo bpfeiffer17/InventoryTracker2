@@ -6,28 +6,28 @@
 {
     <script src="@Url.Content("~/Scripts/AssetType/Edit.js")"></script>
 }
+<div id="editDiv">
+    <div>
+        <label>Name:</label>
+        <input id="assetTypeName"
+               class="form-control" />
+    </div>
+    <div>
+        <label>Description:</label>
+        <input id="assetTypeDescription"
+               class="form-control" />
+    </div>
+    <div>
+        <label>Properties:</label>
+    </div>
+    <div>
+        <button id="addPropButton">Add New</button>
+    </div>
+    <div id="propertiesDiv">
 
+    </div>
+</div>
 <script> var assetTypeId = @ViewBag.id; </script>
-<div>
-    <label>Name:</label>
-    <input 
-           id="assetTypeName"
-           class="form-control"/>
-</div>
-<div>
-    <label>Description:</label>
-    <input 
-           id="assetTypeDescription"
-           class="form-control"/>
-</div>
-<div>
-    <label>Properties:</label>
-</div>
-<div>
-    <button id="addPropButton">Add New</button>
-</div>
-<div id="propertiesDiv">
 
-</div>
 
 

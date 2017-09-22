@@ -1,0 +1,10 @@
+[
+    {
+        "propertyId": 1,
+        "name": "Name",
+        "value": "Hard Drive 1",
+        "type": "String",
+        "unit": null,
+        "dropDownId": null
+    }
+]
