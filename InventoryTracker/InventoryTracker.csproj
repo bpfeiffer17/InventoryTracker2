@@ -198,6 +198,7 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\AssetType\Browse.cshtml" />
     <Content Include="Views\Asset\Browse.cshtml" />
+    <Content Include="Views\Asset\Edit.cshtml" />
     <Content Include="Views\AssetType\Edit.cshtml" />
     <None Include="Scripts\DummyData\Assets.json" />
     <Content Include="Scripts\Asset\Browse.js" />
