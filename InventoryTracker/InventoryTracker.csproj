@@ -201,6 +201,7 @@
     <Content Include="Views\AssetType\Edit.cshtml" />
     <None Include="Scripts\DummyData\Assets.json" />
     <Content Include="Scripts\Asset\Browse.js" />
+    <Content Include="Scripts\Asset\Edit.js" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
