@@ -11,10 +11,12 @@ $(document).ready(function (){
         var assetTypeCol = $('<td>' + assets.assetType+ '</td>');
         var nameCol = $('<td>' + assets.name + '</td>');
         var descCol = $('<td>' + assets.description + '</td>');
+        var editCol = $('<a href="/Asset/Edit/' + assets.assetId + '">Edit</a>');
         //Append the columns to the row
         row.append(assetTypeCol);
         row.append(nameCol);
         row.append(descCol);
+        row.append(editCol);
         //Append the row the the tables body
           $('#assetsTable tbody').append(row);
 
