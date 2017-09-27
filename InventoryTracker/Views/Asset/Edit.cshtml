@@ -1,30 +1,35 @@
 ﻿@{
-    Layout = "~/Views/Asset/Browse.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 
 @section Scripts
 {
-    <script src="@Url.Content("~/Scripts/Assets/Edit.js")"></script>
+    <script src="@Url.Content("~/Scripts/Asset/Edit.js")"></script>
+
 }
 
-<script> var assetTypeId = @ViewBag.id; </script>
-<div>
-    <label>Name:</label>
-    <input id="assetName"
-           class="form-control" />
-</div>n id="addPropButton">Add New</button>
-</div>
-<div id="propertiesDiv">
+<div id = "editDiv">
+	<div>
+        <label>Name:</label>
+        <input id="assetName"
+               class="form-control" />
+    </div>
 
     <div>
         <label>Description:</label>
         <input id="assetDescription"
                class="form-control" />
     </div>
-    <div>
+	
+	<div>
         <label>Properties:</label>
     </div>
-    <div>
-        
+	<div> 
+        <button id="addPropButton"> Add New </button>
+    </div>
+	  <div id="propertiesDiv" class="container">
+
+	</div>   
 </div>
+    <script> var assetTypeId = @ViewBag.id; </script>

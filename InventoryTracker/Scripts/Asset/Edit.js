@@ -1,10 +1,14 @@
 ﻿
 
 
+
+
 $(document).ready(function(){
 /*
 *Retreive asset from db and then add its properties to the page
 */
+
+
     $.get('/Scripts/DummyData/Assets/' + assetId + '.json', function (data,status) {
         var assets = data;
         $('#assetName').val(assets.name);
@@ -18,7 +22,7 @@ $(document).ready(function(){
         addProp({
             propertyId:'new',
             name:'',
-            type: String,
+            type: 'String',
             unit: '',
             dropDownId: ''
 
