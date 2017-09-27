@@ -1,6 +1,6 @@
 ﻿
 
-
+var dropDownHelper;
 
 
 $(document).ready(function(){
@@ -11,6 +11,7 @@ $(document).ready(function(){
 
     $.get('/Scripts/DummyData/Assets/' + assetId + '.json', function (data,status) {
         var assets = data;
+        $('#assetType').val(assets.assetType);
         $('#assetName').val(assets.name);
         $('#assetDescription').val(assets.description);
         for (var prop of assets.properties){
@@ -35,10 +36,10 @@ function addProp(prop) {
         <div>
             <div style="display:inline-block">
                 <label>Property Type: </label>
-                <select value="${prop.type}" class="form-control">
-                    <option>String</option>
-                    <option>Number</option>
-                    <option>Drop Down</option>
+                <select class="form-control" onChange()>
+                    <option> ${prop.type === 'String' ? 'selected':''}String</option>
+                    <option> ${prop.type === 'Number' ? 'selected':''}Number</option>
+                    <option> ${prop.type === 'Drop Down' ? 'selected':''}Drop Down</option>
                 </select>
             </div>
             <div style="display:inline-block">
