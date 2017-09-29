@@ -24,5 +24,11 @@ namespace InventoryTracker.Controllers
             ViewBag.id = id;
             return View();
         }
+
+        public ActionResult View(int id)
+        {
+            ViewBag.id = id;
+            return View();
+        }
     }
 }

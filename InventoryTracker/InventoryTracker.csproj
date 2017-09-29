@@ -159,6 +159,7 @@
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\AssetType\Browse.js" />
     <Content Include="Scripts\AssetType\Edit.js" />
+    <Content Include="Scripts\AssetType\View.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config">
@@ -203,6 +204,7 @@
     <None Include="Scripts\DummyData\Assets.json" />
     <Content Include="Scripts\Asset\Browse.js" />
     <Content Include="Scripts\Asset\Edit.js" />
+    <Content Include="Views\AssetType\View.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

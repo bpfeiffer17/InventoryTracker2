@@ -12,7 +12,7 @@ $(document).ready(function () {
             //Create a row
             var row = $('<tr></tr>');
             //Create a name and description column
-            var nameCol = $('<td>' + assetType.name + '</td>');
+            var nameCol = $('<td><a href="/AssetType/View/' + assetType.assetTypeId + '">' + assetType.name + '</a></td>');
             var descCol = $('<td>' + assetType.description + '</td>');
             var editCol = $('<a href="/AssetType/Edit/' + assetType.assetTypeId + '">Edit</a>');
             //Append those columns to the row

@@ -9,8 +9,8 @@ class DropDownHelper {
      * 
      * @param {any} options - an object with properties to set to our new DropDownHelper
      */
-    constructor(dropDowns) {
-        this.setDropDowns(dropDowns);
+    constructor(options) {
+        this.setDropDowns(options);
     }
 
     /**
