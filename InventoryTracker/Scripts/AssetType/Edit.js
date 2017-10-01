@@ -38,7 +38,7 @@ function addProp(prop) {
         <div class="top-align">
             <div style="display:inline-block">
                 <label>Property Type: </label>
-                <select class="form-control" onChange()>
+                <select class="form-control" onchange="setType(${prop.id}, this.value)">
                     <option ${prop.type === 'String' ? 'selected':''}>String</option>
                     <option ${prop.type === 'Number' ? 'selected':''}>Number</option>
                     <option ${prop.type === 'Drop Down' ? 'selected':''}>Drop Down</option>
@@ -164,4 +164,21 @@ function addProperties() {
     for (var prop of assetType.properties) {
         addProp(prop);
     }
+}
+
+/**
+ * Set the type of the Property with the given propertyId
+ * 
+ * Also check to see what type the Property is being set to.  If it is 'Drop Down',
+ * give the Property a dropDownId, if now make the dropDownId null.
+ */
+function setType(propertyId, type) {
+    var prop = assetType.findProperty(propertyId);
+    prop.type = type;
+    if (prop.type === 'Drop Down') {
+        assetType.setPropertyProperty(propertyId, 'dropDownId', dropDownHelper.dropDowns[0].id);
+    }else {
+        assetType.setPropertyProperty(propertyId, 'dropDownId', null);
+    }
+    addProperties();
 }
