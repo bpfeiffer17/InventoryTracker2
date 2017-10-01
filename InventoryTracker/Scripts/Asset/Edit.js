@@ -1,7 +1,7 @@
 ﻿
 
 var dropDownHelper;
-
+var assetType;
 
 $(document).ready(function(){
 /*
