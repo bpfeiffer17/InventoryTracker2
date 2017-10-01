@@ -1,10 +1,43 @@
-[
-    {
-        "propertyId": 1,
-        "name": "Name",
-        "value": "Hard Drive 1",
-        "type": "String",
-        "unit": null,
-        "dropDownId": null
-    }
-]
+{
+    "assetId": 103,
+    "assetType": {
+        "assetTypeId": 1,
+        "name": "Hard Drive",
+        "description": "A storage device that is in computers.",
+        "tracked": false,
+        "properties": [
+          {
+            "propertyId": 1,
+            "name": "Name",
+            "type": "String",
+            "unit": null,
+            "dropDownId": null,
+            "value": "Hard Drive 1"
+          },
+          {
+            "propertyId": 2,
+            "name": "Description",
+            "type": "String",
+            "unit": null,
+            "dropDownId": null,
+            "value": "Hard Drive 1"
+          },
+          {
+            "propertyId": 3,
+            "name": "Available",
+            "type": "Drop Down",
+            "unit": null,
+            "dropDownId": 1,
+            "value": "Yes"
+          },
+          {
+            "propertyId": 4,
+            "name": "Storage",
+            "type": "Number",
+            "unit": "GB",
+            "dropDownId": null,
+            "value": "128"
+          }
+        ]
+      }
+}

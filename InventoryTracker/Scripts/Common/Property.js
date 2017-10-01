@@ -15,5 +15,6 @@ class Property {
         this.type = options.type;
         this.unit = options.unit;
         this.dropDownId = options.dropDownId;
+        this.value = options.value;
     }
 }
