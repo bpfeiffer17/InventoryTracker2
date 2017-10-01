@@ -14,6 +14,7 @@ class AssetType {
         this.name = options.name;
         this.description = options.description;
         this.setProperties(options.properties);
+        this.tracked = options.tracked;
     }
 
     /**

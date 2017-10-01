@@ -22,6 +22,15 @@
                class="form-control" />
     </div>
     <div>
+        <label>Type:</label>
+        <div class="radio">
+            <label><input type="radio" name="tracked" onclick="assetType.tracked = true; setPage()">Tracked</label>
+        </div>
+        <div class="radio">
+            <label><input type="radio" name="tracked" onclick="assetType.tracked = false; setPage()" checked>Non-tracked</label>
+        </div>
+    </div>
+    <div>
         <label>Properties:</label>
     </div>
     <div>

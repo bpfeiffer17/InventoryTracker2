@@ -2,6 +2,7 @@
   "assetTypeId": 1,
   "name": "Hard Drive",
   "description": "A storage device that is in computers.",
+  "tracked": false,
   "properties": [
     {
       "propertyId": 1,

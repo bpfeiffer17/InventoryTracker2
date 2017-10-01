@@ -21,7 +21,7 @@ $(document).ready(function () {
             //Create an AssetType object with the returned JSON data
             assetType = new AssetType(data);
             //Add the properties of the new AssetType to the view
-            addProperties();
+            setPage();
         });
     });
     //Set our event listeners on the page
@@ -128,7 +128,7 @@ function setListeners() {
  */
 function addNewDDVal(dropDownId) {
     dropDownHelper.addNewDDVal(dropDownId);
-    addProperties();
+    setPage();
 }
 
 /**
@@ -139,7 +139,7 @@ function addNewDDVal(dropDownId) {
 function addNewDD(propertyId) {
     var newDDId = dropDownHelper.addNewDD();
     assetType.setPropertyProperty(propertyId, 'dropDownId', newDDId);
-    addProperties();
+    setPage();
 }
 
 /**
@@ -151,16 +151,19 @@ function addNewDD(propertyId) {
 function cancelNewDD(propertyId, dropDownId) {
     dropDownHelper.removeDD(dropDownId);
     assetType.setPropertyProperty(propertyId, 'dropDownId', dropDownHelper.dropDowns[0].id);
-    addProperties();
+    setPage();
 }
 
 /**
  * Clear out the #propertiesDiv and for each Property on the AssetType, add a html to edit to Property to #propertiesDiv
  */
-function addProperties() {
+function setPage() {
     $('#propertiesDiv').html('');
     $('#assetTypeName').val(assetType.name);
     $('#assetTypeDescription').val(assetType.description);
+    $('#propertiesDiv').append(`
+        <div>Default Properties: ${assetType.tracked ? `Name, Serial Number, Deployed, Location`:`High Tide, Low Tide, Count`}<div>
+    `);
     for (var prop of assetType.properties) {
         addProp(prop);
     }
@@ -180,5 +183,5 @@ function setType(propertyId, type) {
     }else {
         assetType.setPropertyProperty(propertyId, 'dropDownId', null);
     }
-    addProperties();
+    setPage();
 }
