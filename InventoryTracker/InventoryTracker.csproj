@@ -45,6 +45,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.5\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
     </Reference>
@@ -52,6 +58,8 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -143,9 +151,43 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AssetController.cs" />
     <Compile Include="Controllers\AssetTypeController.cs" />
+    <Compile Include="Controllers\DropDownsTController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Asset.cs">
+      <DependentUpon>InventoryTrackerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AssetType.cs">
+      <DependentUpon>InventoryTrackerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DropDown.cs">
+      <DependentUpon>InventoryTrackerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DropDownValue.cs">
+      <DependentUpon>InventoryTrackerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\InventoryTrackerModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>InventoryTrackerModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\InventoryTrackerModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>InventoryTrackerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\InventoryTrackerModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>InventoryTrackerModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Property.cs">
+      <DependentUpon>InventoryTrackerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PropertyValue.cs">
+      <DependentUpon>InventoryTrackerModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -157,6 +199,16 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Models\InventoryTrackerModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>InventoryTrackerModel.Context.cs</LastGenOutput>
+      <DependentUpon>InventoryTrackerModel.edmx</DependentUpon>
+    </Content>
+    <Content Include="Models\InventoryTrackerModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>InventoryTrackerModel.edmx</DependentUpon>
+      <LastGenOutput>InventoryTrackerModel.cs</LastGenOutput>
+    </Content>
     <Content Include="Scripts\AssetType\Browse.js" />
     <Content Include="Scripts\AssetType\Edit.js" />
     <Content Include="Scripts\AssetType\View.js" />
@@ -172,6 +224,13 @@
     <Content Include="Scripts\DummyData\AssetTypes.json" />
     <Content Include="Scripts\DummyData\AssetTypes\1.json" />
     <Content Include="Scripts\DummyData\DropDowns.json" />
+    <EntityDeploy Include="Models\InventoryTrackerModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>InventoryTrackerModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\InventoryTrackerModel.edmx.diagram">
+      <DependentUpon>InventoryTrackerModel.edmx</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -205,10 +264,14 @@
     <Content Include="Scripts\Asset\Browse.js" />
     <Content Include="Scripts\Asset\Edit.js" />
     <Content Include="Views\AssetType\View.cshtml" />
+    <Content Include="Views\DropDownsT\Create.cshtml" />
+    <Content Include="Views\DropDownsT\Delete.cshtml" />
+    <Content Include="Views\DropDownsT\Details.cshtml" />
+    <Content Include="Views\DropDownsT\Edit.cshtml" />
+    <Content Include="Views\DropDownsT\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -222,6 +285,9 @@
   <ItemGroup>
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
