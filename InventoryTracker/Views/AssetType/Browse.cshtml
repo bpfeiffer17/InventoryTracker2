@@ -23,7 +23,20 @@
         </tr>
     </thead>
     <tbody>
-
+        @foreach (var item in ViewBag.assetTypes)
+        {
+            <tr>
+                <td>
+                    <a href="/AssetType/View/@item.AssetTypeID">@item.Name</a>
+                </td>
+                <td>
+                    @item.Description
+                </td>
+                <td>
+                    <a href="/AssetType/Edit/@item.AssetTypeID">Edit</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
 <!--End Asset Types Table-->

@@ -24,7 +24,6 @@ namespace InventoryTracker.Models
         public string Name { get; set; }
         public string Type { get; set; }
         public string Unit { get; set; }
-        public string Value { get; set; }
         public Nullable<int> DropDownID { get; set; }
         public int AssetTypeID { get; set; }
     

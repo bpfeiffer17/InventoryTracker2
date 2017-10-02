@@ -44,7 +44,6 @@
           <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="Type" Type="nvarchar" MaxLength="10" Nullable="false" />
           <Property Name="Unit" Type="nvarchar" MaxLength="50" />
-          <Property Name="Value" Type="nvarchar" MaxLength="100" />
           <Property Name="DropDownID" Type="int" />
           <Property Name="AssetTypeID" Type="int" Nullable="false" />
         </EntityType>
@@ -211,7 +210,6 @@
           <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Type" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Unit" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Value" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="DropDownID" Type="Int32" />
           <Property Name="AssetTypeID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="AssetType" Relationship="Self.FK_Properties_AssetTypes" FromRole="Properties" ToRole="AssetTypes" />
@@ -381,7 +379,6 @@
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Type" ColumnName="Type" />
                 <ScalarProperty Name="Unit" ColumnName="Unit" />
-                <ScalarProperty Name="Value" ColumnName="Value" />
                 <ScalarProperty Name="DropDownID" ColumnName="DropDownID" />
                 <ScalarProperty Name="AssetTypeID" ColumnName="AssetTypeID" />
               </MappingFragment>
