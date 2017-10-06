@@ -1,0 +1,37 @@
+﻿
+@{
+    ViewBag.Title = "View";
+}
+
+<h2>View</h2>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Scripts
+{
+    <script src="@Url.Content("~/Scripts/Asset/View.js")"></script>
+    <script src="@Url.Content("~/Scripts/Common/DropDownHelper.js")"></script>
+    <script src="@Url.Content("~/Scripts/Common/DropDown.js")"></script>
+    <script src="@Url.Content("~/Scripts/Common/AssetType.js")"></script>
+    <script src="@Url.Content("~/Scripts/Common/Property.js")"></script>
+}
+<div id="editDiv">
+    <div>
+        <label>Name:</label>
+        <label id="assetTypeName"></label>
+    </div>
+    <div>
+        <label>Description:</label>
+        <label id="assetTypeDescription"></label>
+    </div>
+    <div>
+        <label>Properties:</label>
+    </div>
+    <div id="propertiesDiv" class="container">
+
+    </div>
+</div>
+
+<script> var assetTypeId = @ViewBag.id; </script>

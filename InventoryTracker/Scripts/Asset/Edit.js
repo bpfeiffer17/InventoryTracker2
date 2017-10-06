@@ -7,29 +7,18 @@ $(document).ready(function(){
 /*
 *Retreive asset from db and then add its properties to the page
 */
-
-
-    $.get('/Scripts/DummyData/Assets/' + assetId + '.json', function (data,status) {
-        var assets = data;
-        $('#assetType').val(assets.assetType);
-        $('#assetName').val(assets.name);
-        $('#assetDescription').val(assets.description);
-        for (var prop of assets.properties){
-            addProp(prop);
-        }
-    });
-
-    $('addPropButton').click(function (){
-        addProp({
-            propertyId:'new',
-            name:'',
-            type: 'String',
-            unit: '',
-            dropDownId: ''
-
+    $.get('/Scripts/DummyData/DropDowns.json', function (data,status){
+        //create a dropdownhelper object with the returned json data
+        dropDownHelper = new dropDownHelper(data);
+        $.get('/Scripts/DummyData/AssetTypes/' + assetTypeId + '.json', function (data,status){
+            assetType = new assetType(data);
+            setPage();
         });
-      });
-   });
+    });
+    setListners();
+});
+
+    
 
 function addProp(prop) {
    $('#propertiesDiv').append(`
@@ -52,4 +41,8 @@ function addProp(prop) {
             </div>
         </div>
     `);
+   if (prop.type == 'Drop Down') {
+       addDropDown(prop.id, prop.addDropDownId)
+   }
 }
+
