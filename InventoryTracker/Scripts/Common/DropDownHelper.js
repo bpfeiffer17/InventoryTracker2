@@ -55,9 +55,9 @@ class DropDownHelper {
     addNewDD() {
         var newId = 'new' + Date.now();
         this.dropDowns.push(new DropDown({
-            dropDownId: newId,
-            name: "New",
-            values: ['']
+            DropDownID: newId,
+            Name: "New",
+            Values: ['']
         }));
         return newId;
     }

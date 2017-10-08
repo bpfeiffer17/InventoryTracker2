@@ -25,6 +25,21 @@
             </div>
         </div>
 
+        <h4>Drop Down Values</h4>
+        <hr />
+        @{
+            foreach (var value in Model.DropDownValues)
+            {
+                <div class="form-group">
+                    <div class="col-md-10">
+                        <input type="text"
+                               name="DD-@value.DropDownValueID"
+                               value="@value.Value"/>
+                    </div>
+                </div>
+            }
+        }
+
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Save" class="btn btn-default" />

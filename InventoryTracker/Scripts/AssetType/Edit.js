@@ -15,11 +15,12 @@ $(document).ready(function () {
      */
     $.get('/Scripts/DummyData/DropDowns.json', function (data, status) {
         //Create a DropDownHelper object with the returned JSON data
-        dropDownHelper = new DropDownHelper(data);
+        dropDownHelper = new DropDownHelper(dropDowns);
         //Retrieve an AssetType from the database with the given assetTypeId
         $.get('/Scripts/DummyData/AssetTypes/' + assetTypeId + '.json', function (data, status) {
             //Create an AssetType object with the returned JSON data
-            assetType = new AssetType(data);
+            //assetType = new AssetType(data);
+            assetType = new AssetType(assetTypeJSON);
             //Add the properties of the new AssetType to the view
             setPage();
         });
@@ -38,7 +39,7 @@ function addProp(prop) {
         <div class="top-align">
             <div style="display:inline-block">
                 <label>Property Type: </label>
-                <select class="form-control" onchange="setType(${prop.id}, this.value)">
+                <select class="form-control" onchange="setType('${prop.id}', this.value)">
                     <option ${prop.type === 'String' ? 'selected':''}>String</option>
                     <option ${prop.type === 'Number' ? 'selected':''}>Number</option>
                     <option ${prop.type === 'Drop Down' ? 'selected':''}>Drop Down</option>
@@ -111,13 +112,9 @@ function setListeners() {
      * propertyId of 'new' plus the current timestamp for uniqueness
      */
     $('#addPropButton').click(function () {
-        addProp({
-            propertyId: 'new' + Date.now(),
-            name: '',
-            type: 'String',
-            unit: '',
-            dropDownId: ''
-        });
+        var newID = assetType.addNewProperty();
+        var newProperty = assetType.findProperty(newID);
+        addProp(newProperty);
     });
 }
 
@@ -184,4 +181,13 @@ function setType(propertyId, type) {
         assetType.setPropertyProperty(propertyId, 'dropDownId', null);
     }
     setPage();
+}
+
+function save() {
+    var data = {
+        assetType: JSON.stringify(assetType)
+    }
+    $.post('/AssetType/Edit', data, function (data, status) {
+        console.log(response);
+    });
 }

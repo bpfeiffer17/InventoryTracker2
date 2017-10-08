@@ -30,6 +30,9 @@ namespace InventoryTracker.Controllers
 
         public ActionResult Edit(int id)
         {
+            AssetType assetType = db.AssetTypes.Find(id);
+            ViewBag.assetTypeJSON = new JavaScriptSerializer().Serialize(assetType.getAssetTypeBare());
+            ViewBag.dropDowns = new JavaScriptSerializer().Serialize(this.getDropDowns());
             ViewBag.id = id;
             return View();
         }
@@ -38,6 +41,17 @@ namespace InventoryTracker.Controllers
         {
             ViewBag.id = id;
             return View();
+        }
+
+        private DropDownBare[] getDropDowns()
+        {
+            List<DropDownBare> dropDowns = new List<DropDownBare>();
+            List<DropDown> dbDropDowns = db.DropDowns.ToList();
+            foreach (DropDown dd in dbDropDowns)
+            {
+                dropDowns.Add(dd.getDropDownBare());
+            }
+            return dropDowns.ToArray();
         }
     }
 }

@@ -10,11 +10,11 @@ class AssetType {
      * @param {any} options - an object with properties to set to our new AssetType
      */
     constructor(options) {
-        this.id = options.assetTypeId;
-        this.name = options.name;
-        this.description = options.description;
-        this.setProperties(options.properties);
-        this.tracked = options.tracked;
+        this.id = options.AssetTypeID;
+        this.name = options.Name;
+        this.description = options.Description;
+        this.setProperties(options.Properties);
+        this.tracked = options.Tracked;
     }
 
     /**
@@ -57,5 +57,17 @@ class AssetType {
      */
     setPropertyProperty(id, property, value) {
         this.findProperty(id)[property] = value;
+    }
+
+    addNewProperty() {
+        var newID = 'new' + Date.now();
+        this.properties.push(new Property({
+            PropertyID: newID,
+            Name: '',
+            Type: 'String',
+            Unit: '',
+            DropDownID: ''
+        }));
+        return newID;
     }
 }

@@ -39,8 +39,11 @@
     <div id="propertiesDiv" class="container">
 
     </div>
+    <div>
+        <button onclick="save()">Save</button>
+    </div>
 </div>
-<script> var assetTypeId = @ViewBag.id; </script>
+<script> var assetTypeId = @ViewBag.id; var assetTypeJSON = @Html.Raw(ViewBag.assetTypeJSON); var dropDowns = @Html.Raw(ViewBag.dropDowns);</script>
 
 
 

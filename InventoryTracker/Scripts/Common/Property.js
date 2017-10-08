@@ -10,11 +10,11 @@ class Property {
      * @param {any} options - an object with properties to set to our new AssetType
      */
     constructor(options) {
-        this.id = options.propertyId;
-        this.name = options.name;
-        this.type = options.type;
-        this.unit = options.unit;
-        this.dropDownId = options.dropDownId;
-        this.value = options.value;
+        this.id = options.PropertyID;
+        this.name = options.Name;
+        this.type = options.Type;
+        this.unit = options.Unit;
+        this.dropDownId = options.DropDownID;
+        this.value = options.Value;
     }
 }

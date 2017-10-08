@@ -10,9 +10,9 @@ class DropDown {
      * @param {any} options - an object with properties to set to our new DropDown
      */
     constructor(options) {
-        this.id = options.dropDownId;
-        this.name = options.name;
-        this.values = options.values;
+        this.id = options.DropDownID;
+        this.name = options.Name;
+        this.values = options.Values;
     }
 
     /**

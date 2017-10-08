@@ -28,5 +28,27 @@ namespace InventoryTracker.Models
         public virtual ICollection<DropDownValue> DropDownValues { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Property> Properties { get; set; }
+
+        public DropDownBare getDropDownBare()
+        {
+            DropDownBare dropDownBare = new DropDownBare();
+            dropDownBare.DropDownID = this.DropDownID;
+            dropDownBare.Name = this.Name;
+            dropDownBare.Values = new string[this.DropDownValues.Count];
+            var i = 0;
+            foreach (DropDownValue val in this.DropDownValues)
+            {
+                dropDownBare.Values[i] = val.Value;
+                i++;
+            }
+            return dropDownBare;
+        }
+    }
+
+    public class DropDownBare
+    {
+        public int DropDownID { get; set; }
+        public string Name { get; set; }
+        public string[] Values { get; set; }
     }
 }
