@@ -1,3 +1,8 @@
 ﻿.top-align > * {
     vertical-align: top;
 }
+
+.col-25 {
+    display: inline-block;
+    width: 24%;
+}

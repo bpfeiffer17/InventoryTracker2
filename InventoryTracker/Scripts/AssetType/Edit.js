@@ -23,24 +23,21 @@ $(document).ready(function () {
  */
 function addProp(prop) {
     $('#propertiesDiv').append(`
-        <div class="top-align">
-            <div style="display:inline-block">
-                <label>Property Type: </label>
+        <div class="row">
+            <div class="col-25">
                 <select class="form-control" onchange="setType('${prop.id}', this.value)">
                     <option ${prop.type === 'String' ? 'selected':''}>String</option>
                     <option ${prop.type === 'Number' ? 'selected':''}>Number</option>
                     <option ${prop.type === 'Drop Down' ? 'selected':''}>Drop Down</option>
                 </select>
             </div>
-            <div style="display:inline-block">
-                <label>Property Name: </label>
+            <div class="col-25">
                 <input value="${prop.name}" class="form-control" onblur="assetType.setPropertyProperty('${prop.id}', 'name', this.value)" />
             </div>
-            <div style="display:inline-block">
-                <label>Property Unit: </label>
+            <div class="col-25">
                 <input value="${prop.unit ? prop.unit:''}" class="form-control" onblur="assetType.setPropertyProperty('${prop.id}', 'unit', this.value)" />
             </div>
-            <div class="top-align" style="display:inline-block" id="dropDownDiv-${prop.id}"></div>
+            <div class="col-25" id="dropDownDiv-${prop.id}"></div>
         </div>
     `);
     //If the Property is of type 'Drop Down', append DropDown specific html to the Property div
@@ -75,7 +72,7 @@ function addDropDown(propertyId, dropDownId) {
     //Create a template with html for editing the DropDown
     var template = `
         <div style="display:inline-block">
-            <label>Select Drop Down: </label>${select}
+            ${select}
         </div>
     `;
     //Add the created template to the #dropDownDiv-[PropertyID]
@@ -138,7 +135,23 @@ function setPage() {
     $('#assetTypeName').val(assetType.name);
     $('#assetTypeDescription').val(assetType.description);
     $('#propertiesDiv').append(`
-        <div>Default Properties: ${assetType.tracked ? `Name, Serial Number, Deployed, Location`:`High Tide, Low Tide, Count`}<div>
+        <div class="row"><div class="col">Default Properties: ${assetType.tracked ? `Name, Serial Number, Deployed, Location`:`High Tide, Low Tide, Count`}</div></div>
+    `);
+    $('#propertiesDiv').append(`
+        <div class="row">
+            <div class="col-25">
+                <label>Property Type: </label>
+            </div>
+            <div class="col-25">
+                <label>Property Name: </label>
+            </div>
+            <div class="col-25">
+                <label>Property Unit: </label>
+            </div>
+            <div class="col-25">
+            <label>Drop Down: </label>
+            </div>
+        </div>
     `);
     for (var prop of assetType.properties) {
         addProp(prop);
