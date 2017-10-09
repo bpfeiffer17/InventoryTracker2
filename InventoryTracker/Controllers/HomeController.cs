@@ -13,17 +13,20 @@ namespace InventoryTracker.Controllers
             return View();
         }
 
+        //links to the Cleveand Clinic about page after the user put in home/about
+
         public ActionResult About()
         {
-            ViewBag.Message = "Your application description page.";
-
+            Response.BufferOutput = true;
+            Response.Redirect("https://my.clevelandclinic.org/about");
             return View();
         }
 
+        //links to the cleveland clinic contact page after the user puts in home/contact
         public ActionResult Contact()
         {
-            ViewBag.Message = "Your contact page.";
-
+            Response.BufferOutput = true;
+            Response.Redirect("https://my.clevelandclinic.org/help");
             return View();
         }
     }
