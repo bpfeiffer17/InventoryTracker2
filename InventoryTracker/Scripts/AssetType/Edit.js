@@ -24,20 +24,20 @@ $(document).ready(function () {
 function addProp(prop) {
     $('#propertiesDiv').append(`
         <div class="row">
-            <div class="col-25">
+            <div class="col-sm-3">
+                <input value="${prop.name}" class="form-control" onblur="assetType.setPropertyProperty('${prop.id}', 'name', this.value)" />
+            </div>
+            <div class="col-sm-3">
                 <select class="form-control" onchange="setType('${prop.id}', this.value)">
                     <option ${prop.type === 'String' ? 'selected':''}>String</option>
                     <option ${prop.type === 'Number' ? 'selected':''}>Number</option>
                     <option ${prop.type === 'Drop Down' ? 'selected':''}>Drop Down</option>
                 </select>
             </div>
-            <div class="col-25">
-                <input value="${prop.name}" class="form-control" onblur="assetType.setPropertyProperty('${prop.id}', 'name', this.value)" />
-            </div>
-            <div class="col-25">
+            <div class="col-sm-3">
                 <input value="${prop.unit ? prop.unit:''}" class="form-control" onblur="assetType.setPropertyProperty('${prop.id}', 'unit', this.value)" />
             </div>
-            <div class="col-25" id="dropDownDiv-${prop.id}"></div>
+            <div class="col-sm-3" id="dropDownDiv-${prop.id}"></div>
         </div>
     `);
     //If the Property is of type 'Drop Down', append DropDown specific html to the Property div
@@ -135,21 +135,18 @@ function setPage() {
     $('#assetTypeName').val(assetType.name);
     $('#assetTypeDescription').val(assetType.description);
     $('#propertiesDiv').append(`
-        <div class="row"><div class="col">Default Properties: ${assetType.tracked ? `Name, Serial Number, Deployed, Location`:`High Tide, Low Tide, Count`}</div></div>
-    `);
-    $('#propertiesDiv').append(`
         <div class="row">
-            <div class="col-25">
-                <label>Property Type: </label>
+            <div class="col-sm-3">
+                <h4>Name: </h4>
             </div>
-            <div class="col-25">
-                <label>Property Name: </label>
+            <div class="col-sm-3">
+                <h4>Type: </h4>
             </div>
-            <div class="col-25">
-                <label>Property Unit: </label>
+            <div class="col-sm-3">
+                <h4>Unit: </h4>
             </div>
-            <div class="col-25">
-            <label>Drop Down: </label>
+            <div class="col-sm-3">
+                <h4>Drop Down: </h4>
             </div>
         </div>
     `);
