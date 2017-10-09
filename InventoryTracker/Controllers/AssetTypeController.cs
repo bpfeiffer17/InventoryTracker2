@@ -52,8 +52,9 @@ namespace InventoryTracker.Controllers
 
         public ActionResult View(int id)
         {
-            ViewBag.id = id;
-            return View();
+            AssetType assetType = db.AssetTypes.Find(id);
+            ViewBag.assetTypeJSON = new JavaScriptSerializer().Serialize(assetType.getAssetTypeBare());
+            return View(assetType);
         }
 
         /**
