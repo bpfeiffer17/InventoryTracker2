@@ -9,22 +9,9 @@ var assetType;
 
 //Code to be executed when the page is done loading.
 $(document).ready(function () {
-    /**
-     * Retrieve DropDowns JSON and AssetType JSON from the data base
-     * so that we can create DropDownHelper and AssetType objects.
-     */
-    $.get('/Scripts/DummyData/DropDowns.json', function (data, status) {
-        //Create a DropDownHelper object with the returned JSON data
-        dropDownHelper = new DropDownHelper(dropDowns);
-        //Retrieve an AssetType from the database with the given assetTypeId
-        $.get('/Scripts/DummyData/AssetTypes/' + assetTypeId + '.json', function (data, status) {
-            //Create an AssetType object with the returned JSON data
-            //assetType = new AssetType(data);
-            assetType = new AssetType(assetTypeJSON);
-            //Add the properties of the new AssetType to the view
-            setPage();
-        });
-    });
+    dropDownHelper = new DropDownHelper(dropDowns);
+    assetType = new AssetType(assetTypeJSON);
+    setPage();
     //Set our event listeners on the page
     setListeners();
 });
@@ -88,15 +75,7 @@ function addDropDown(propertyId, dropDownId) {
     //Create a template with html for editing the DropDown
     var template = `
         <div style="display:inline-block">
-            ${!dropDown.isNew() ?
-                `<label>Select Drop Down: </label><a onClick="addNewDD('${propertyId}')"><label> (New)</label></a> ${select}`
-                :
-                `<label>Drop Down Name:</label><a onClick="cancelNewDD('${propertyId}', '${dropDownId}')"><label>(Cancel)</label></a><input class="form-control" value="${dropDown.name}" />`
-            }
-        </div>
-        <div style="display:inline-block">
-            <label>Drop Down Options: </label>${dropDown.isNew() ? `<a onClick="addNewDDVal('${dropDownId}')"><label> (New)</label></a>`:``}
-            ${values}
+            <label>Select Drop Down: </label>${select}
         </div>
     `;
     //Add the created template to the #dropDownDiv-[PropertyID]
@@ -185,9 +164,9 @@ function setType(propertyId, type) {
 
 function save() {
     var data = {
-        assetType: JSON.stringify(assetType)
+        assetType: JSON.stringify(assetType.getSaveStructure())
     }
-    $.post('/AssetType/Edit', data, function (data, status) {
+    $.post('/AssetType/SaveAsset', data, function (data, status) {
         console.log(response);
     });
 }

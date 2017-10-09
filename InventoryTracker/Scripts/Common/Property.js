@@ -17,4 +17,21 @@ class Property {
         this.dropDownId = options.DropDownID;
         this.value = options.Value;
     }
+
+     /**
+     * Get a structure that will mach the c# Property model
+     * 
+     * @returns - a json structure that resembles the c# Property model
+     */
+    getSaveStructure() {
+        let structure = {
+            PropertyID: (this.id + '').indexOf('new') >= 0 ? 0:this.id,
+            Name: this.name,
+            Type: this.type,
+            Unit: this.unit,
+            DropDownID: this.dropDownId,
+            Value: this.value
+        }
+        return structure;
+    }
 }

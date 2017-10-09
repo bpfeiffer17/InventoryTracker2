@@ -14,12 +14,14 @@
     <div>
         <label>Name:</label>
         <input id="assetTypeName"
-               class="form-control" />
+               class="form-control"
+               onblur="assetType.name = this.value"/>
     </div>
     <div>
         <label>Description:</label>
         <input id="assetTypeDescription"
-               class="form-control" />
+               class="form-control"
+               onblur="assetType.description = this.value"/>
     </div>
     <div>
         <label>Type:</label>
@@ -43,7 +45,7 @@
         <button onclick="save()">Save</button>
     </div>
 </div>
-<script> var assetTypeId = @ViewBag.id; var assetTypeJSON = @Html.Raw(ViewBag.assetTypeJSON); var dropDowns = @Html.Raw(ViewBag.dropDowns);</script>
+<script>var assetTypeJSON = @Html.Raw(ViewBag.assetTypeJSON); var dropDowns = @Html.Raw(ViewBag.dropDowns);</script>
 
 
 

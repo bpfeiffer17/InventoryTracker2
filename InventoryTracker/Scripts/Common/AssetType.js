@@ -59,6 +59,9 @@ class AssetType {
         this.findProperty(id)[property] = value;
     }
 
+    /**
+     * Add a brand new property to the properties array
+     */
     addNewProperty() {
         var newID = 'new' + Date.now();
         this.properties.push(new Property({
@@ -69,5 +72,24 @@ class AssetType {
             DropDownID: ''
         }));
         return newID;
+    }
+
+    /**
+     * Get a structure that will mach the c# model
+     * 
+     * @returns - a json structure that resembles the c# AssetType model
+     */
+    getSaveStructure() {
+        var structure = {
+            AssetTypeID: this.id,
+            Name: this.name,
+            Description: this.description,
+            Properties: [],
+            Tracked: this.tracked
+        }
+        for (var prop of this.properties) {
+            structure.Properties.push(prop.getSaveStructure());
+        }
+        return structure;
     }
 }
