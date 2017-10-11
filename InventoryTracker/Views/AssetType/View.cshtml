@@ -1,30 +1,64 @@
-﻿@{
+﻿@model InventoryTracker.Models.AssetType
+
+@{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-@section Scripts
-{
-    <script src="@Url.Content("~/Scripts/AssetType/View.js")"></script>
-    <script src="@Url.Content("~/Scripts/Common/DropDownHelper.js")"></script>
-    <script src="@Url.Content("~/Scripts/Common/DropDown.js")"></script>
-    <script src="@Url.Content("~/Scripts/Common/AssetType.js")"></script>
-    <script src="@Url.Content("~/Scripts/Common/Property.js")"></script>
-}
-<div id="editDiv">
+<div>
     <div>
-        <label>Name:</label>
-        <label id="assetTypeName"></label>
+        <h3>General:</h3>
+    </div>
+    <hr />
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-3">
+                <h4>Name:</h4>
+                @Html.DisplayFor(model => Model.Name)
+            </div>
+            <div class="col-sm-3">
+                <h4>Description:</h4>
+                @Html.DisplayFor(model => Model.Description)
+            </div>
+            <div class="col-sm-6">
+                <h4>Type:</h4>
+                @Html.DisplayFor(model => Model.Tracked)
+            </div>
+        </div>
     </div>
     <div>
-        <label>Description:</label>
-        <label id="assetTypeDescription"></label>
+        <h3>Properties:</h3>
     </div>
-    <div>
-        <label>Properties:</label>
-    </div>
+    <hr />
     <div id="propertiesDiv" class="container">
-
+        <div class="row">
+            <div class="col-sm-3">
+                <h4>Name</h4>
+            </div>
+            <div class="col-sm-3">
+                <h4>Type</h4>
+            </div>
+            <div class="col-sm-3">
+                <h4>Unit</h4>
+            </div>
+            <div class="col-sm-3">
+                <h4>Drop Down</h4>
+            </div>
+        </div>
+        @foreach (var property in Model.Properties)
+        {
+            <div class="row">
+                <div class="col-sm-3">
+                    @Html.DisplayFor(modelItem => property.Name)
+                </div>
+                <div class="col-sm-3">
+                    @Html.DisplayFor(modelItem => property.Type)
+                </div>
+                <div class="col-sm-3">
+                    @Html.DisplayFor(modelItem => property.Unit)
+                </div>
+                <div class="col-sm-3">
+                    @Html.DisplayFor(modelItem => property.DropDown.Name)
+                </div>
+            </div>
+        }
     </div>
 </div>
-
-<script> var assetTypeId = @ViewBag.id; </script>

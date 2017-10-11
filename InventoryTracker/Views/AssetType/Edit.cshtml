@@ -10,39 +10,50 @@
     <script src="@Url.Content("~/Scripts/Common/AssetType.js")"></script>
     <script src="@Url.Content("~/Scripts/Common/Property.js")"></script>
 }
-<div id="editDiv">
+<div>
     <div>
-        <label>Name:</label>
-        <input id="assetTypeName"
-               class="form-control"
-               onblur="assetType.name = this.value"/>
+        <h3>General:</h3>
     </div>
-    <div>
-        <label>Description:</label>
-        <input id="assetTypeDescription"
-               class="form-control"
-               onblur="assetType.description = this.value"/>
-    </div>
-    <div>
-        <label>Type:</label>
-        <div class="radio">
-            <label><input type="radio" name="tracked" onclick="assetType.tracked = true; setPage()">Tracked</label>
+    <hr />
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-3">
+                <h4>Name:</h4>
+                <input id="assetTypeName"
+                       class="form-control"
+                       onblur="assetType.name = this.value" />
+            </div>
+            <div class="col-sm-3">
+                <h4>Description:</h4>
+                <input id="assetTypeDescription"
+                       class="form-control"
+                       onblur="assetType.description = this.value" />
+            </div>
+            <div class="col-sm-6">
+                <h4>Type:</h4>
+                <div class="radio">
+                    <label><input type="radio" name="tracked" onclick="assetType.tracked = true; setPage()">Tracked</label>
+                </div>
+                <div class="radio">
+                    <label><input type="radio" name="tracked" onclick="assetType.tracked = false; setPage()" checked>Non-tracked</label>
+                </div>
+            </div>
         </div>
-        <div class="radio">
-            <label><input type="radio" name="tracked" onclick="assetType.tracked = false; setPage()" checked>Non-tracked</label>
-        </div>
     </div>
     <div>
-        <label>Properties:</label>
+        <h3>Properties:</h3>
     </div>
+    <hr />
     <div>
-        <button id="addPropButton">Add New</button>
+        <button class="btn" id="addPropButton">Add New</button>
     </div>
+    <hr />
     <div id="propertiesDiv" class="container">
 
     </div>
+    <hr />
     <div>
-        <button onclick="save()">Save</button>
+        <button class="btn" onclick="save()">Save</button>
     </div>
 </div>
 <script>var assetTypeJSON = @Html.Raw(ViewBag.assetTypeJSON); var dropDowns = @Html.Raw(ViewBag.dropDowns);</script>
