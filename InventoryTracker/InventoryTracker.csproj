@@ -183,6 +183,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>InventoryTrackerModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\Property.cs">
       <DependentUpon>InventoryTrackerModel.tt</DependentUpon>
     </Compile>
