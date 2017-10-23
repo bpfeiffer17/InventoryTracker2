@@ -1,0 +1,13 @@
+﻿
+@{
+    ViewBag.Title = "Demo_BulkImport";
+}
+
+<h2>Demo_BulkImport</h2>
+
+USE InventoryTrackerEntities 
+GO
+//create table to insert the data from the file into
+CREATE TABLE CSVFile (Name nvarchar(15), Description nvarchr(150), Tracked int)
+GO
+//Bulk insert the data from csv file

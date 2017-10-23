@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using MvcApplication6.Models;
+//using MvcApplication6.Models;
 
 
 namespace InventoryTracker.Controllers
