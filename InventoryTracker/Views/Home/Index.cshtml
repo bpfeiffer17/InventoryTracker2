@@ -8,6 +8,23 @@
     <p><a href="https://my.clevelandclinic.org/" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
 </div>
 
+@model MvcApplication6.Models.LoginModel
+@{
+    ViewBag.Title = "Index";
+}
+<script language="javascript">
+    function display() {
+        if ($("#txtusername").attr("value") == "") {
+            alert("Please Enter your UserName.");
+            return false;
+        } else if ($("#txtuserpassword").attr("value") == "") {
+            alert("Please enter UserPassword.");
+            return false;
+        }
+        alert("Login Successfully");
+        return true;
+    }
+</script>
 
 <div class="row">
     <div class="col-md-4">
@@ -22,50 +39,30 @@
         <p>If you have questions we are here to help. Hit learn more to contact a professional or get answers to your health concerns.</p>
         <p><a class="btn btn-default" href="https://my.clevelandclinic.org/help">Learn more &raquo;</a></p>
     </div>
-    @*<div class="col-md-4">
+    <div class="col-md-4">
         <h2>Login</h2>
-        <p>To review different assets and inventory feel free to login. </p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Login &raquo;</a></p>
-    </div>*@
+        @using (Html.BeginForm("Index", "Home"))
+        {
+            <table width="100" cellpadding="1" cellspacing="5">
+                <tr>
+                    <td colspan="2" style="color:#f00;font-size:larger">@ViewBag.Status</td>
+                </tr>
+                <tr>
+                    <td align="left">Username:</td>
+                    <td>@Html.TextBoxFor(m => m.UserName, new { @style = "width:300px", @id = "txtusername" })</td>
+                </tr>
+                <tr>
+                    <td align="left">Password:</td>
+                    <td>@Html.PasswordFor(m => m.UserPassword, new { @style = "width:300px", @id = "txtuserpassword" })</td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <br/>
+                        <input type="submit" a class="btn btn-default" value="Login" title="login" onclick=" display();" />
+                    </td>
+                </tr>
+            </table>
+        }
+    </div>
 </div>
 
-@model MvcApplication6.Models.LoginModel
-@{
-    ViewBag.Title = "Index";
-}
-<script language="javascript">
-    function display() {
-        if ($("#txtusername").attr("value") == "")
-        {
-            alert("Please Enter your UserName.");
-            return false;
-        } else if ($("#txtuserpassword").attr("value") == "") {
-            alert("Please enter UserPassword.");
-            return false;
-        }
-        alert("Login Successfully");
-        return true;
-    }
-</script>
-<h3>Simple We API Login Form </h3>
-@using (Html.BeginForm("Index", "Home"))
-{
-<table width="40%" cellpadding="1" cellspacing="5">
-<tr>
-<td colspan="2" style="color:#f00;font-size:larger">@ViewBag.Status</td>
-</tr>
-    <tr>
-         <td align="right">User Name :</td>
-         <td>@Html.TextBoxFor(m => m.UserName, new {@style="width:200px",@id="txtusername" })</td>
-    </tr>
-    <tr>
- <td align="right">User Password :</td>
-         <td>@Html.PasswordFor(m => m.UserPassword, new {@style="width:200px",@id="txtuserpassword" })</td>
-    </tr>
-    <tr>
-        <td colspan="2">
-          <input type="submit" value="Login" title="login" onclick=" display();"/>
-        </td>
-    </tr>
- </table>
-}
