@@ -3,29 +3,66 @@
 }
 
 <div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+    <h1>Cleveland Clinic</h1>
+    <p class="lead">Every life deserves world class care.</p>
+    <p><a href="https://my.clevelandclinic.org/" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
 </div>
+
+@model MvcApplication6.Models.LoginModel
+@{
+    ViewBag.Title = "Index";
+}
+<script language="javascript">
+    function display() {
+        if ($("#txtusername").attr("value") == "") {
+            alert("Please Enter your UserName.");
+            return false;
+        } else if ($("#txtuserpassword").attr("value") == "") {
+            alert("Please enter UserPassword.");
+            return false;
+        }
+        alert("Login Successfully");
+        return true;
+    }
+</script>
 
 <div class="row">
     <div class="col-md-4">
-        <h2>Getting started</h2>
+        <h2>About</h2>
         <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
+            Learn about us  and our mission to create world class helthcare for everyone.
         </p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
+        <p><a class="btn btn-default" href="https://my.clevelandclinic.org/about">Learn more &raquo;</a></p>
     </div>
     <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
+        <h2>Contact</h2>
+        <p>If you have questions we are here to help. Hit learn more to contact a professional or get answers to your health concerns.</p>
+        <p><a class="btn btn-default" href="https://my.clevelandclinic.org/help">Learn more &raquo;</a></p>
     </div>
     <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
+        <h2>Login</h2>
+        @using (Html.BeginForm("Index", "Home"))
+        {
+            <table width="100" cellpadding="1" cellspacing="5">
+                <tr>
+                    <td colspan="2" style="color:#f00;font-size:larger">@ViewBag.Status</td>
+                </tr>
+                <tr>
+                    <td align="left">Username:</td>
+                    <td>@Html.TextBoxFor(m => m.UserName, new { @style = "width:300px", @id = "txtusername" })</td>
+                </tr>
+                <tr>
+                    <td align="left">Password:</td>
+                    <td>@Html.PasswordFor(m => m.UserPassword, new { @style = "width:300px", @id = "txtuserpassword" })</td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <br/>
+                        <input type="submit" a class="btn btn-default" value="Login" title="login" onclick=" display();" />
+                    </td>
+                </tr>
+            </table>
+        }
     </div>
 </div>
+
