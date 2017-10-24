@@ -41,6 +41,7 @@ namespace InventoryTracker.Models
             propertyBare.Unit = this.Unit;
             propertyBare.DropDownID = this.DropDownID;
             propertyBare.AssetTypeID = this.AssetTypeID;
+            propertyBare.Value = "";
             return propertyBare;
         }
     }
@@ -53,5 +54,6 @@ namespace InventoryTracker.Models
         public string Unit { get; set; }
         public Nullable<int> DropDownID { get; set; }
         public int AssetTypeID { get; set; }
+        public string Value { get; set; }
     }
 }

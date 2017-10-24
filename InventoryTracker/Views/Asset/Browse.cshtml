@@ -13,18 +13,44 @@
 }
 
 <h1>Browse Assets</h1>
+<label>Asset Types:</label>
+<select class="form-control" onchange="window.location = '/Asset/Browse/' + this.value">
+    @foreach (var item in ViewBag.assetTypes)
+    {
+        <option @(item.AssetTypeID ==  ViewBag.assetTypeToBrowse.AssetTypeID  ? "selected" : "") value="@item.AssetTypeID">@item.Name</option>
+    }
+</select>
 <!--Begin Assets Table-->
 <table id="assetsTable">
     <thead>
         <tr>
-            <th> Asset Type</th>
-	        <th> Name</th>
-		    <th> Description</th>
-            <th>Edit</th>
+            <th>Options</th>
+            @foreach (var prop in ViewBag.assetTypeToBrowse.Properties)
+            {
+                <th>@prop.Name</th>
+            }
 		</tr>
 	</thead>
 	<tbody>
-		
+		@foreach (var asset in ViewBag.assets)
+        {
+            if (asset.AssetTypeID == ViewBag.assetTypeToBrowse.AssetTypeID)
+            {
+                <tr>
+                    <td>
+                        <a href="/Asset/Edit/@asset.AssetID">Edit</a>
+                        <a href="/Asset/View/@asset.AssetID">View</a>
+                        <a>Delete</a>
+                    </td>
+                    @foreach (var prop in asset.getAssetBare().AssetType.Properties)
+                    {
+                        <td>
+                            @prop.Value
+                        </td>
+                    }
+                </tr>
+            }
+        }
 	</tbody>
 </table>
 <!--End Assets Table-->

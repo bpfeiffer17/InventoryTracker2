@@ -1,37 +1,22 @@
-﻿
-@{
-    ViewBag.Title = "View";
-}
-
-<h2>View</h2>
+﻿@model InventoryTracker.Models.Asset
 
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-@section Scripts
-{
-    <script src="@Url.Content("~/Scripts/Asset/View.js")"></script>
-    <script src="@Url.Content("~/Scripts/Common/DropDownHelper.js")"></script>
-    <script src="@Url.Content("~/Scripts/Common/DropDown.js")"></script>
-    <script src="@Url.Content("~/Scripts/Common/AssetType.js")"></script>
-    <script src="@Url.Content("~/Scripts/Common/Property.js")"></script>
-}
-<div id="editDiv">
-    <div>
-        <label>Name:</label>
-        <label id="assetTypeName"></label>
-    </div>
-    <div>
-        <label>Description:</label>
-        <label id="assetTypeDescription"></label>
-    </div>
-    <div>
-        <label>Properties:</label>
-    </div>
+<div>
     <div id="propertiesDiv" class="container">
-
+        @foreach (var property in Model.getAssetBare().AssetType.Properties)
+        {
+            <div class="row">
+                <div class="col-sm-3">
+                    <h4>@Html.DisplayFor(modelItem => property.Name)</h4>
+                </div>
+                <div class="col-sm-3">
+                    @Html.DisplayFor(modelItem => property.Value)
+                </div>
+                <div class="col-sm-6">
+                </div>
+            </div>
+        }
     </div>
 </div>
-
-<script> var assetTypeId = @ViewBag.id; </script>

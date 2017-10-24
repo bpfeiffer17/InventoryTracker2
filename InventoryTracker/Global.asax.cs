@@ -17,5 +17,14 @@ namespace InventoryTracker
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
         }
+
+        public void Application_BeginRequest()
+        {
+            // Start a UserSettings Cookie if one does not exist
+            if (Request.Cookies["UserSettings"] == null)
+            {
+                Response.Cookies.Add(new HttpCookie("UserSettings"));
+            }
+        }
     }
 }
