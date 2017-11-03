@@ -8,40 +8,13 @@
     <script src="@Url.Content("~/Scripts/Asset/Edit.js")"></script>
     <script src="@Url.Content("~/Scripts/Common/DropDown.js")"></script>
     <script src="@Url.Content("~/Scripts/Common/DropDownHelper.js")"></script>
-
+    <script src="@Url.Content("~/Scripts/Common/Asset.js")"></script>
+    <script src="@Url.Content("~/Scripts/Common/AssetType.js")"></script>
+    <script src="@Url.Content("~/Scripts/Common/Property.js")"></script>
 
 }
-
-<div id = "editDiv">
-    <div>
-        <label>Asset Type:</label>
-        <select class="form-control" id="AssetType" name="AssetTypes">
-        <option>Computer</option> 
-        <option>Hard Drive</option> 
-        <option>Moniter</option> 
-</select>
-    </div>
-	
-	<div>
-        <label>Name:</label>
-        <input id="assetName"
-               class="form-control" />
-    </div>
-
-    <div>
-        <label>Description:</label>
-        <input id="assetDescription"
-               class="form-control" />
-    </div>
-	
-	<div>
-        <label>Properties:</label>
-    </div>
-	<div> 
-        <button id="addPropButton"> Add New </button>
-    </div>
-	  <div id="propertiesDiv" class="container">
-
-	</div>   
-</div>
-    <script> var assetTypeId = @ViewBag.id; </script>
+<div id="propertiesDiv"></div>
+<button onclick="save()">Save</button>
+<script>
+    var assetTypeId = @ViewBag.id;
+</script>

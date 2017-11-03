@@ -139,5 +139,10 @@ namespace InventoryTracker.Controllers
                 }
             }
         }
+
+        public string DropDownHelper()
+        {
+            return new JavaScriptSerializer().Serialize(this.getDropDowns());
+        }
     }
 }
