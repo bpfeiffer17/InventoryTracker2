@@ -30,9 +30,13 @@ class ConfirmModal {
         if (this.modalExists()) {
             // Check to see if the user confirmed the message
             if (this.confirmed) {
-                this.confirmCallBack();
+                if (this.confirmCallBack) {
+                    this.confirmCallBack();
+                }
             }else {
-                this.denyCallBack();
+                if (this.denyCallBack) {
+                    this.denyCallBack();
+                }
             }
             $('#confirmModal').modal('hide');
         }
