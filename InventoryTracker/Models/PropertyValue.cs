@@ -14,7 +14,6 @@ namespace InventoryTracker.Models
     
     public partial class PropertyValue
     {
-        public int PropertyValueID { get; set; }
         public int AssetID { get; set; }
         public int PropertyID { get; set; }
         public string Value { get; set; }

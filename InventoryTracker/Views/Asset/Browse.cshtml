@@ -5,7 +5,8 @@
     {
         <script src="@Url.Content("~/Scripts/Asset/Browse.js")"></script>
         <script src="@Url.Content("~/Scripts/DataTables/datatables.js")"></script>
-
+        <script src="@Url.Content("~/Scripts/Common/ConfirmModal.js")"></script>
+        <script src="@Url.Content("~/Scripts/Common/LoadingModal.js")"></script>
     }
 
 @section Styles {
@@ -14,12 +15,14 @@
 
 <h1>Browse Assets</h1>
 <label>Asset Types:</label>
-<select class="form-control" onchange="window.location = '/Asset/Browse/' + this.value">
+<select id="assetType" class="form-control" onchange="window.location = '/Asset/Browse/' + this.value">
     @foreach (var item in ViewBag.assetTypes)
     {
         <option @(item.AssetTypeID ==  ViewBag.assetTypeToBrowse.AssetTypeID  ? "selected" : "") value="@item.AssetTypeID">@item.Name</option>
     }
 </select>
+<button onclick="createNewAsset()" class="btn">Create New Asset</button>
+<hr />
 <!--Begin Assets Table-->
 <table id="assetsTable">
     <thead>
@@ -40,7 +43,7 @@
                     <td>
                         <a href="/Asset/Edit/@asset.AssetID">Edit</a>
                         <a href="/Asset/View/@asset.AssetID">View</a>
-                        <a>Delete</a>
+                        <a class="clickable" onclick="deleteAsset(@asset.AssetID)">Delete</a>
                     </td>
                     @foreach (var prop in asset.getAssetBare().AssetType.Properties)
                     {
