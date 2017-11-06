@@ -11,10 +11,15 @@
     <script src="@Url.Content("~/Scripts/Common/Asset.js")"></script>
     <script src="@Url.Content("~/Scripts/Common/AssetType.js")"></script>
     <script src="@Url.Content("~/Scripts/Common/Property.js")"></script>
-
+    <script src="@Url.Content("~/Scripts/Common/LoadingModal.js")"></script>
 }
-<div id="propertiesDiv"></div>
-<button onclick="save()">Save</button>
+<div>
+    <h3><span id="type"></span> Asset:</h3>
+</div>
+<hr />
+<div id="propertiesDiv" class="container"></div>
+<hr />
+<button onclick="save()" class="btn">Save</button>
 <script>
     var assetTypeId = @ViewBag.id;
 </script>

@@ -175,10 +175,12 @@ function setType(propertyId, type) {
 }
 
 function save() {
+    loadingModal.show();
     var data = {
         assetType: JSON.stringify(assetType.getSaveStructure())
     }
     $.post('/AssetType/SaveAsset', data, function (data, status) {
-        console.log(response);
+        loadingModal.hide();
+        window.location = '/AssetType/Browse';
     });
 }
