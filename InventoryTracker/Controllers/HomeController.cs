@@ -21,7 +21,9 @@ namespace MvcApplication6.Controllers
             var display = Userloginvalues().Where(m => m.UserName == objuserlogin.UserName && m.UserPassword == objuserlogin.UserPassword).FirstOrDefault();
             if (display != null)
             {
-                ViewBag.Status = "CORRECT UserNAme and Password";
+                ViewBag.Status = "CORRECT UserName and Password";
+                Request.Cookies["Tracking"]["Username"] = objuserlogin.UserName.ToString();
+                ViewBag.assetTypeToBrowse = db.AssetTypes.Find(id);
             }
             else
             {
@@ -39,5 +41,7 @@ namespace MvcApplication6.Controllers
             objModel.Add(new LoginModel { UserName = "user5", UserPassword = "password5" });
             return objModel;
         }
+      
     }
 }
+
