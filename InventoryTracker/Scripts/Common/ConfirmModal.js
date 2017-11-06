@@ -12,7 +12,7 @@ class ConfirmModal {
     }
 
     /**
-     * Show a loading modal
+     * Show a confirm modal
      */
     show(confirmMessage, confirmCallBack, denyCallBack) {
         this.confirmed = false;
@@ -26,9 +26,12 @@ class ConfirmModal {
         $('#confirmModal').modal('show');
     }
 
+    /**
+     * Execute the proper callback and then close the modal
+     */
     hide() {
         if (this.modalExists()) {
-            // Check to see if the user confirmed the message
+            // Check to see if the user confirmed the message and execute the correct callback
             if (this.confirmed) {
                 if (this.confirmCallBack) {
                     this.confirmCallBack();
@@ -42,6 +45,9 @@ class ConfirmModal {
         }
     }
 
+    /**
+     * Check to see if this modal exists by querying for a confirmModal element
+     */
     modalExists() {
         if ($('#confirmModal').length) {
             return true;
@@ -49,6 +55,9 @@ class ConfirmModal {
         return false;
     }
 
+    /**
+     * Add a modal to the pages body
+     */
     addModal() {
         $('body').append(`
             <div id="confirmModal" class="modal fade">
@@ -71,4 +80,5 @@ class ConfirmModal {
     }
 }
 
+// Create a new ConfirmModal object to be used where this script is included
 confirmModal = new ConfirmModal();
