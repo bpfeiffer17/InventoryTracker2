@@ -7,7 +7,7 @@ $(document).ready(function(){
     /*
     *Retreive asset from db and then add its properties to the page
     */
-    $.get('/AssetType/DropDownHelper', function (data,status){
+    $.get('/AssetType/DropDownHelper', function (data,status) {
         dropDownHelper = new DropDownHelper(JSON.parse(data));
         $.get('/Asset/JSON/' + assetTypeId, function (data,status){
             asset = new Asset(JSON.parse(data));

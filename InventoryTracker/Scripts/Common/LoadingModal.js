@@ -1,5 +1,5 @@
 /**
- * LoadingModal class that shows and hides a laoding modal
+ * LoadingModal class that shows and hides a loading modal
  * 
  * @author - Brandon Pfeiffer <bpfeiffer17@jcu.edu>
  */

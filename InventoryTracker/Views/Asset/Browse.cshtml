@@ -5,7 +5,8 @@
     {
         <script src="@Url.Content("~/Scripts/Asset/Browse.js")"></script>
         <script src="@Url.Content("~/Scripts/DataTables/datatables.js")"></script>
-
+        <script src="@Url.Content("~/Scripts/Common/ConfirmModal.js")"></script>
+        <script src="@Url.Content("~/Scripts/Common/LoadingModal.js")"></script>
     }
 
 @section Styles {
@@ -40,7 +41,7 @@
                     <td>
                         <a href="/Asset/Edit/@asset.AssetID">Edit</a>
                         <a href="/Asset/View/@asset.AssetID">View</a>
-                        <a>Delete</a>
+                        <a class="clickable" onclick="deleteAsset(@asset.AssetID)">Delete</a>
                     </td>
                     @foreach (var prop in asset.getAssetBare().AssetType.Properties)
                     {

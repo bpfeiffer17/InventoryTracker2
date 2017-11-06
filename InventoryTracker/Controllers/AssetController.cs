@@ -154,5 +154,20 @@ namespace InventoryTracker.Controllers
             }
             return "";
         }
+
+        /**
+         *  Delete an asset from the database given its id
+         */
+        [HttpPost]
+        public string DeleteAsset(int id)
+        {
+            Asset asset = db.Assets.Find(id);
+            if (asset != null)
+            {
+                db.Assets.Remove(asset);
+                db.SaveChanges();
+            }
+            return "";
+        }
     }
 }

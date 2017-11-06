@@ -6,3 +6,7 @@
     display: inline-block;
     width: 24%;
 }
+
+.clickable {
+    cursor: pointer !important;
+}
