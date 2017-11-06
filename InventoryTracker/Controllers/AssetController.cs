@@ -42,9 +42,10 @@ namespace InventoryTracker.Controllers
             return View();
         }
 
-        public ActionResult Edit(int id)
+        public ActionResult Edit(int id, int assetTypeID = 0)
 		{
             ViewBag.id = id;
+            ViewBag.assetTypeID = assetTypeID;
             ViewBag.dropDowns = new JavaScriptSerializer().Serialize(this.getDropDowns());
             return View();
 		}
@@ -116,9 +117,21 @@ namespace InventoryTracker.Controllers
             return View();
         }
 
-        public string JSON(int id)
+        public string JSON(int id = 0, int assetTypeID = 0)
         {
-            Asset asset = db.Assets.Find(id);
+            Asset asset;
+            if (id != 0)
+            {
+                asset = db.Assets.Find(id);
+            }
+            else
+            {
+                // Create a new asset
+                asset = new Asset();
+                // Add AssetType info based on the given assetTypeID
+                asset.AssetTypeID = assetTypeID;
+                asset.AssetType = db.AssetTypes.Find(assetTypeID);
+            }
             return ViewBag.assetTypeJSON = new JavaScriptSerializer().Serialize(asset.getAssetBare());
         }
 
@@ -128,6 +141,15 @@ namespace InventoryTracker.Controllers
         [HttpPost]
         public string SaveAsset(AssetBare asset)
         {
+            // Check to see if the asset exists in the db of if this is a new asset
+            if (db.Assets.Find(asset.AssetID) == null)
+            {
+                Asset newDBAsset = new Asset();
+                newDBAsset.AssetTypeID = asset.AssetType.AssetTypeID;
+                db.Assets.Add(newDBAsset);
+                db.SaveChanges();
+                asset.AssetID = newDBAsset.AssetID;
+            }
             foreach (var prop in asset.AssetType.Properties)
             {
                 PropertyValue propVal = db.PropertyValues.Find(asset.AssetID, prop.PropertyID);
@@ -144,11 +166,14 @@ namespace InventoryTracker.Controllers
                 }
                 else
                 {
-                    propVal = new PropertyValue();
-                    propVal.AssetID = asset.AssetID;
-                    propVal.PropertyID = prop.PropertyID;
-                    propVal.Value = prop.Value;
-                    db.PropertyValues.Add(propVal);
+                    if (prop.Value != "" && prop.Value != null)
+                    {
+                        propVal = new PropertyValue();
+                        propVal.AssetID = asset.AssetID;
+                        propVal.PropertyID = prop.PropertyID;
+                        propVal.Value = prop.Value;
+                        db.PropertyValues.Add(propVal);
+                    }
                 }
                 db.SaveChanges();
             }
@@ -164,6 +189,12 @@ namespace InventoryTracker.Controllers
             Asset asset = db.Assets.Find(id);
             if (asset != null)
             {
+                // Delete the PropertyValues for this asset
+                foreach (var propVal in asset.PropertyValues.ToList())
+                {
+                    db.PropertyValues.Remove(propVal);
+                }
+                // Delete the asset itself
                 db.Assets.Remove(asset);
                 db.SaveChanges();
             }

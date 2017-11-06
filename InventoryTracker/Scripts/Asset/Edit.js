@@ -9,7 +9,7 @@ $(document).ready(function(){
     */
     $.get('/AssetType/DropDownHelper', function (data,status) {
         dropDownHelper = new DropDownHelper(JSON.parse(data));
-        $.get('/Asset/JSON/' + assetTypeId, function (data,status){
+        $.get(`/Asset/JSON/${assetId}${assetTypeId ? `?assetTypeID=${assetTypeId}`:''}`, function (data,status){
             asset = new Asset(JSON.parse(data));
             setPage();
         });

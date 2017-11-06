@@ -19,3 +19,10 @@ function deleteAsset(assetId) {
         });
     });
 }
+
+function createNewAsset() {
+    var assetTypeID = $('#assetType').val();
+    if (assetTypeID) {
+        window.location = `/Asset/Edit?id=0&assetTypeID=${assetTypeID}`;
+    }
+}
