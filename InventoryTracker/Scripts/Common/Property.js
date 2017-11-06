@@ -16,6 +16,7 @@ class Property {
         this.unit = options.Unit;
         this.dropDownId = options.DropDownID;
         this.value = options.Value;
+        this.active = options.Active;
     }
 
      /**
@@ -30,7 +31,8 @@ class Property {
             Type: this.type,
             Unit: this.unit,
             DropDownID: this.dropDownId,
-            Value: this.value
+            Value: this.value,
+            Active: this.active
         }
         return structure;
     }

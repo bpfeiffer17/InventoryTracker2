@@ -46,6 +46,7 @@
           <Property Name="Unit" Type="nvarchar" MaxLength="50" />
           <Property Name="DropDownID" Type="int" />
           <Property Name="AssetTypeID" Type="int" Nullable="false" />
+          <Property Name="Active" Type="tinyint" Nullable="false" />
         </EntityType>
         <EntityType Name="PropertyValues">
           <Key>
@@ -215,6 +216,7 @@
           <NavigationProperty Name="AssetType" Relationship="Self.FK_Properties_AssetTypes" FromRole="Properties" ToRole="AssetTypes" />
           <NavigationProperty Name="DropDown" Relationship="Self.FK_Properties_DropDowns" FromRole="Properties" ToRole="DropDowns" />
           <NavigationProperty Name="PropertyValues" Relationship="InventoryTrackerModel.FK_PropertyValues_Properties" FromRole="Property" ToRole="PropertyValue" />
+          <Property Name="Active" Type="Byte" Nullable="false" />
         </EntityType>
         <Association Name="FK_Assets_AssetTypes">
           <End Role="AssetTypes" Type="Self.AssetType" Multiplicity="1" />
@@ -375,6 +377,7 @@
           <EntitySetMapping Name="Properties">
             <EntityTypeMapping TypeName="InventoryTrackerModel.Property">
               <MappingFragment StoreEntitySet="Properties">
+                <ScalarProperty Name="Active" ColumnName="Active" />
                 <ScalarProperty Name="PropertyID" ColumnName="PropertyID" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Type" ColumnName="Type" />

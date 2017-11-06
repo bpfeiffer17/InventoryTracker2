@@ -24,27 +24,30 @@ $(document).ready(function () {
  * @param {Property} prop - a Property of the Asset Type to be added to the view 
  */
 function addProp(prop) {
-    $('#propertiesDiv').append(`
-        <div class="row">
-            <div class="col-sm-3">
-                <input value="${prop.name}" class="form-control" onblur="assetType.setPropertyProperty('${prop.id}', 'name', this.value)" />
+    if (prop.active) {
+        $('#propertiesDiv').append(`
+            <div class="row">
+                <div class="col-sm-3">
+                    <input value="${prop.name}" class="form-control" onblur="assetType.setPropertyProperty('${prop.id}', 'name', this.value)" />
+                </div>
+                <div class="col-sm-3">
+                    <select class="form-control" onchange="setType('${prop.id}', this.value)">
+                        <option ${prop.type === 'String' ? 'selected':''}>String</option>
+                        <option ${prop.type === 'Number' ? 'selected':''}>Number</option>
+                        <option ${prop.type === 'Drop Down' ? 'selected':''}>Drop Down</option>
+                    </select>
+                </div>
+                <div class="col-sm-3">
+                    <input value="${prop.unit ? prop.unit:''}" class="form-control" onblur="assetType.setPropertyProperty('${prop.id}', 'unit', this.value)" />
+                </div>
+                <div class="col-sm-2" id="dropDownDiv-${prop.id}"></div>
+                <div class="col-sm-1" onclick="deleteProp('${prop.id}')"><button>DELETE</button></div>
             </div>
-            <div class="col-sm-3">
-                <select class="form-control" onchange="setType('${prop.id}', this.value)">
-                    <option ${prop.type === 'String' ? 'selected':''}>String</option>
-                    <option ${prop.type === 'Number' ? 'selected':''}>Number</option>
-                    <option ${prop.type === 'Drop Down' ? 'selected':''}>Drop Down</option>
-                </select>
-            </div>
-            <div class="col-sm-3">
-                <input value="${prop.unit ? prop.unit:''}" class="form-control" onblur="assetType.setPropertyProperty('${prop.id}', 'unit', this.value)" />
-            </div>
-            <div class="col-sm-3" id="dropDownDiv-${prop.id}"></div>
-        </div>
-    `);
-    //If the Property is of type 'Drop Down', append DropDown specific html to the Property div
-    if (prop.type === 'Drop Down') {
-        addDropDown(prop.id, prop.dropDownId);
+        `);
+        //If the Property is of type 'Drop Down', append DropDown specific html to the Property div
+        if (prop.type === 'Drop Down') {
+            addDropDown(prop.id, prop.dropDownId);
+        }
     }
 }
 
@@ -147,8 +150,11 @@ function setPage() {
             <div class="col-sm-3">
                 <h4>Unit: </h4>
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-2">
                 <h4>Drop Down: </h4>
+            </div>
+            <div class="col-sm-1">
+                <h4>Delete: </h4>
             </div>
         </div>
     `);
@@ -182,5 +188,12 @@ function save() {
     $.post('/AssetType/SaveAsset', data, function (data, status) {
         loadingModal.hide();
         window.location = '/AssetType/Browse';
+    });
+}
+
+function deleteProp(propertID) {
+    confirmModal.show('Are you sure you want to delete this property?', () => {
+        assetType.findProperty(propertID).active = false;
+        setPage();
     });
 }

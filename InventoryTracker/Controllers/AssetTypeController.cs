@@ -132,10 +132,14 @@ namespace InventoryTracker.Controllers
                     dbProperty.Type = prop.Type;
                     dbProperty.Unit = prop.Unit;
                     dbProperty.DropDownID = prop.DropDownID;
+                    dbProperty.Active = prop.Active;
                 }
                 else
                 {
-                    dbAssetType.Properties.Add(prop);
+                    if (prop.Active != 0)
+                    {
+                        dbAssetType.Properties.Add(prop);
+                    }
                 }
             }
         }
