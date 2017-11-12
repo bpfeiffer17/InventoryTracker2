@@ -40,7 +40,7 @@ function addProp(prop) {
                 <div class="col-sm-3">
                     <input value="${prop.unit ? prop.unit:''}" class="form-control" onblur="assetType.setPropertyProperty('${prop.id}', 'unit', this.value)" />
                 </div>
-                <div class="col-sm-2" id="dropDownDiv-${prop.id}"></div>
+                <div class="col-sm-2 center" id="dropDownDiv-${prop.id}">${prop.type !== 'Drop Down' ? `--` : ``}</div>
                 <div class="col-sm-1" onclick="deleteProp('${prop.id}')"><button>DELETE</button></div>
             </div>
         `);

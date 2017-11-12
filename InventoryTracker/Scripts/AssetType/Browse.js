@@ -9,3 +9,13 @@
 $(document).ready(function () {
     $('#assetTypesTable').DataTable();
 });
+
+function deleteAssetType(assetTypeId) {
+    confirmModal.show('Are you sure you want to delete this asset type?', () => {
+        loadingModal.show();
+        $.post('/AssetType/DeleteAssetType/' + assetTypeId, function (data, status) {
+            loadingModal.hide();
+            window.location = '/AssetType/Browse';
+        });
+    });
+}

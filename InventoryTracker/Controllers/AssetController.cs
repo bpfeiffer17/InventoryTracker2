@@ -26,10 +26,10 @@ namespace InventoryTracker.Controllers
             ViewBag.assetTypes = db.AssetTypes.ToList();
             if (id != 0)
             {
-                Request.Cookies["UserSettings"]["AssetTypeToBrowseID"] = id.ToString();
+                Response.Cookies["UserSettings"]["AssetTypeToBrowseID"] = id.ToString();
                 ViewBag.assetTypeToBrowse = db.AssetTypes.Find(id);
             }
-            if (Request.Cookies["UserSettings"]["AssetTypeToBrowseID"] != null)
+            else if (Request.Cookies["UserSettings"]["AssetTypeToBrowseID"] != null)
             {
                 ViewBag.assetTypeToBrowse = db.AssetTypes.Find((Int64.Parse(Request.Cookies["UserSettings"]["AssetTypeToBrowseID"])));
             }

@@ -69,7 +69,8 @@ class AssetType {
             Name: '',
             Type: 'String',
             Unit: '',
-            DropDownID: ''
+            DropDownID: '',
+            Active: true
         }));
         return newID;
     }

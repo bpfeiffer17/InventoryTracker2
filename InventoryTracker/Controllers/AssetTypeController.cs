@@ -148,5 +148,20 @@ namespace InventoryTracker.Controllers
         {
             return new JavaScriptSerializer().Serialize(this.getDropDowns());
         }
+
+        /**
+         *  Make the asset type with the given id inactive
+         */
+        [HttpPost]
+        public string DeleteAssetType(int id)
+        {
+            AssetType assetType = db.AssetTypes.Find(id);
+            if (assetType != null)
+            {
+                assetType.Active = 0;
+                db.SaveChanges();
+            }
+            return "";
+        }
     }
 }
