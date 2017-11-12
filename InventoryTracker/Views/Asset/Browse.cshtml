@@ -18,7 +18,10 @@
 <select id="assetType" class="form-control" onchange="window.location = '/Asset/Browse/' + this.value">
     @foreach (var item in ViewBag.assetTypes)
     {
-        <option @(item.AssetTypeID ==  ViewBag.assetTypeToBrowse.AssetTypeID  ? "selected" : "") value="@item.AssetTypeID">@item.Name</option>
+        if (item.Active == 1)
+        {
+            <option @(item.AssetTypeID == ViewBag.assetTypeToBrowse.AssetTypeID ? "selected" : "") value="@item.AssetTypeID">@item.Name</option>
+        }
     }
 </select>
 <hr />

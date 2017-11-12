@@ -99,6 +99,7 @@ namespace InventoryTracker.Controllers
             //If assetType's id is 0, add it to the DB
             if (assetType.AssetTypeID == 0)
             {
+                dbAssetType.Active = 1;
                 db.AssetTypes.Add(dbAssetType);
             }
 

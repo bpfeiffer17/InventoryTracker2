@@ -61,7 +61,7 @@ function addDropDown(propertyId, dropDownId) {
     //Retrieve the DropDown that we are going to add from the DropDownHelper
     var dropDown = dropDownHelper.findDD(dropDownId);
     //Begin creating the select element where the user will select which DropDown to attribute to the Property
-    var select = `<select class="form-control" onchange="addDropDown('${propertyId}', this.value)" >`;
+    var select = `<select class="form-control" onchange="assetType.setPropertyProperty('${propertyId}', 'dropDownId', this.value)" >`;
     //For each DropDown in the DropDownHelper, add an option to the select element we are creating
     for (var dd of dropDownHelper.dropDowns) {
         select += `<option value="${dd.id}" ${dd.id == dropDownId ? 'selected':''}>${dd.name}</option>`;
