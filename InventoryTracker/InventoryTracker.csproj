@@ -154,7 +154,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AssetController.cs" />
     <Compile Include="Controllers\AssetTypeController.cs" />
-    <Compile Include="Controllers\DropDownsTController.cs" />
+    <Compile Include="Controllers\DropDownsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -221,11 +221,15 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\Common\Asset.js" />
+    <Content Include="Scripts\Common\ConfirmModal.js" />
     <Content Include="Scripts\Common\DropDownHelper.js" />
     <Content Include="Scripts\Common\AssetType.js" />
     <Content Include="Scripts\Common\DropDown.js" />
+    <Content Include="Scripts\Common\LoadingModal.js" />
     <Content Include="Scripts\Common\Property.js" />
-    <Content Include="Scripts\DropDown\Index.js" />
+    <Content Include="Scripts\DataTables\datatables.css" />
+    <Content Include="Scripts\DataTables\datatables.js" />
     <Content Include="Scripts\DummyData\AssetTypes.json" />
     <Content Include="Scripts\DummyData\AssetTypes\1.json" />
     <Content Include="Scripts\DummyData\DropDowns.json" />
@@ -269,14 +273,14 @@
     <Content Include="Scripts\Asset\Browse.js" />
     <Content Include="Scripts\Asset\Edit.js" />
     <Content Include="Views\AssetType\View.cshtml" />
-    <Content Include="Views\DropDownsT\Create.cshtml" />
-    <Content Include="Views\DropDownsT\Delete.cshtml" />
-    <Content Include="Views\DropDownsT\Details.cshtml" />
-    <Content Include="Views\DropDownsT\Edit.cshtml" />
-    <Content Include="Views\DropDownsT\Index.cshtml" />
     <Content Include="Views\Asset\View.cshtml" />
     <Content Include="Views\Demo_BulkImport.cshtml" />
     <Content Include="Views\Asset\Upload.cshtml" />
+    <Content Include="Views\DropDowns\Create.cshtml" />
+    <Content Include="Views\DropDowns\Delete.cshtml" />
+    <Content Include="Views\DropDowns\Details.cshtml" />
+    <Content Include="Views\DropDowns\Edit.cshtml" />
+    <Content Include="Views\DropDowns\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

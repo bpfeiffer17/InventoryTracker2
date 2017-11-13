@@ -10,17 +10,17 @@ using InventoryTracker.Models;
 
 namespace InventoryTracker.Controllers
 {
-    public class DropDownsTController : Controller
+    public class DropDownsController : Controller
     {
         private InventoryTrackerEntities db = new InventoryTrackerEntities();
 
-        // GET: DropDownsT
+        // GET: DropDowns
         public ActionResult Index()
         {
             return View(db.DropDowns.ToList());
         }
 
-        // GET: DropDownsT/Details/5
+        // GET: DropDowns/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -35,15 +35,15 @@ namespace InventoryTracker.Controllers
             return View(dropDown);
         }
 
-        // GET: DropDownsT/Create
+        // GET: DropDowns/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: DropDownsT/Create
+        // POST: DropDowns/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "DropDownID,Name")] DropDown dropDown)
@@ -58,7 +58,7 @@ namespace InventoryTracker.Controllers
             return View(dropDown);
         }
 
-        // GET: DropDownsT/Edit/5
+        // GET: DropDowns/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -73,9 +73,9 @@ namespace InventoryTracker.Controllers
             return View(dropDown);
         }
 
-        // POST: DropDownsT/Edit/5
+        // POST: DropDowns/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "DropDownID,Name")] DropDown dropDown)
@@ -89,7 +89,7 @@ namespace InventoryTracker.Controllers
             return View(dropDown);
         }
 
-        // GET: DropDownsT/Delete/5
+        // GET: DropDowns/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -104,7 +104,7 @@ namespace InventoryTracker.Controllers
             return View(dropDown);
         }
 
-        // POST: DropDownsT/Delete/5
+        // POST: DropDowns/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
