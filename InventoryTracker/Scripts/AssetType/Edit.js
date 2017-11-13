@@ -9,11 +9,13 @@ var assetType;
 
 //Code to be executed when the page is done loading.
 $(document).ready(function () {
-    dropDownHelper = new DropDownHelper(dropDowns);
-    assetType = new AssetType(assetTypeJSON);
-    setPage();
-    //Set our event listeners on the page
-    setListeners();
+    $.get('/AssetType/DropDownHelper', function (data,status){
+        dropDownHelper = new DropDownHelper(JSON.parse(data));
+        assetType = new AssetType(assetTypeJSON);
+        setPage();
+        //Set our event listeners on the page
+        setListeners();
+    });
 });
 
 /**
@@ -22,27 +24,30 @@ $(document).ready(function () {
  * @param {Property} prop - a Property of the Asset Type to be added to the view 
  */
 function addProp(prop) {
-    $('#propertiesDiv').append(`
-        <div class="row">
-            <div class="col-sm-3">
-                <input value="${prop.name}" class="form-control" onblur="assetType.setPropertyProperty('${prop.id}', 'name', this.value)" />
+    if (prop.active) {
+        $('#propertiesDiv').append(`
+            <div class="row">
+                <div class="col-sm-3">
+                    <input value="${prop.name}" class="form-control" onblur="assetType.setPropertyProperty('${prop.id}', 'name', this.value)" />
+                </div>
+                <div class="col-sm-3">
+                    <select class="form-control" onchange="setType('${prop.id}', this.value)">
+                        <option ${prop.type === 'String' ? 'selected':''}>String</option>
+                        <option ${prop.type === 'Number' ? 'selected':''}>Number</option>
+                        <option ${prop.type === 'Drop Down' ? 'selected':''}>Drop Down</option>
+                    </select>
+                </div>
+                <div class="col-sm-3">
+                    <input value="${prop.unit ? prop.unit:''}" class="form-control" onblur="assetType.setPropertyProperty('${prop.id}', 'unit', this.value)" />
+                </div>
+                <div class="col-sm-2 center" id="dropDownDiv-${prop.id}">${prop.type !== 'Drop Down' ? `--` : ``}</div>
+                <div class="col-sm-1" onclick="deleteProp('${prop.id}')"><button>DELETE</button></div>
             </div>
-            <div class="col-sm-3">
-                <select class="form-control" onchange="setType('${prop.id}', this.value)">
-                    <option ${prop.type === 'String' ? 'selected':''}>String</option>
-                    <option ${prop.type === 'Number' ? 'selected':''}>Number</option>
-                    <option ${prop.type === 'Drop Down' ? 'selected':''}>Drop Down</option>
-                </select>
-            </div>
-            <div class="col-sm-3">
-                <input value="${prop.unit ? prop.unit:''}" class="form-control" onblur="assetType.setPropertyProperty('${prop.id}', 'unit', this.value)" />
-            </div>
-            <div class="col-sm-3" id="dropDownDiv-${prop.id}"></div>
-        </div>
-    `);
-    //If the Property is of type 'Drop Down', append DropDown specific html to the Property div
-    if (prop.type === 'Drop Down') {
-        addDropDown(prop.id, prop.dropDownId);
+        `);
+        //If the Property is of type 'Drop Down', append DropDown specific html to the Property div
+        if (prop.type === 'Drop Down') {
+            addDropDown(prop.id, prop.dropDownId);
+        }
     }
 }
 
@@ -56,7 +61,7 @@ function addDropDown(propertyId, dropDownId) {
     //Retrieve the DropDown that we are going to add from the DropDownHelper
     var dropDown = dropDownHelper.findDD(dropDownId);
     //Begin creating the select element where the user will select which DropDown to attribute to the Property
-    var select = `<select class="form-control" onchange="addDropDown('${propertyId}', this.value)" >`;
+    var select = `<select class="form-control" onchange="assetType.setPropertyProperty('${propertyId}', 'dropDownId', this.value)" >`;
     //For each DropDown in the DropDownHelper, add an option to the select element we are creating
     for (var dd of dropDownHelper.dropDowns) {
         select += `<option value="${dd.id}" ${dd.id == dropDownId ? 'selected':''}>${dd.name}</option>`;
@@ -145,8 +150,11 @@ function setPage() {
             <div class="col-sm-3">
                 <h4>Unit: </h4>
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-2">
                 <h4>Drop Down: </h4>
+            </div>
+            <div class="col-sm-1">
+                <h4>Delete: </h4>
             </div>
         </div>
     `);
@@ -173,10 +181,19 @@ function setType(propertyId, type) {
 }
 
 function save() {
+    loadingModal.show();
     var data = {
         assetType: JSON.stringify(assetType.getSaveStructure())
     }
     $.post('/AssetType/SaveAsset', data, function (data, status) {
-        console.log(response);
+        loadingModal.hide();
+        window.location = '/AssetType/Browse';
+    });
+}
+
+function deleteProp(propertID) {
+    confirmModal.show('Are you sure you want to delete this property?', () => {
+        assetType.findProperty(propertID).active = false;
+        setPage();
     });
 }

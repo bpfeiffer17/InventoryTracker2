@@ -4,12 +4,14 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using MvcApplication6.Models;
-
+using InventoryTracker.Models;
 
 namespace MvcApplication6.Controllers
 {
     public class HomeController : Controller
     {
+        private InventoryTrackerEntities db = new InventoryTrackerEntities();
+
         public ActionResult Index()
         {
             LoginModel obj = new LoginModel();
@@ -21,7 +23,9 @@ namespace MvcApplication6.Controllers
             var display = Userloginvalues().Where(m => m.UserName == objuserlogin.UserName && m.UserPassword == objuserlogin.UserPassword).FirstOrDefault();
             if (display != null)
             {
-                ViewBag.Status = "CORRECT UserNAme and Password";
+                ViewBag.Status = "CORRECT UserName and Password";
+                Request.Cookies["Tracking"]["Username"] = objuserlogin.UserName.ToString();
+                //ViewBag.assetTypeToBrowse = db.AssetTypes.Find(id);
             }
             else
             {
@@ -39,5 +43,7 @@ namespace MvcApplication6.Controllers
             objModel.Add(new LoginModel { UserName = "user5", UserPassword = "password5" });
             return objModel;
         }
+      
     }
 }
+

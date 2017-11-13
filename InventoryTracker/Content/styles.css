@@ -6,3 +6,15 @@
     display: inline-block;
     width: 24%;
 }
+
+.clickable {
+    cursor: pointer !important;
+}
+
+.center {
+    text-align: center;
+}
+
+.odd {
+    background: rgb(220, 220, 220) !important;
+}

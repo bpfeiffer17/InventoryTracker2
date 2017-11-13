@@ -25,6 +25,7 @@ namespace InventoryTracker.Models
         public string Name { get; set; }
         public string Description { get; set; }
         public byte Tracked { get; set; }
+        public byte Active { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Asset> Assets { get; set; }
@@ -45,6 +46,14 @@ namespace InventoryTracker.Models
                 assetTypeBare.Properties[i] = prop.getPropertyBare();
                 i++;
             }
+            if (this.Active == 1)
+            {
+                assetTypeBare.Active = true;
+            }
+            else
+            {
+                assetTypeBare.Active = false;
+            }
             return assetTypeBare;
         }
     }
@@ -56,5 +65,6 @@ namespace InventoryTracker.Models
         public string Description { get; set; }
         public byte Tracked { get; set; }
         public PropertyBare[] Properties { get; set; }
+        public Boolean Active { get; set; }
     }
 }

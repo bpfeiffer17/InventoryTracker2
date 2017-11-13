@@ -45,20 +45,27 @@
         </div>
         @foreach (var property in Model.Properties)
         {
-            <div class="row">
-                <div class="col-sm-3">
-                    @Html.DisplayFor(modelItem => property.Name)
+            if (property.Active == 1)
+            {
+                <div class="row">
+                    <div class="col-sm-3">
+                        @Html.DisplayFor(modelItem => property.Name)
+                    </div>
+                    <div class="col-sm-3">
+                        @Html.DisplayFor(modelItem => property.Type)
+                    </div>
+                    <div class="col-sm-3">
+                        @Html.DisplayFor(modelItem => property.Unit)
+                    </div>
+                    <div class="col-sm-3">
+                        @if (property.Type != "Drop Down") {
+                            <label>--</label>
+                        }else {
+                            @Html.DisplayFor(modelItem => property.DropDown.Name)
+                        }
+                    </div>
                 </div>
-                <div class="col-sm-3">
-                    @Html.DisplayFor(modelItem => property.Type)
-                </div>
-                <div class="col-sm-3">
-                    @Html.DisplayFor(modelItem => property.Unit)
-                </div>
-                <div class="col-sm-3">
-                    @Html.DisplayFor(modelItem => property.DropDown.Name)
-                </div>
-            </div>
+            }
         }
     </div>
 </div>

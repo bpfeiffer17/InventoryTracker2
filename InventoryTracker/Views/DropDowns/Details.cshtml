@@ -20,17 +20,6 @@
 
     </dl>
 </div>
-<h4>Values</h4>
-<table class="table">
-    @foreach (var item in Model.DropDownValues)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Value)
-            </td>
-        </tr>
-    }
-</table>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.DropDownID }) |
     @Html.ActionLink("Back to List", "Index")

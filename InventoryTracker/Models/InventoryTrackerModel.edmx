@@ -20,6 +20,7 @@
           <Property Name="Name" Type="nvarchar" MaxLength="150" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="250" />
           <Property Name="Tracked" Type="tinyint" Nullable="false" />
+          <Property Name="Active" Type="tinyint" Nullable="false" />
         </EntityType>
         <EntityType Name="DropDowns">
           <Key>
@@ -46,15 +47,16 @@
           <Property Name="Unit" Type="nvarchar" MaxLength="50" />
           <Property Name="DropDownID" Type="int" />
           <Property Name="AssetTypeID" Type="int" Nullable="false" />
+          <Property Name="Active" Type="tinyint" Nullable="false" />
         </EntityType>
         <EntityType Name="PropertyValues">
           <Key>
-            <PropertyRef Name="PropertyValueID" />
+            <PropertyRef Name="AssetID" />
+            <PropertyRef Name="PropertyID" />
           </Key>
-          <Property Name="PropertyValueID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="AssetID" Type="int" Nullable="false" />
           <Property Name="PropertyID" Type="int" Nullable="false" />
-          <Property Name="Value" Type="nvarchar" MaxLength="300" Nullable="false" />
+          <Property Name="Value" Type="nvarchar" MaxLength="300" />
         </EntityType>
         <Association Name="FK_Assets_AssetTypes">
           <End Role="AssetTypes" Type="Self.AssetTypes" Multiplicity="1" />
@@ -171,7 +173,7 @@
           <Property Name="AssetID" Type="Int32" Nullable="false" />
           <Property Name="AssetTypeID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="AssetType" Relationship="Self.FK_Assets_AssetTypes" FromRole="Assets" ToRole="AssetTypes" />
-          <NavigationProperty Name="PropertyValues" Relationship="Self.FK_PropertyValues_Assets" FromRole="Assets" ToRole="PropertyValues" />
+          <NavigationProperty Name="PropertyValues" Relationship="InventoryTrackerModel.FK_PropertyValues_Assets" FromRole="Asset" ToRole="PropertyValue" />
         </EntityType>
         <EntityType Name="AssetType">
           <Key>
@@ -183,6 +185,7 @@
           <Property Name="Tracked" Type="Byte" Nullable="false" />
           <NavigationProperty Name="Assets" Relationship="Self.FK_Assets_AssetTypes" FromRole="AssetTypes" ToRole="Assets" />
           <NavigationProperty Name="Properties" Relationship="Self.FK_Properties_AssetTypes" FromRole="AssetTypes" ToRole="Properties" />
+          <Property Name="Active" Type="Byte" Nullable="false" />
         </EntityType>
         <EntityType Name="DropDown">
           <Key>
@@ -214,18 +217,8 @@
           <Property Name="AssetTypeID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="AssetType" Relationship="Self.FK_Properties_AssetTypes" FromRole="Properties" ToRole="AssetTypes" />
           <NavigationProperty Name="DropDown" Relationship="Self.FK_Properties_DropDowns" FromRole="Properties" ToRole="DropDowns" />
-          <NavigationProperty Name="PropertyValues" Relationship="Self.FK_PropertyValues_Properties" FromRole="Properties" ToRole="PropertyValues" />
-        </EntityType>
-        <EntityType Name="PropertyValue">
-          <Key>
-            <PropertyRef Name="PropertyValueID" />
-          </Key>
-          <Property Name="PropertyValueID" Type="Int32" Nullable="false" />
-          <Property Name="AssetID" Type="Int32" Nullable="false" />
-          <Property Name="PropertyID" Type="Int32" Nullable="false" />
-          <Property Name="Value" Type="String" MaxLength="300" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Asset" Relationship="Self.FK_PropertyValues_Assets" FromRole="PropertyValues" ToRole="Assets" />
-          <NavigationProperty Name="Property" Relationship="Self.FK_PropertyValues_Properties" FromRole="PropertyValues" ToRole="Properties" />
+          <NavigationProperty Name="PropertyValues" Relationship="InventoryTrackerModel.FK_PropertyValues_Properties" FromRole="Property" ToRole="PropertyValue" />
+          <Property Name="Active" Type="Byte" Nullable="false" />
         </EntityType>
         <Association Name="FK_Assets_AssetTypes">
           <End Role="AssetTypes" Type="Self.AssetType" Multiplicity="1" />
@@ -236,18 +229,6 @@
             </Principal>
             <Dependent Role="Assets">
               <PropertyRef Name="AssetTypeID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_PropertyValues_Assets">
-          <End Role="Assets" Type="Self.Asset" Multiplicity="1" />
-          <End Role="PropertyValues" Type="Self.PropertyValue" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Assets">
-              <PropertyRef Name="AssetID" />
-            </Principal>
-            <Dependent Role="PropertyValues">
-              <PropertyRef Name="AssetID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -287,32 +268,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_PropertyValues_Properties">
-          <End Role="Properties" Type="Self.Property" Multiplicity="1" />
-          <End Role="PropertyValues" Type="Self.PropertyValue" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Properties">
-              <PropertyRef Name="PropertyID" />
-            </Principal>
-            <Dependent Role="PropertyValues">
-              <PropertyRef Name="PropertyID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityContainer Name="InventoryTrackerEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Assets" EntityType="Self.Asset" />
           <EntitySet Name="AssetTypes" EntityType="Self.AssetType" />
           <EntitySet Name="DropDowns" EntityType="Self.DropDown" />
           <EntitySet Name="DropDownValues" EntityType="Self.DropDownValue" />
           <EntitySet Name="Properties" EntityType="Self.Property" />
-          <EntitySet Name="PropertyValues" EntityType="Self.PropertyValue" />
           <AssociationSet Name="FK_Assets_AssetTypes" Association="Self.FK_Assets_AssetTypes">
             <End Role="AssetTypes" EntitySet="AssetTypes" />
             <End Role="Assets" EntitySet="Assets" />
-          </AssociationSet>
-          <AssociationSet Name="FK_PropertyValues_Assets" Association="Self.FK_PropertyValues_Assets">
-            <End Role="Assets" EntitySet="Assets" />
-            <End Role="PropertyValues" EntitySet="PropertyValues" />
           </AssociationSet>
           <AssociationSet Name="FK_Properties_AssetTypes" Association="Self.FK_Properties_AssetTypes">
             <End Role="AssetTypes" EntitySet="AssetTypes" />
@@ -326,11 +290,51 @@
             <End Role="DropDowns" EntitySet="DropDowns" />
             <End Role="Properties" EntitySet="Properties" />
           </AssociationSet>
-          <AssociationSet Name="FK_PropertyValues_Properties" Association="Self.FK_PropertyValues_Properties">
-            <End Role="Properties" EntitySet="Properties" />
-            <End Role="PropertyValues" EntitySet="PropertyValues" />
+          <EntitySet Name="PropertyValues" EntityType="InventoryTrackerModel.PropertyValue" />
+          <AssociationSet Name="FK_PropertyValues_Assets" Association="InventoryTrackerModel.FK_PropertyValues_Assets">
+            <End Role="Asset" EntitySet="Assets" />
+            <End Role="PropertyValue" EntitySet="PropertyValues" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PropertyValues_Properties" Association="InventoryTrackerModel.FK_PropertyValues_Properties">
+            <End Role="Property" EntitySet="Properties" />
+            <End Role="PropertyValue" EntitySet="PropertyValues" />
           </AssociationSet>
         </EntityContainer>
+        <EntityType Name="PropertyValue">
+          <Key>
+            <PropertyRef Name="AssetID" />
+            <PropertyRef Name="PropertyID" />
+          </Key>
+          <Property Name="AssetID" Type="Int32" Nullable="false" />
+          <Property Name="PropertyID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Asset" Relationship="InventoryTrackerModel.FK_PropertyValues_Assets" FromRole="PropertyValue" ToRole="Asset" />
+          <NavigationProperty Name="Property" Relationship="InventoryTrackerModel.FK_PropertyValues_Properties" FromRole="PropertyValue" ToRole="Property" />
+          <Property Name="Value" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <Association Name="FK_PropertyValues_Assets">
+          <End Type="InventoryTrackerModel.Asset" Role="Asset" Multiplicity="1" />
+          <End Type="InventoryTrackerModel.PropertyValue" Role="PropertyValue" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Asset">
+              <PropertyRef Name="AssetID" />
+            </Principal>
+            <Dependent Role="PropertyValue">
+              <PropertyRef Name="AssetID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PropertyValues_Properties">
+          <End Type="InventoryTrackerModel.Property" Role="Property" Multiplicity="1" />
+          <End Type="InventoryTrackerModel.PropertyValue" Role="PropertyValue" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Property">
+              <PropertyRef Name="PropertyID" />
+            </Principal>
+            <Dependent Role="PropertyValue">
+              <PropertyRef Name="PropertyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -348,6 +352,7 @@
           <EntitySetMapping Name="AssetTypes">
             <EntityTypeMapping TypeName="InventoryTrackerModel.AssetType">
               <MappingFragment StoreEntitySet="AssetTypes">
+                <ScalarProperty Name="Active" ColumnName="Active" />
                 <ScalarProperty Name="AssetTypeID" ColumnName="AssetTypeID" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
@@ -375,6 +380,7 @@
           <EntitySetMapping Name="Properties">
             <EntityTypeMapping TypeName="InventoryTrackerModel.Property">
               <MappingFragment StoreEntitySet="Properties">
+                <ScalarProperty Name="Active" ColumnName="Active" />
                 <ScalarProperty Name="PropertyID" ColumnName="PropertyID" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Type" ColumnName="Type" />
@@ -387,10 +393,9 @@
           <EntitySetMapping Name="PropertyValues">
             <EntityTypeMapping TypeName="InventoryTrackerModel.PropertyValue">
               <MappingFragment StoreEntitySet="PropertyValues">
-                <ScalarProperty Name="PropertyValueID" ColumnName="PropertyValueID" />
-                <ScalarProperty Name="AssetID" ColumnName="AssetID" />
-                <ScalarProperty Name="PropertyID" ColumnName="PropertyID" />
                 <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="PropertyID" ColumnName="PropertyID" />
+                <ScalarProperty Name="AssetID" ColumnName="AssetID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

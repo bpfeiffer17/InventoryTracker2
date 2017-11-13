@@ -6,6 +6,8 @@
 {
     <script src="@Url.Content("~/Scripts/AssetType/Browse.js")"></script>
     <script src="@Url.Content("~/Scripts/DataTables/datatables.js")"></script>
+    <script src="@Url.Content("~/Scripts/Common/ConfirmModal.js")"></script>
+    <script src="@Url.Content("~/Scripts/Common/LoadingModal.js")"></script>
 }
 
 @section Styles {
@@ -20,25 +22,30 @@
 <table id="assetTypesTable">
     <thead>
         <tr>
+            <th>Options</th>
             <th>Name</th>
             <th>Description</th>
-            <th>Edit</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in ViewBag.assetTypes)
         {
-            <tr>
-                <td>
-                    <a href="/AssetType/View/@item.AssetTypeID">@item.Name</a>
-                </td>
-                <td>
-                    @item.Description
-                </td>
-                <td>
-                    <a href="/AssetType/Edit/@item.AssetTypeID">Edit</a>
-                </td>
-            </tr>
+            if (item.Active != 0)
+            {
+                <tr>
+                    <td>
+                        <a href="/AssetType/Edit/@item.AssetTypeID">Edit</a> |
+                        <a href="/AssetType/View/@item.AssetTypeID">View</a> |
+                        <a class="clickable" onclick="deleteAssetType(@item.AssetTypeID)">Delete</a>
+                    </td>
+                    <td>
+                        @item.Name
+                    </td>
+                    <td>
+                        @item.Description
+                    </td>
+                </tr>
+            }
         }
     </tbody>
 </table>

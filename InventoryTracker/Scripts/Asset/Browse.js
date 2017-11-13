@@ -9,3 +9,20 @@
 $(document).ready(function (){
     $('#assetsTable').DataTable();
 });
+
+function deleteAsset(assetId) {
+    confirmModal.show('Are you sure you want to delete this asset?', () => {
+        loadingModal.show();
+        $.post('/Asset/DeleteAsset/' + assetId, function (data, status) {
+            loadingModal.hide();
+            window.location = '/Asset/Browse';
+        });
+    });
+}
+
+function createNewAsset() {
+    var assetTypeID = $('#assetType').val();
+    if (assetTypeID) {
+        window.location = `/Asset/Edit?id=0&assetTypeID=${assetTypeID}`;
+    }
+}
