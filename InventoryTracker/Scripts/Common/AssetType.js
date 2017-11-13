@@ -14,7 +14,7 @@ class AssetType {
         this.name = options.Name;
         this.description = options.Description;
         this.setProperties(options.Properties);
-        this.tracked = options.Tracked;
+        this.tracked = options.Tracked ? true : false;
     }
 
     /**
@@ -69,7 +69,8 @@ class AssetType {
             Name: '',
             Type: 'String',
             Unit: '',
-            DropDownID: ''
+            DropDownID: '',
+            Active: true
         }));
         return newID;
     }

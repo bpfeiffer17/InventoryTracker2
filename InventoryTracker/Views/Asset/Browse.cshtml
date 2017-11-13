@@ -18,10 +18,14 @@
 <select id="assetType" class="form-control" onchange="window.location = '/Asset/Browse/' + this.value">
     @foreach (var item in ViewBag.assetTypes)
     {
-        <option @(item.AssetTypeID ==  ViewBag.assetTypeToBrowse.AssetTypeID  ? "selected" : "") value="@item.AssetTypeID">@item.Name</option>
+        if (item.Active == 1)
+        {
+            <option @(item.AssetTypeID == ViewBag.assetTypeToBrowse.AssetTypeID ? "selected" : "") value="@item.AssetTypeID">@item.Name</option>
+        }
     }
 </select>
-<button onclick="createNewAsset()" class="btn">Create New Asset</button>
+<hr />
+<a onclick="createNewAsset()" class="btn">Create New</a>
 <hr />
 <!--Begin Assets Table-->
 <table id="assetsTable">
@@ -41,14 +45,21 @@
             {
                 <tr>
                     <td>
-                        <a href="/Asset/Edit/@asset.AssetID">Edit</a>
-                        <a href="/Asset/View/@asset.AssetID">View</a>
+                        <a href="/Asset/Edit/@asset.AssetID">Edit</a> |
+                        <a href="/Asset/View/@asset.AssetID">View</a> |
                         <a class="clickable" onclick="deleteAsset(@asset.AssetID)">Delete</a>
                     </td>
                     @foreach (var prop in asset.getAssetBare().AssetType.Properties)
                     {
                         <td>
-                            @prop.Value
+                            @if (@prop.Value == "")
+                            {
+                                <div class="center">--</div>
+                            }
+                            else
+                            {
+                                @prop.Value
+                            }
                         </td>
                     }
                 </tr>

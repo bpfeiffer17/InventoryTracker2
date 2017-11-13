@@ -99,6 +99,7 @@ namespace InventoryTracker.Controllers
             //If assetType's id is 0, add it to the DB
             if (assetType.AssetTypeID == 0)
             {
+                dbAssetType.Active = 1;
                 db.AssetTypes.Add(dbAssetType);
             }
 
@@ -147,6 +148,21 @@ namespace InventoryTracker.Controllers
         public string DropDownHelper()
         {
             return new JavaScriptSerializer().Serialize(this.getDropDowns());
+        }
+
+        /**
+         *  Make the asset type with the given id inactive
+         */
+        [HttpPost]
+        public string DeleteAssetType(int id)
+        {
+            AssetType assetType = db.AssetTypes.Find(id);
+            if (assetType != null)
+            {
+                assetType.Active = 0;
+                db.SaveChanges();
+            }
+            return "";
         }
     }
 }

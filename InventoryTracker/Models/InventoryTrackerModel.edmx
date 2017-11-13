@@ -20,6 +20,7 @@
           <Property Name="Name" Type="nvarchar" MaxLength="150" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="250" />
           <Property Name="Tracked" Type="tinyint" Nullable="false" />
+          <Property Name="Active" Type="tinyint" Nullable="false" />
         </EntityType>
         <EntityType Name="DropDowns">
           <Key>
@@ -184,6 +185,7 @@
           <Property Name="Tracked" Type="Byte" Nullable="false" />
           <NavigationProperty Name="Assets" Relationship="Self.FK_Assets_AssetTypes" FromRole="AssetTypes" ToRole="Assets" />
           <NavigationProperty Name="Properties" Relationship="Self.FK_Properties_AssetTypes" FromRole="AssetTypes" ToRole="Properties" />
+          <Property Name="Active" Type="Byte" Nullable="false" />
         </EntityType>
         <EntityType Name="DropDown">
           <Key>
@@ -350,6 +352,7 @@
           <EntitySetMapping Name="AssetTypes">
             <EntityTypeMapping TypeName="InventoryTrackerModel.AssetType">
               <MappingFragment StoreEntitySet="AssetTypes">
+                <ScalarProperty Name="Active" ColumnName="Active" />
                 <ScalarProperty Name="AssetTypeID" ColumnName="AssetTypeID" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
