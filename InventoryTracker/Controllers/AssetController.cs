@@ -71,7 +71,6 @@ namespace InventoryTracker.Controllers
         {
             if (ModelState.IsValid)
             {
-
                 if (upload != null && upload.ContentLength > 0)
                 {
 
@@ -82,8 +81,44 @@ namespace InventoryTracker.Controllers
                         using (CsvReader csvReader =
                             new CsvReader(new StreamReader(stream), true))
                         {
+                            // loads the csv file in a datatable
                             csvTable.Load(csvReader);
+
+                            // Make sure that the csv has the right columns in it this needs to be dynamic based on the asset type
+                            if (!csvTable.Columns.Contains("name") ||
+                                !csvTable.Columns.Contains("description") ||
+                                !csvTable.Columns.Contains("tracked"))
+                                {
+
+                                ViewBag.ErrorMessage = "CSV file must contail these three columns name, description, tracked";
+                                return View("");
+                                                                
+                            }
+
+                            ViewBag.ErrorMessage = "";
+                            //loop thru table
+                            foreach (DataRow row in csvTable.Rows)
+                            {
+                                
+
+                                var name = row["name"].ToString();
+                                var description = row["description"].ToString();
+                                var tracked = row["tracked"].ToString();
+
+                                //new AssetType model is created
+                                var newAsset = new InventoryTracker.Models.AssetType();
+                                newAsset.Name = name;
+                                newAsset.Description = description;
+                                newAsset.Tracked = byte.Parse(tracked);
+
+                                //adds the new AssetType model to the database
+                                db.AssetTypes.Add(newAsset);                                
+                            }
+                            //saves data into database
+                            db.SaveChanges();
                         }
+
+                        
                         return View(csvTable);
                     }
                     else

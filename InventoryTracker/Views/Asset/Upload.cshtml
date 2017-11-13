@@ -27,8 +27,13 @@
         <input type="submit" value="Upload" class="btn btn-default" />
     </div>
 
+    <!-- Display errors if there are any in the veiw bag -->
+    <p></p>
+    <div>@ViewBag.ErrorMessage</div>
     if (Model != null)
     {
+        <div>Data From CSV File</div>
+        <div></div>
         <table>
             <thead>
                 <tr>
@@ -50,6 +55,8 @@
                 }
             </tbody>
         </table>
+        <br />
+    
     }
 }
 
