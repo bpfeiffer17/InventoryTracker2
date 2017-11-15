@@ -102,12 +102,11 @@ namespace InventoryTracker.Controllers
                             csvTable.Load(csvReader);
 
                             // Make sure that the csv has the right columns in it this needs to be dynamic based on the asset type
-                            if (!csvTable.Columns.Contains("name") ||
-                                !csvTable.Columns.Contains("description") ||
-                                !csvTable.Columns.Contains("tracked"))
+                            // First three columns are fixed, assettypeid, name, description... variable fields after
+                            if (!csvTable.Columns.Contains("AssetTypeID") )
                                 {
 
-                                ViewBag.ErrorMessage = "CSV file must contail these three columns name, description, tracked";
+                                ViewBag.ErrorMessage = "CSV file must contail Atlest the AssetTypeID and any other properies";
                                 return View("");
                                                                 
                             }
@@ -116,25 +115,59 @@ namespace InventoryTracker.Controllers
                             //loop thru table
                             foreach (DataRow row in csvTable.Rows)
                             {
-                                
+                                // Get The asset type id
+                                int assetTypeId = int.Parse(row["AssetTypeID"].ToString());
 
-                                var name = row["name"].ToString();
-                                var description = row["description"].ToString();
-                                var tracked = row["tracked"].ToString();
+                                // Find the asset type according to the id
+                                AssetType findTheAssetType = db.AssetTypes.Find(assetTypeId);
 
-                                //new AssetType model is created
-                                var newAsset = new InventoryTracker.Models.AssetType();
-                                newAsset.Name = name;
-                                newAsset.Description = description;
-                                newAsset.Tracked = byte.Parse(tracked);
+                                // Create a new asset and give it the assetTypeId you just found
+                                Asset newAsset = new Asset()
+                                {
+                                    AssetTypeID = findTheAssetType.AssetTypeID
+                                };
 
-                                //adds the new AssetType model to the database
-                                db.AssetTypes.Add(newAsset);                                
+                                //Add the asset, save the changes so we can get the id to use for saving property values
+                                Asset addedAsset = db.Assets.Add(newAsset);                               
+                                db.SaveChanges();
+
+                                // loop thru the rest of the columns to get the values
+                                for (int col=1; col < csvTable.Columns.Count; col++)
+                                {
+                                    //get the column name and value
+                                    string columnName = csvTable.Columns[col].ToString();
+                                    string columnValue = row[col].ToString();
+
+                                    //gets all of the properties
+                                    var properties = db.Properties;
+
+                                    // Find the corresponding Property by looping thru all until we find it
+                                    foreach (Property propertyItem in db.Properties)
+                                    {
+                                        //System.Diagnostics.Debugger.Break();
+
+                                        //if the column name matches the property name then create a new property value.
+                                        if (propertyItem.Name.ToLower() == columnName.Trim().ToLower())
+                                        {
+                                            // found the matching property, now create a new value
+                                            PropertyValue newPropertyValue = new PropertyValue();
+
+                                            //give the new property the propertyID and the assetID from above
+                                            newPropertyValue.PropertyID = propertyItem.PropertyID;
+                                            newPropertyValue.AssetID = addedAsset.AssetID;
+                                            newPropertyValue.Value = columnValue;
+
+                                            //add the new property to the properties
+                                            db.PropertyValues.Add(newPropertyValue);
+                                            break; // exit the loop
+                                        }
+                                    }
+
+                                    // Save the newly added property value
+                                    db.SaveChanges();
+                                }
                             }
-                            //saves data into database
-                            db.SaveChanges();
                         }
-
                         
                         return View(csvTable);
                     }
