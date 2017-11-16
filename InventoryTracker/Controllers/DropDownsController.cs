@@ -46,7 +46,7 @@ namespace InventoryTracker.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "DropDownID,Name")] DropDown dropDown)
+        public ActionResult Create([Bind(Include = "DropDownID,Name,Values")] DropDown dropDown)
         {
             if (ModelState.IsValid)
             {
@@ -78,7 +78,7 @@ namespace InventoryTracker.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "DropDownID,Name")] DropDown dropDown)
+        public ActionResult Edit([Bind(Include = "DropDownID,Name,Value")] DropDown dropDown)
         {
             if (ModelState.IsValid)
             {
