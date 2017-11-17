@@ -13,6 +13,7 @@ class DropDown {
         this.id = options.DropDownID;
         this.name = options.Name;
         this.values = options.Values;
+        this.active = options.Active;
     }
 
     /**
@@ -24,9 +25,13 @@ class DropDown {
      * @returns {boolean} - whether or not the DropDown is new
      */
     isNew() {
-        if (this.id.toString().indexOf('new') >= 0) {
-            return true;
-        }
-        return false;
+        let structure= {
+            DropDownID: (this.id + '').indexOf('new') >= 0 ? 0:this.id, 
+            Name: this.name,
+            Value: this.value,
+            Active: this.active
+           }
+
+    return structure;
     }
-}
+ }

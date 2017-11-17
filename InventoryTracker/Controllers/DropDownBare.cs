@@ -1,6 +1,6 @@
 ﻿namespace InventoryTracker.Controllers
 {
-    public class AssetBare
+    internal class DropDownBare
     {
     }
 }

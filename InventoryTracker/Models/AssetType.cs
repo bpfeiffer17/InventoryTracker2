@@ -31,40 +31,5 @@ namespace InventoryTracker.Models
         public virtual ICollection<Asset> Assets { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Property> Properties { get; set; }
-
-        public AssetTypeBare getAssetTypeBare()
-        {
-            AssetTypeBare assetTypeBare = new AssetTypeBare();
-            assetTypeBare.AssetTypeID = this.AssetTypeID;
-            assetTypeBare.Name = this.Name;
-            assetTypeBare.Description = this.Description;
-            assetTypeBare.Tracked = this.Tracked;
-            assetTypeBare.Properties = new PropertyBare[this.Properties.Count];
-            var i = 0;
-            foreach (Property prop in this.Properties)
-            {
-                assetTypeBare.Properties[i] = prop.getPropertyBare();
-                i++;
-            }
-            if (this.Active == 1)
-            {
-                assetTypeBare.Active = true;
-            }
-            else
-            {
-                assetTypeBare.Active = false;
-            }
-            return assetTypeBare;
-        }
-    }
-
-    public class AssetTypeBare
-    {
-        public int AssetTypeID { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public byte Tracked { get; set; }
-        public PropertyBare[] Properties { get; set; }
-        public Boolean Active { get; set; }
     }
 }
