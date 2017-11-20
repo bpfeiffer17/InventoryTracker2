@@ -24,31 +24,33 @@ function setProperties() {
     $('#propertiesDiv').html('');
     var propTemplate = ``;
     for (var prop of asset.AssetType.properties) {
-        if (prop.type === 'String'  || prop.type === 'Number') {
-            propTemplate = `
+        if (prop.active) {
+            if (prop.type === 'String' || prop.type === 'Number') {
+                propTemplate = `
             <div class="row">
                 <div class="col-sm-3">${prop.name}</div>
                 <div class="col-sm-9">
                     <input class="form-control" value="${prop.value}" onblur="setPropertyValue('${prop.id}', this.value)" />
                 </div>
             </div>`;
-        }else if (prop.type === 'Drop Down') {
-            propTemplate = `
+            } else if (prop.type === 'Drop Down') {
+                propTemplate = `
             <div class="row">
                 <div class="col-sm-3">${prop.name}</div>
                 <div class="col-sm-9">
                     <select class="form-control" onchange="setPropertyValue('${prop.id}', this.value)">
                         <option ${prop.value === value ? 'selected' : ''}></option>`;
-            for (var value of dropDownHelper.findDD(prop.dropDownId).values) {
-                propTemplate += `<option ${prop.value === value ? 'selected' : ''}>${value}</option>`;
-            }
-            propTemplate += `
+                for (var value of dropDownHelper.findDD(prop.dropDownId).values) {
+                    propTemplate += `<option ${prop.value === value ? 'selected' : ''}>${value}</option>`;
+                }
+                propTemplate += `
                     </select>
                 </div>
             </div>
             `;
+            }
+            $('#propertiesDiv').append(propTemplate);
         }
-        $('#propertiesDiv').append(propTemplate);
     }
     // Add the type to the UI
     $('#type').html(asset.AssetType.name);

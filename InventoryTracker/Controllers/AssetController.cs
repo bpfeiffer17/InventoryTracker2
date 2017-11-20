@@ -8,6 +8,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
+using System.Net.Mail;
 
 namespace InventoryTracker.Controllers
 {
@@ -267,6 +268,85 @@ namespace InventoryTracker.Controllers
                 db.SaveChanges();
             }
             return "";
+        }
+        [HttpPost]
+        public void checkTide(int id)
+        {
+            Asset asset = db.Assets.Find(id);
+            if (asset != null)
+            {
+                int onHand = 0;
+                int lowTide = 0;
+                int highTide = 0;
+                String assetName = "";
+                foreach (var prop in asset.getAssetBare().AssetType.Properties)
+                {
+                    //21 is on hand, 22 is low tide, 23 is high tide, 41 is assetName 
+                    if (prop.PropertyID == 21)
+                    {
+                        onHand = int.Parse(prop.Value);
+                    }
+                    else if (prop.PropertyID == 22)
+                    {
+                        lowTide = int.Parse(prop.Value);
+                    }
+                    else if (prop.PropertyID == 23)
+                    {
+                        highTide = int.Parse(prop.Value);
+                    }
+                    else if (prop.PropertyID == 41)
+                    {
+                        assetName = prop.Value;
+                    }
+
+
+                }
+                if (onHand < lowTide)
+                {
+                    SendMail("Low Tide", assetName);
+                }
+                if (onHand > highTide)
+                {
+                    SendMail("High Tide", assetName);
+                }
+
+            }
+        }
+
+        [HttpPost]
+        public void checkAllTides()
+        {
+            for (int id = 0; id < 100; id++)
+            {
+                checkTide(id);
+            }
+        }
+
+        public void SendMail(String tide, String assetName)
+        {
+            //Mail Notification 
+            MailMessage alert = new MailMessage();
+            alert.To.Add(new MailAddress("inventorytrackerJCU@gmail.com"));
+            alert.Subject = tide;
+            alert.Body = "You have reached " + tide + " for the " + assetName + " Asset";
+            alert.From = new MailAddress("inventorytrackerjcu@gmail.com");
+
+            //Email Address from there you send the mail 
+            var fromAddress = "inventorytrackerjcu@gmail.com";
+            //Password of your mail address 
+            const string fromPassword = "a11002233";
+
+            //stmp settings 
+            var smtp = new System.Net.Mail.SmtpClient();
+            {
+                smtp.Host = "smtp.gmail.com";
+                smtp.EnableSsl = true;
+                smtp.DeliveryMethod = System.Net.Mail.SmtpDeliveryMethod.Network;
+                smtp.Credentials = new System.Net.NetworkCredential(fromAddress, fromPassword);
+                smtp.Timeout = 20000;
+            }
+            // Passing values to smtp object 
+            smtp.Send(alert);
         }
     }
 }

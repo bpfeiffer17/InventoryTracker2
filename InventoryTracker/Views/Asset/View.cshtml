@@ -7,16 +7,19 @@
     <div id="propertiesDiv" class="container">
         @foreach (var property in Model.getAssetBare().AssetType.Properties)
         {
-            <div class="row">
-                <div class="col-sm-3">
-                    <h4>@Html.DisplayFor(modelItem => property.Name)</h4>
+            if (property.Active)
+            {
+                <div class="row">
+                    <div class="col-sm-3">
+                        <h4>@Html.DisplayFor(modelItem => property.Name)</h4>
+                    </div>
+                    <div class="col-sm-3">
+                        @Html.DisplayFor(modelItem => property.Value)
+                    </div>
+                    <div class="col-sm-6">
+                    </div>
                 </div>
-                <div class="col-sm-3">
-                    @Html.DisplayFor(modelItem => property.Value)
-                </div>
-                <div class="col-sm-6">
-                </div>
-            </div>
+            }
         }
     </div>
 </div>
