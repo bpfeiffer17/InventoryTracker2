@@ -34,7 +34,10 @@
             <th>Options</th>
             @foreach (var prop in ViewBag.assetTypeToBrowse.Properties)
             {
-                <th>@prop.Name</th>
+                if (prop.Active == 1)
+                {
+                    <th>@prop.Name</th>
+                }
             }
 		</tr>
 	</thead>
@@ -51,16 +54,19 @@
                     </td>
                     @foreach (var prop in asset.getAssetBare().AssetType.Properties)
                     {
-                        <td>
-                            @if (@prop.Value == "")
-                            {
-                                <div class="center">--</div>
-                            }
-                            else
-                            {
-                                @prop.Value
-                            }
-                        </td>
+                        if (prop.Active)
+                        {
+                            <td>
+                                @if (@prop.Value == "")
+                                {
+                                    <div class="center">--</div>
+                                }
+                                else
+                                {
+                                    @prop.Value
+                                }
+                            </td>
+                        }
                     }
                 </tr>
             }
