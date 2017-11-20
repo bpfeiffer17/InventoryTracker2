@@ -153,10 +153,8 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Controllers\AssetBare.cs" />
     <Compile Include="Controllers\AssetController.cs" />
     <Compile Include="Controllers\AssetTypeController.cs" />
-    <Compile Include="Controllers\DropDownBare.cs" />
     <Compile Include="Controllers\DropDowns1Controller.cs" />
     <Compile Include="Controllers\DropDownsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />

@@ -27,10 +27,43 @@ namespace InventoryTracker.Models
         public Nullable<int> DropDownID { get; set; }
         public int AssetTypeID { get; set; }
         public byte Active { get; set; }
-    
+
         public virtual AssetType AssetType { get; set; }
         public virtual DropDown DropDown { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PropertyValue> PropertyValues { get; set; }
+
+        public PropertyBare getPropertyBare()
+        {
+            PropertyBare propertyBare = new PropertyBare();
+            propertyBare.PropertyID = this.PropertyID;
+            propertyBare.Name = this.Name;
+            propertyBare.Type = this.Type;
+            propertyBare.Unit = this.Unit;
+            propertyBare.DropDownID = this.DropDownID;
+            propertyBare.AssetTypeID = this.AssetTypeID;
+            propertyBare.Value = "";
+            if (this.Active == 1)
+            {
+                propertyBare.Active = true;
+            }
+            else
+            {
+                propertyBare.Active = false;
+            }
+            return propertyBare;
+        }
+    }
+
+    public class PropertyBare
+    {
+        public int PropertyID { get; set; }
+        public string Name { get; set; }
+        public string Type { get; set; }
+        public string Unit { get; set; }
+        public Nullable<int> DropDownID { get; set; }
+        public int AssetTypeID { get; set; }
+        public string Value { get; set; }
+        public Boolean Active { get; set; }
     }
 }
