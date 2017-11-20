@@ -8,7 +8,7 @@
         <EntityTypeShape EntityType="InventoryTrackerModel.Asset" Width="1.5" PointX="3" PointY="5.375" IsExpanded="true" />
         <EntityTypeShape EntityType="InventoryTrackerModel.AssetType" Width="1.5" PointX="0.75" PointY="5.125" IsExpanded="true" />
         <EntityTypeShape EntityType="InventoryTrackerModel.DropDown" Width="1.5" PointX="0.75" PointY="1.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="InventoryTrackerModel.DropDownValue" Width="2.875" PointX="3" PointY="8.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="InventoryTrackerModel.DropDownValue" Width="1.5" PointX="3" PointY="8.25" IsExpanded="true" />
         <EntityTypeShape EntityType="InventoryTrackerModel.Property" Width="1.5" PointX="4" PointY="0.75" IsExpanded="true" />
         <AssociationConnector Association="InventoryTrackerModel.FK_Assets_AssetTypes" ManuallyRouted="false" />
         <AssociationConnector Association="InventoryTrackerModel.FK_Properties_AssetTypes" ManuallyRouted="false" />
