@@ -22,6 +22,7 @@ function setPage() {
 
 function setProperties() {
     $('#propertiesDiv').html('');
+    var propIndex = 1;
     var propTemplate = ``;
     for (var prop of asset.AssetType.properties) {
         if (prop.active) {
@@ -30,26 +31,27 @@ function setProperties() {
             <div class="row">
                 <div class="col-sm-3">${prop.name}</div>
                 <div class="col-sm-9">
-                    <input class="form-control" value="${prop.value}" onblur="setPropertyValue('${prop.id}', this.value)" />
+                    <input class="form-control" value="${prop.value}" onblur="setPropertyValue('${prop.id}', this.value)" tabindex="${propIndex}"/>
                 </div>
             </div>`;
             } else if (prop.type === 'Drop Down') {
                 propTemplate = `
-            <div class="row">
-                <div class="col-sm-3">${prop.name}</div>
-                <div class="col-sm-9">
-                    <select class="form-control" onchange="setPropertyValue('${prop.id}', this.value)">
-                        <option ${prop.value === value ? 'selected' : ''}></option>`;
+                    <div class="row">
+                        <div class="col-sm-3">${prop.name}</div>
+                        <div class="col-sm-9">
+                            <select class="form-control" onchange="setPropertyValue('${prop.id}', this.value)" tabindex="${propIndex}">
+                                <option ${prop.value === value ? 'selected' : ''}></option>`;
                 for (var value of dropDownHelper.findDD(prop.dropDownId).values) {
                     propTemplate += `<option ${prop.value === value ? 'selected' : ''}>${value}</option>`;
                 }
                 propTemplate += `
-                    </select>
-                </div>
-            </div>
-            `;
+                            </select>
+                        </div>
+                    </div>
+                `;
             }
             $('#propertiesDiv').append(propTemplate);
+            propIndex++;
         }
     }
     // Add the type to the UI
@@ -58,7 +60,7 @@ function setProperties() {
 
 function setPropertyValue(propId, value) {
     asset.AssetType.setPropertyProperty(propId, 'value', value);
-    setProperties();
+    //setProperties();
 }
 
 function save() {
