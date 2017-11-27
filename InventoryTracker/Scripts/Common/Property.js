@@ -17,6 +17,9 @@ class Property {
         this.dropDownId = options.DropDownID;
         this.value = options.Value;
         this.active = options.Active;
+        this.required = options.Required === 1 ? true : false;
+        this.tracked = options.Tracked === 1 ? true : false;
+        this.nonTracked = options.NonTracked === 1 ? true : false;
     }
 
      /**

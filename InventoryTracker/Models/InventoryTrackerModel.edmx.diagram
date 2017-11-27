@@ -11,12 +11,12 @@
         <EntityTypeShape EntityType="InventoryTrackerModel.DropDownValue" Width="1.5" PointX="3" PointY="8.25" IsExpanded="true" />
         <EntityTypeShape EntityType="InventoryTrackerModel.Property" Width="1.5" PointX="4" PointY="0.75" IsExpanded="true" />
         <AssociationConnector Association="InventoryTrackerModel.FK_Assets_AssetTypes" ManuallyRouted="false" />
-        <AssociationConnector Association="InventoryTrackerModel.FK_Properties_AssetTypes" ManuallyRouted="false" />
         <AssociationConnector Association="InventoryTrackerModel.FK_DropDownValue_DropDowns" ManuallyRouted="false" />
         <AssociationConnector Association="InventoryTrackerModel.FK_Properties_DropDowns" ManuallyRouted="false" />
         <EntityTypeShape EntityType="InventoryTrackerModel.PropertyValue" Width="1.5" PointX="6.25" PointY="3" />
         <AssociationConnector Association="InventoryTrackerModel.FK_PropertyValues_Assets" />
         <AssociationConnector Association="InventoryTrackerModel.FK_PropertyValues_Properties" />
+        <AssociationConnector Association="InventoryTrackerModel.AssetTypeProperties" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

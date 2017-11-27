@@ -12,6 +12,14 @@
           <Property Name="AssetID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="AssetTypeID" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="AssetTypeProperties">
+          <Key>
+            <PropertyRef Name="AssetTypeID" />
+            <PropertyRef Name="PropertyID" />
+          </Key>
+          <Property Name="AssetTypeID" Type="int" Nullable="false" />
+          <Property Name="PropertyID" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="AssetTypes">
           <Key>
             <PropertyRef Name="AssetTypeID" />
@@ -46,8 +54,10 @@
           <Property Name="Type" Type="nvarchar" MaxLength="10" Nullable="false" />
           <Property Name="Unit" Type="nvarchar" MaxLength="50" />
           <Property Name="DropDownID" Type="int" />
-          <Property Name="AssetTypeID" Type="int" Nullable="false" />
           <Property Name="Active" Type="tinyint" Nullable="false" />
+          <Property Name="Required" Type="tinyint" Nullable="false" />
+          <Property Name="Tracked" Type="tinyint" Nullable="false" />
+          <Property Name="NonTracked" Type="tinyint" Nullable="false" />
         </EntityType>
         <EntityType Name="PropertyValues">
           <Key>
@@ -70,6 +80,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_AssetTypeProperties_AssetTypes">
+          <End Role="AssetTypes" Type="Self.AssetTypes" Multiplicity="1" />
+          <End Role="AssetTypeProperties" Type="Self.AssetTypeProperties" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AssetTypes">
+              <PropertyRef Name="AssetTypeID" />
+            </Principal>
+            <Dependent Role="AssetTypeProperties">
+              <PropertyRef Name="AssetTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AssetTypeProperties_Properties">
+          <End Role="Properties" Type="Self.Properties" Multiplicity="1" />
+          <End Role="AssetTypeProperties" Type="Self.AssetTypeProperties" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Properties">
+              <PropertyRef Name="PropertyID" />
+            </Principal>
+            <Dependent Role="AssetTypeProperties">
+              <PropertyRef Name="PropertyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_DropDownValue_DropDowns">
           <End Role="DropDowns" Type="Self.DropDowns" Multiplicity="1" />
           <End Role="DropDownValues" Type="Self.DropDownValues" Multiplicity="*" />
@@ -79,18 +113,6 @@
             </Principal>
             <Dependent Role="DropDownValues">
               <PropertyRef Name="DropDownID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Properties_AssetTypes">
-          <End Role="AssetTypes" Type="Self.AssetTypes" Multiplicity="1" />
-          <End Role="Properties" Type="Self.Properties" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AssetTypes">
-              <PropertyRef Name="AssetTypeID" />
-            </Principal>
-            <Dependent Role="Properties">
-              <PropertyRef Name="AssetTypeID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -132,6 +154,7 @@
         </Association>
         <EntityContainer Name="InventoryTrackerModelStoreContainer">
           <EntitySet Name="Assets" EntityType="Self.Assets" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AssetTypeProperties" EntityType="Self.AssetTypeProperties" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AssetTypes" EntityType="Self.AssetTypes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DropDowns" EntityType="Self.DropDowns" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DropDownValues" EntityType="Self.DropDownValues" Schema="dbo" store:Type="Tables" />
@@ -141,13 +164,17 @@
             <End Role="AssetTypes" EntitySet="AssetTypes" />
             <End Role="Assets" EntitySet="Assets" />
           </AssociationSet>
+          <AssociationSet Name="FK_AssetTypeProperties_AssetTypes" Association="Self.FK_AssetTypeProperties_AssetTypes">
+            <End Role="AssetTypes" EntitySet="AssetTypes" />
+            <End Role="AssetTypeProperties" EntitySet="AssetTypeProperties" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AssetTypeProperties_Properties" Association="Self.FK_AssetTypeProperties_Properties">
+            <End Role="Properties" EntitySet="Properties" />
+            <End Role="AssetTypeProperties" EntitySet="AssetTypeProperties" />
+          </AssociationSet>
           <AssociationSet Name="FK_DropDownValue_DropDowns" Association="Self.FK_DropDownValue_DropDowns">
             <End Role="DropDowns" EntitySet="DropDowns" />
             <End Role="DropDownValues" EntitySet="DropDownValues" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Properties_AssetTypes" Association="Self.FK_Properties_AssetTypes">
-            <End Role="AssetTypes" EntitySet="AssetTypes" />
-            <End Role="Properties" EntitySet="Properties" />
           </AssociationSet>
           <AssociationSet Name="FK_Properties_DropDowns" Association="Self.FK_Properties_DropDowns">
             <End Role="DropDowns" EntitySet="DropDowns" />
@@ -184,8 +211,8 @@
           <Property Name="Description" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="Tracked" Type="Byte" Nullable="false" />
           <NavigationProperty Name="Assets" Relationship="Self.FK_Assets_AssetTypes" FromRole="AssetTypes" ToRole="Assets" />
-          <NavigationProperty Name="Properties" Relationship="Self.FK_Properties_AssetTypes" FromRole="AssetTypes" ToRole="Properties" />
           <Property Name="Active" Type="Byte" Nullable="false" />
+          <NavigationProperty Name="Properties" Relationship="InventoryTrackerModel.AssetTypeProperties" FromRole="AssetType" ToRole="Property" />
         </EntityType>
         <EntityType Name="DropDown">
           <Key>
@@ -214,11 +241,13 @@
           <Property Name="Type" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Unit" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="DropDownID" Type="Int32" />
-          <Property Name="AssetTypeID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="AssetType" Relationship="Self.FK_Properties_AssetTypes" FromRole="Properties" ToRole="AssetTypes" />
           <NavigationProperty Name="DropDown" Relationship="Self.FK_Properties_DropDowns" FromRole="Properties" ToRole="DropDowns" />
           <NavigationProperty Name="PropertyValues" Relationship="InventoryTrackerModel.FK_PropertyValues_Properties" FromRole="Property" ToRole="PropertyValue" />
           <Property Name="Active" Type="Byte" Nullable="false" />
+          <Property Name="Required" Type="Byte" Nullable="false" />
+          <Property Name="Tracked" Type="Byte" Nullable="false" />
+          <Property Name="NonTracked" Type="Byte" Nullable="false" />
+          <NavigationProperty Name="AssetTypes" Relationship="InventoryTrackerModel.AssetTypeProperties" FromRole="Property" ToRole="AssetType" />
         </EntityType>
         <Association Name="FK_Assets_AssetTypes">
           <End Role="AssetTypes" Type="Self.AssetType" Multiplicity="1" />
@@ -228,18 +257,6 @@
               <PropertyRef Name="AssetTypeID" />
             </Principal>
             <Dependent Role="Assets">
-              <PropertyRef Name="AssetTypeID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Properties_AssetTypes">
-          <End Role="AssetTypes" Type="Self.AssetType" Multiplicity="1" />
-          <End Role="Properties" Type="Self.Property" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AssetTypes">
-              <PropertyRef Name="AssetTypeID" />
-            </Principal>
-            <Dependent Role="Properties">
               <PropertyRef Name="AssetTypeID" />
             </Dependent>
           </ReferentialConstraint>
@@ -278,10 +295,6 @@
             <End Role="AssetTypes" EntitySet="AssetTypes" />
             <End Role="Assets" EntitySet="Assets" />
           </AssociationSet>
-          <AssociationSet Name="FK_Properties_AssetTypes" Association="Self.FK_Properties_AssetTypes">
-            <End Role="AssetTypes" EntitySet="AssetTypes" />
-            <End Role="Properties" EntitySet="Properties" />
-          </AssociationSet>
           <AssociationSet Name="FK_DropDownValue_DropDowns" Association="Self.FK_DropDownValue_DropDowns">
             <End Role="DropDowns" EntitySet="DropDowns" />
             <End Role="DropDownValues" EntitySet="DropDownValues" />
@@ -298,6 +311,10 @@
           <AssociationSet Name="FK_PropertyValues_Properties" Association="InventoryTrackerModel.FK_PropertyValues_Properties">
             <End Role="Property" EntitySet="Properties" />
             <End Role="PropertyValue" EntitySet="PropertyValues" />
+          </AssociationSet>
+          <AssociationSet Name="AssetTypeProperties" Association="InventoryTrackerModel.AssetTypeProperties">
+            <End Role="AssetType" EntitySet="AssetTypes" />
+            <End Role="Property" EntitySet="Properties" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="PropertyValue">
@@ -334,6 +351,10 @@
               <PropertyRef Name="PropertyID" />
             </Dependent>
           </ReferentialConstraint>
+        </Association>
+        <Association Name="AssetTypeProperties">
+          <End Type="InventoryTrackerModel.AssetType" Role="AssetType" Multiplicity="*" />
+          <End Type="InventoryTrackerModel.Property" Role="Property" Multiplicity="*" />
         </Association>
       </Schema>
     </edmx:ConceptualModels>
@@ -380,13 +401,15 @@
           <EntitySetMapping Name="Properties">
             <EntityTypeMapping TypeName="InventoryTrackerModel.Property">
               <MappingFragment StoreEntitySet="Properties">
+                <ScalarProperty Name="NonTracked" ColumnName="NonTracked" />
+                <ScalarProperty Name="Tracked" ColumnName="Tracked" />
+                <ScalarProperty Name="Required" ColumnName="Required" />
                 <ScalarProperty Name="Active" ColumnName="Active" />
                 <ScalarProperty Name="PropertyID" ColumnName="PropertyID" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Type" ColumnName="Type" />
                 <ScalarProperty Name="Unit" ColumnName="Unit" />
                 <ScalarProperty Name="DropDownID" ColumnName="DropDownID" />
-                <ScalarProperty Name="AssetTypeID" ColumnName="AssetTypeID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -399,6 +422,14 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <AssociationSetMapping Name="AssetTypeProperties" TypeName="InventoryTrackerModel.AssetTypeProperties" StoreEntitySet="AssetTypeProperties">
+            <EndProperty Name="Property">
+              <ScalarProperty Name="PropertyID" ColumnName="PropertyID" />
+            </EndProperty>
+            <EndProperty Name="AssetType">
+              <ScalarProperty Name="AssetTypeID" ColumnName="AssetTypeID" />
+            </EndProperty>
+          </AssociationSetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

@@ -24,7 +24,7 @@ $(document).ready(function () {
  * @param {Property} prop - a Property of the Asset Type to be added to the view 
  */
 function addProp(prop) {
-    if (prop.active) {
+    if (prop.active && !prop.tracked && !prop.nonTracked) {
         $('#propertiesDiv').append(`
             <div class="row">
                 <div class="col-sm-3">

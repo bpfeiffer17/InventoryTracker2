@@ -11,27 +11,31 @@ namespace InventoryTracker.Models
 {
     using System;
     using System.Collections.Generic;
-    
+
     public partial class Property
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Property()
         {
             this.PropertyValues = new HashSet<PropertyValue>();
+            this.AssetTypes = new HashSet<AssetType>();
         }
-    
+
         public int PropertyID { get; set; }
         public string Name { get; set; }
         public string Type { get; set; }
         public string Unit { get; set; }
         public Nullable<int> DropDownID { get; set; }
-        public int AssetTypeID { get; set; }
         public byte Active { get; set; }
+        public byte Required { get; set; }
+        public byte Tracked { get; set; }
+        public byte NonTracked { get; set; }
 
-        public virtual AssetType AssetType { get; set; }
         public virtual DropDown DropDown { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PropertyValue> PropertyValues { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<AssetType> AssetTypes { get; set; }
 
         public PropertyBare getPropertyBare()
         {
@@ -41,7 +45,6 @@ namespace InventoryTracker.Models
             propertyBare.Type = this.Type;
             propertyBare.Unit = this.Unit;
             propertyBare.DropDownID = this.DropDownID;
-            propertyBare.AssetTypeID = this.AssetTypeID;
             propertyBare.Value = "";
             if (this.Active == 1)
             {
@@ -51,6 +54,9 @@ namespace InventoryTracker.Models
             {
                 propertyBare.Active = false;
             }
+            propertyBare.Required = this.Required;
+            propertyBare.Tracked = this.Tracked;
+            propertyBare.NonTracked = this.NonTracked;
             return propertyBare;
         }
     }
@@ -65,5 +71,8 @@ namespace InventoryTracker.Models
         public int AssetTypeID { get; set; }
         public string Value { get; set; }
         public Boolean Active { get; set; }
+        public int Required { get; set; }
+        public int Tracked { get; set; }
+        public int NonTracked { get; set; }
     }
 }

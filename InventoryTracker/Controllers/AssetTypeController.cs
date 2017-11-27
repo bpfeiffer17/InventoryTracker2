@@ -101,6 +101,19 @@ namespace InventoryTracker.Controllers
             {
                 dbAssetType.Active = 1;
                 db.AssetTypes.Add(dbAssetType);
+                //Add tracked and non tracked dproperties
+                IQueryable<Property> defaults;
+                if (assetType.Tracked == 1)
+                {
+                    defaults = db.Properties.Where(prop => prop.Tracked == 1);
+                }else
+                {
+                    defaults = db.Properties.Where(prop => prop.NonTracked == 1);
+                }
+                foreach (Property prop in defaults)
+                {
+                    dbAssetType.Properties.Add(prop);
+                }
             }
 
             //Save the properties coming in from the request
