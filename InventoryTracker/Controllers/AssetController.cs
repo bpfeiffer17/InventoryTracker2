@@ -22,9 +22,9 @@ namespace InventoryTracker.Controllers
             return View("Browse");
         }
 
-        public ActionResult Browse(int id = 0)
+        public ActionResult Browse(long id = 0)
         {
-            ViewBag.assetTypes = db.AssetTypes.ToList();
+            ViewBag.assetTypes = db.AssetTypes.Where(assetType => assetType.Active == 1).ToList();
             if (id != 0)
             {
                 Response.Cookies["UserSettings"]["AssetTypeToBrowseID"] = id.ToString();
@@ -32,14 +32,23 @@ namespace InventoryTracker.Controllers
             }
             else if (Request.Cookies["UserSettings"]["AssetTypeToBrowseID"] != null)
             {
-                ViewBag.assetTypeToBrowse = db.AssetTypes.Find((Int64.Parse(Request.Cookies["UserSettings"]["AssetTypeToBrowseID"])));
+                id = Int64.Parse(Request.Cookies["UserSettings"]["AssetTypeToBrowseID"]);
+                ViewBag.assetTypeToBrowse = db.AssetTypes.Find(id);
             }
             else
             {
                 ViewBag.assetTypeToBrowse = ViewBag.assetTypes[0];
             }
+            
             //Gather a list of Assets from the database
-            ViewBag.assets = db.Assets.ToList();
+            if (id == 0 && Request.Cookies["UserSettings"]["AssetTypeToBrowseID"] == null)
+            {
+                ViewBag.assetTypeToBrowse = null;
+                ViewBag.assets = null;
+            }else
+            {
+                ViewBag.assets = db.Assets.Where(asset => asset.AssetTypeID == id).ToList();
+            }
             return View();
         }
 
