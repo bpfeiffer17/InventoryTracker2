@@ -282,15 +282,15 @@ namespace InventoryTracker.Controllers
                 foreach (var prop in asset.getAssetBare().AssetType.Properties)
                 {
                     //21 is on hand, 22 is low tide, 23 is high tide, 41 is assetName 
-                    if (prop.PropertyID == 21)
+                    if (prop.PropertyID == 48)
                     {
                         onHand = int.Parse(prop.Value);
                     }
-                    else if (prop.PropertyID == 22)
+                    else if (prop.PropertyID == 47)
                     {
                         lowTide = int.Parse(prop.Value);
                     }
-                    else if (prop.PropertyID == 23)
+                    else if (prop.PropertyID == 46)
                     {
                         highTide = int.Parse(prop.Value);
                     }
