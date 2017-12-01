@@ -290,7 +290,7 @@ namespace InventoryTracker.Controllers
                 String assetName = "";
                 foreach (var prop in asset.getAssetBare().AssetType.Properties)
                 {
-                    //21 is on hand, 22 is low tide, 23 is high tide, 41 is assetName 
+                    //48 is on hand, 47 is low tide, 46 is high tide
                     if (prop.PropertyID == 48)
                     {
                         onHand = int.Parse(prop.Value);
@@ -303,7 +303,7 @@ namespace InventoryTracker.Controllers
                     {
                         highTide = int.Parse(prop.Value);
                     }
-                    else if (prop.PropertyID == 41)
+                    else if (prop.Name == "Name")
                     {
                         assetName = prop.Value;
                     }
@@ -333,9 +333,12 @@ namespace InventoryTracker.Controllers
 
         public void SendMail(String tide, String assetName)
         {
-            //Mail Notification 
+            // Mail Notification 
             MailMessage alert = new MailMessage();
+            // add recipients below here here
             alert.To.Add(new MailAddress("inventorytrackerJCU@gmail.com"));
+
+
             alert.Subject = tide;
             alert.Body = "You have reached " + tide + " for the " + assetName + " Asset";
             alert.From = new MailAddress("inventorytrackerjcu@gmail.com");
