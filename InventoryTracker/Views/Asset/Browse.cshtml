@@ -16,11 +16,18 @@
 <h1>Browse Assets</h1>
 <label>Asset Types:</label>
 <select id="assetType" class="form-control" onchange="window.location = '/Asset/Browse/' + this.value">
-    @foreach (var item in ViewBag.assetTypes)
+    <option value="0">--Select--</option>
+    @if (ViewBag.assetTypeToBrowse != null)
     {
-        if (item.Active == 1)
+        foreach (var item in ViewBag.assetTypes)
         {
             <option @(item.AssetTypeID == ViewBag.assetTypeToBrowse.AssetTypeID ? "selected" : "") value="@item.AssetTypeID">@item.Name</option>
+        }
+    }else
+    {
+        foreach (var item in ViewBag.assetTypes)
+        {
+            <option value="@item.AssetTypeID">@item.Name</option>
         }
     }
 </select>
@@ -32,43 +39,49 @@
     <thead>
         <tr>
             <th>Options</th>
-            @foreach (var prop in ViewBag.assetTypeToBrowse.Properties)
+            @if (ViewBag.assetTypeToBrowse != null)
             {
-                if (prop.Active == 1)
+                foreach (var prop in ViewBag.assetTypeToBrowse.Properties)
                 {
-                    <th>@prop.Name</th>
+                    if (prop.Active == 1)
+                    {
+                        <th>@prop.Name</th>
+                    }
                 }
             }
 		</tr>
 	</thead>
 	<tbody>
-		@foreach (var asset in ViewBag.assets)
+        @if (ViewBag.assets != null)
         {
-            if (asset.AssetTypeID == ViewBag.assetTypeToBrowse.AssetTypeID)
+            foreach (var asset in ViewBag.assets)
             {
-                <tr>
-                    <td>
-                        <a href="/Asset/Edit/@asset.AssetID">Edit</a> |
-                        <a href="/Asset/View/@asset.AssetID">View</a> |
-                        <a class="clickable" onclick="deleteAsset(@asset.AssetID)">Delete</a>
-                    </td>
-                    @foreach (var prop in asset.getAssetBare().AssetType.Properties)
-                    {
-                        if (prop.Active)
+                if (asset.AssetTypeID == ViewBag.assetTypeToBrowse.AssetTypeID)
+                {
+                    <tr>
+                        <td>
+                            <a href="/Asset/Edit/@asset.AssetID">Edit</a> |
+                            <a href="/Asset/View/@asset.AssetID">View</a> |
+                            <a class="clickable" onclick="deleteAsset(@asset.AssetID)">Delete</a>
+                        </td>
+                        @foreach (var prop in asset.getAssetBare().AssetType.Properties)
                         {
-                            <td>
-                                @if (@prop.Value == "")
+                            if (prop.Active)
+                            {
+                                <td>
+                                    @if (@prop.Value == "")
                                 {
-                                    <div class="center">--</div>
-                                }
-                                else
-                                {
-                                    @prop.Value
-                                }
-                            </td>
+                                        <div class="center">--</div>
+                                    }
+                                    else
+                                    {
+                                        @prop.Value
+                                    }
+                                </td>
+                            }
                         }
-                    }
-                </tr>
+                    </tr>
+                }
             }
         }
 	</tbody>

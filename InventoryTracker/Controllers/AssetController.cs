@@ -22,9 +22,9 @@ namespace InventoryTracker.Controllers
             return View("Browse");
         }
 
-        public ActionResult Browse(int id = 0)
+        public ActionResult Browse(long id = 0)
         {
-            ViewBag.assetTypes = db.AssetTypes.ToList();
+            ViewBag.assetTypes = db.AssetTypes.Where(assetType => assetType.Active == 1).ToList();
             if (id != 0)
             {
                 Response.Cookies["UserSettings"]["AssetTypeToBrowseID"] = id.ToString();
@@ -32,14 +32,23 @@ namespace InventoryTracker.Controllers
             }
             else if (Request.Cookies["UserSettings"]["AssetTypeToBrowseID"] != null)
             {
-                ViewBag.assetTypeToBrowse = db.AssetTypes.Find((Int64.Parse(Request.Cookies["UserSettings"]["AssetTypeToBrowseID"])));
+                id = Int64.Parse(Request.Cookies["UserSettings"]["AssetTypeToBrowseID"]);
+                ViewBag.assetTypeToBrowse = db.AssetTypes.Find(id);
             }
             else
             {
                 ViewBag.assetTypeToBrowse = ViewBag.assetTypes[0];
             }
+            
             //Gather a list of Assets from the database
-            ViewBag.assets = db.Assets.ToList();
+            if (id == 0 && Request.Cookies["UserSettings"]["AssetTypeToBrowseID"] == null)
+            {
+                ViewBag.assetTypeToBrowse = null;
+                ViewBag.assets = null;
+            }else
+            {
+                ViewBag.assets = db.Assets.Where(asset => asset.AssetTypeID == id).ToList();
+            }
             return View();
         }
 
@@ -280,20 +289,20 @@ namespace InventoryTracker.Controllers
                 String assetName = "";
                 foreach (var prop in asset.getAssetBare().AssetType.Properties)
                 {
-                    //21 is on hand, 22 is low tide, 23 is high tide, 41 is assetName 
-                    if (prop.PropertyID == 21)
+                    //48 is on hand, 47 is low tide, 46 is high tide
+                    if (prop.PropertyID == 48)
                     {
                         onHand = int.Parse(prop.Value);
                     }
-                    else if (prop.PropertyID == 22)
+                    else if (prop.PropertyID == 47)
                     {
                         lowTide = int.Parse(prop.Value);
                     }
-                    else if (prop.PropertyID == 23)
+                    else if (prop.PropertyID == 46)
                     {
                         highTide = int.Parse(prop.Value);
                     }
-                    else if (prop.PropertyID == 41)
+                    else if (prop.Name == "Name")
                     {
                         assetName = prop.Value;
                     }
@@ -323,9 +332,12 @@ namespace InventoryTracker.Controllers
 
         public void SendMail(String tide, String assetName)
         {
-            //Mail Notification 
+            // Mail Notification 
             MailMessage alert = new MailMessage();
+            // add recipients below here here
             alert.To.Add(new MailAddress("inventorytrackerJCU@gmail.com"));
+
+
             alert.Subject = tide;
             alert.Body = "You have reached " + tide + " for the " + assetName + " Asset";
             alert.From = new MailAddress("inventorytrackerjcu@gmail.com");
