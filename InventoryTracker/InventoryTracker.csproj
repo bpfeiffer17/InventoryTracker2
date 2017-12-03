@@ -226,6 +226,7 @@
     <Content Include="Scripts\Common\DropDownHelper.js" />
     <Content Include="Scripts\Common\AssetType.js" />
     <Content Include="Scripts\Common\DropDown.js" />
+    <Content Include="Scripts\Common\AlertModal.js" />
     <Content Include="Scripts\Common\LoadingModal.js" />
     <Content Include="Scripts\Common\Property.js" />
     <Content Include="Scripts\DataTables\datatables.css" />
