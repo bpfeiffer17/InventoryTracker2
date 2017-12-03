@@ -15,6 +15,10 @@
 }
 <div>
     <h3><span id="type"></span> Asset:</h3>
+    @if (@ViewBag.id != 0)
+    {
+        <b>Created:</b> <span id="dateAdded"></span> <b>Last Modified:</b> <span id="dateLastModified"></span>
+    }
 </div>
 <hr />
 <div id="propertiesDiv" class="container"></div>

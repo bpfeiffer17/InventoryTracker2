@@ -11,7 +11,8 @@ namespace InventoryTracker.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.Globalization;
+
     public partial class Asset
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -22,6 +23,8 @@ namespace InventoryTracker.Models
     
         public int AssetID { get; set; }
         public int AssetTypeID { get; set; }
+        public System.DateTime DateAdded { get; set; }
+        public System.DateTime DateLastModified { get; set; }
     
         public virtual AssetType AssetType { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -32,6 +35,8 @@ namespace InventoryTracker.Models
             AssetBare assetBare = new AssetBare();
             assetBare.AssetID = this.AssetID;
             assetBare.AssetType = this.AssetType.getAssetTypeBare();
+            assetBare.DateAdded = this.DateAdded.ToString("MM/dd/yy H:mm");
+            assetBare.DateLastModified = this.DateLastModified.ToString("MM/dd/yy H:mm");
             // Set the values for the properties
             var i = 0;
             foreach (Property prop in this.AssetType.Properties)
@@ -59,5 +64,7 @@ namespace InventoryTracker.Models
     {
         public int AssetID { get; set; }
         public AssetTypeBare AssetType { get; set; }
+        public string DateAdded { get; set; }
+        public string DateLastModified { get; set; }
     }
 }

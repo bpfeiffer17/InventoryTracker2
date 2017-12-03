@@ -12,6 +12,8 @@ class Asset {
     constructor(options) {
         this.id = options.AssetID;
         this.AssetType = new AssetType(options.AssetType);
+        this.dateAdded = options.DateAdded;
+        this.dateLastModified = options.DateLastModified;
     }
 
     /**

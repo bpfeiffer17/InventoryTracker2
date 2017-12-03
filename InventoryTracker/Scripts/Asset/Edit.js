@@ -56,6 +56,8 @@ function setProperties() {
     }
     // Add the type to the UI
     $('#type').html(asset.AssetType.name);
+    $('#dateAdded').html(asset.dateAdded);
+    $('#dateLastModified').html(asset.dateLastModified);
 }
 
 function setPropertyValue(propId, value) {
@@ -66,7 +68,7 @@ function setPropertyValue(propId, value) {
 function save() {
     loadingModal.show();
     var data = {
-        asset: asset.getSaveStructure()
+        postAsset: asset.getSaveStructure()
     }
     $.post('/Asset/SaveAsset/' + assetTypeId, data, function (data, status) {
         loadingModal.hide();
