@@ -24,26 +24,20 @@ namespace InventoryTracker.Controllers
 
         public ActionResult Browse(long id = 0)
         {
+            // Asset types for the drop down of asset types to browse through
             ViewBag.assetTypes = db.AssetTypes.Where(assetType => assetType.Active == 1).ToList();
             if (id != 0)
             {
-                Response.Cookies["UserSettings"]["AssetTypeToBrowseID"] = id.ToString();
-                ViewBag.assetTypeToBrowse = db.AssetTypes.Find(id);
-            }
-            else if (Request.Cookies["UserSettings"]["AssetTypeToBrowseID"] != null)
-            {
-                id = Int64.Parse(Request.Cookies["UserSettings"]["AssetTypeToBrowseID"]);
                 ViewBag.assetTypeToBrowse = db.AssetTypes.Find(id);
             }
             else
             {
-                ViewBag.assetTypeToBrowse = ViewBag.assetTypes[0];
+                ViewBag.assetTypeToBrowse = null;
             }
             
             //Gather a list of Assets from the database
-            if (id == 0 && Request.Cookies["UserSettings"]["AssetTypeToBrowseID"] == null)
+            if (id == 0)
             {
-                ViewBag.assetTypeToBrowse = null;
                 ViewBag.assets = null;
             }else
             {

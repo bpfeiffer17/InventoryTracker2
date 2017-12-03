@@ -70,6 +70,6 @@ function save() {
     }
     $.post('/Asset/SaveAsset/' + assetTypeId, data, function (data, status) {
         loadingModal.hide();
-        window.location = '/Asset/Browse';
+        window.location = '/Asset/Browse/' + asset.AssetType.id;
     });
 }
