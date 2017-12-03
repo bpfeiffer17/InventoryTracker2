@@ -88,6 +88,8 @@ namespace InventoryTracker.Controllers
         
         [HttpPost]
         [ValidateAntiForgeryToken]
+
+        //pass in assetType
         public ActionResult Upload(HttpPostedFileBase upload)
         {
             if (ModelState.IsValid)
@@ -142,11 +144,8 @@ namespace InventoryTracker.Controllers
                                     string columnName = csvTable.Columns[col].ToString();
                                     string columnValue = row[col].ToString();
 
-                                    //gets all of the properties
-                                    var properties = db.Properties;
-
                                     // Find the corresponding Property by looping thru all until we find it
-                                    foreach (Property propertyItem in db.Properties)
+                                    foreach (Property propertyItem in findTheAssetType.Properties)
                                     {
                                         //System.Diagnostics.Debugger.Break();
 
