@@ -21,10 +21,45 @@ namespace InventoryTracker.Controllers
         {
             return View("Browse");
         }
+        
+        public ActionResult CreateFile(int id = 0)
+        {
+            //Create CSV File based upon user asset selection
 
+            //https://stackoverflow.com/questions/1375486/how-to-create-file-and-return-it-via-fileresult-in-asp-net-mvc
+            //https://www.codeproject.com/Articles/325103/MVC-Grid-to-Excel-file-download
+
+
+            //Convert the rendering of the gridview to a string representation 
+            StringWriter sw = new StringWriter();
+
+            //var xxx =  db.Assets
+
+            // Create the csv file here but dont have access to the assettypeproperties in the database.
+            sw.WriteLine("Hello, MyNameIsEvelyn " + id.ToString() );
+
+            //Create a response stream to create and write the Excel file
+
+            this.HttpContext.Response.Clear();
+            this.HttpContext.Response.AddHeader("content-disposition", "attachment;filename=some.csv");
+            this.HttpContext.Response.Charset = "";
+            this.HttpContext.Response.Cache.SetCacheability(HttpCacheability.NoCache);
+            this.HttpContext.Response.ContentType = "application/vnd.ms-excel";
+
+            //Open a memory stream that you can use to write back to the response
+            byte[] byteArray = System.Text.Encoding.ASCII.GetBytes(sw.ToString());
+            MemoryStream s = new MemoryStream(byteArray);
+            StreamReader sr = new StreamReader(s, System.Text.Encoding.ASCII);
+
+            //Write the stream back to the response
+            this.HttpContext.Response.Write(sr.ReadToEnd());
+            this.HttpContext.Response.End();
+
+            return View("");
+        }
         public ActionResult Browse(int id = 0)
         {
-<<<<<<< HEAD
+
             ViewBag.assetTypes = db.AssetTypes.ToList();
             if (id != 0)
             {
@@ -34,22 +69,23 @@ namespace InventoryTracker.Controllers
             else if (Request.Cookies["UserSettings"]["AssetTypeToBrowseID"] != null)
             {
                 ViewBag.assetTypeToBrowse = db.AssetTypes.Find((Int64.Parse(Request.Cookies["UserSettings"]["AssetTypeToBrowseID"])));
-=======
+
+            }
             // Asset types for the drop down of asset types to browse through
             ViewBag.assetTypes = db.AssetTypes.Where(assetType => assetType.Active == 1).ToList();
             if (id != 0)
             {
                 ViewBag.assetTypeToBrowse = db.AssetTypes.Find(id);
->>>>>>> 63eed39ee748d3cbac88ea19d0412d55c1826a25
+
             }
             else
             {
                 ViewBag.assetTypeToBrowse = null;
             }
             //Gather a list of Assets from the database
-<<<<<<< HEAD
+
             ViewBag.assets = db.Assets.ToList();
-=======
+
             if (id == 0)
             {
                 ViewBag.assets = null;
@@ -57,7 +93,7 @@ namespace InventoryTracker.Controllers
             {
                 ViewBag.assets = db.Assets.Where(asset => asset.AssetTypeID == id).ToList();
             }
->>>>>>> 63eed39ee748d3cbac88ea19d0412d55c1826a25
+
             return View();
         }
 
