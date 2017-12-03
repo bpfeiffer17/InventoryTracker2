@@ -22,9 +22,9 @@ namespace InventoryTracker.Controllers
             return View("Browse");
         }
 
-        public ActionResult Browse(long id = 0)
+        public ActionResult Browse(int id = 0)
         {
-            ViewBag.assetTypes = db.AssetTypes.Where(assetType => assetType.Active == 1).ToList();
+            ViewBag.assetTypes = db.AssetTypes.ToList();
             if (id != 0)
             {
                 Response.Cookies["UserSettings"]["AssetTypeToBrowseID"] = id.ToString();
@@ -32,23 +32,14 @@ namespace InventoryTracker.Controllers
             }
             else if (Request.Cookies["UserSettings"]["AssetTypeToBrowseID"] != null)
             {
-                id = Int64.Parse(Request.Cookies["UserSettings"]["AssetTypeToBrowseID"]);
-                ViewBag.assetTypeToBrowse = db.AssetTypes.Find(id);
+                ViewBag.assetTypeToBrowse = db.AssetTypes.Find((Int64.Parse(Request.Cookies["UserSettings"]["AssetTypeToBrowseID"])));
             }
             else
             {
                 ViewBag.assetTypeToBrowse = ViewBag.assetTypes[0];
             }
-            
             //Gather a list of Assets from the database
-            if (id == 0 && Request.Cookies["UserSettings"]["AssetTypeToBrowseID"] == null)
-            {
-                ViewBag.assetTypeToBrowse = null;
-                ViewBag.assets = null;
-            }else
-            {
-                ViewBag.assets = db.Assets.Where(asset => asset.AssetTypeID == id).ToList();
-            }
+            ViewBag.assets = db.Assets.ToList();
             return View();
         }
 
@@ -150,7 +141,7 @@ namespace InventoryTracker.Controllers
                                     string columnName = csvTable.Columns[col].ToString();
                                     string columnValue = row[col].ToString();
 
-                                    // Find the corresponding Property by looping thru all until we find it
+                                    // Find the corresponding Property by looping thru all until we find it ****
                                     foreach (Property propertyItem in findTheAssetType.Properties)
                                     {
                                         //System.Diagnostics.Debugger.Break();
@@ -289,20 +280,20 @@ namespace InventoryTracker.Controllers
                 String assetName = "";
                 foreach (var prop in asset.getAssetBare().AssetType.Properties)
                 {
-                    //48 is on hand, 47 is low tide, 46 is high tide
-                    if (prop.PropertyID == 48)
+                    //21 is on hand, 22 is low tide, 23 is high tide, 41 is assetName 
+                    if (prop.PropertyID == 21)
                     {
                         onHand = int.Parse(prop.Value);
                     }
-                    else if (prop.PropertyID == 47)
+                    else if (prop.PropertyID == 22)
                     {
                         lowTide = int.Parse(prop.Value);
                     }
-                    else if (prop.PropertyID == 46)
+                    else if (prop.PropertyID == 23)
                     {
                         highTide = int.Parse(prop.Value);
                     }
-                    else if (prop.Name == "Name")
+                    else if (prop.PropertyID == 41)
                     {
                         assetName = prop.Value;
                     }
@@ -332,12 +323,9 @@ namespace InventoryTracker.Controllers
 
         public void SendMail(String tide, String assetName)
         {
-            // Mail Notification 
+            //Mail Notification 
             MailMessage alert = new MailMessage();
-            // add recipients below here here
             alert.To.Add(new MailAddress("inventorytrackerJCU@gmail.com"));
-
-
             alert.Subject = tide;
             alert.Body = "You have reached " + tide + " for the " + assetName + " Asset";
             alert.From = new MailAddress("inventorytrackerjcu@gmail.com");
