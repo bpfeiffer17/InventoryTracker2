@@ -35,7 +35,8 @@ class Property {
             Unit: this.unit,
             DropDownID: this.dropDownId,
             Value: this.value,
-            Active: this.active
+            Active: this.active,
+            Required: this.required ? 1:0
         }
         return structure;
     }

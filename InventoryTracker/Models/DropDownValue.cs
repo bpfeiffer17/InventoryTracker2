@@ -11,16 +11,13 @@ namespace InventoryTracker.Models
 {
     using System;
     using System.Collections.Generic;
-
+    
     public partial class DropDownValue
     {
         public int DropDownValueID { get; set; }
         public int DropDownID { get; set; }
         public string Value { get; set; }
-
-
+    
         public virtual DropDown DropDown { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PropertyValue> PropertyValues { get; set; }
     }
 }

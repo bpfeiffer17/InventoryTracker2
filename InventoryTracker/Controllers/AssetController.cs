@@ -24,6 +24,7 @@ namespace InventoryTracker.Controllers
 
         public ActionResult Browse(int id = 0)
         {
+<<<<<<< HEAD
             ViewBag.assetTypes = db.AssetTypes.ToList();
             if (id != 0)
             {
@@ -33,13 +34,30 @@ namespace InventoryTracker.Controllers
             else if (Request.Cookies["UserSettings"]["AssetTypeToBrowseID"] != null)
             {
                 ViewBag.assetTypeToBrowse = db.AssetTypes.Find((Int64.Parse(Request.Cookies["UserSettings"]["AssetTypeToBrowseID"])));
+=======
+            // Asset types for the drop down of asset types to browse through
+            ViewBag.assetTypes = db.AssetTypes.Where(assetType => assetType.Active == 1).ToList();
+            if (id != 0)
+            {
+                ViewBag.assetTypeToBrowse = db.AssetTypes.Find(id);
+>>>>>>> 63eed39ee748d3cbac88ea19d0412d55c1826a25
             }
             else
             {
-                ViewBag.assetTypeToBrowse = ViewBag.assetTypes[0];
+                ViewBag.assetTypeToBrowse = null;
             }
             //Gather a list of Assets from the database
+<<<<<<< HEAD
             ViewBag.assets = db.Assets.ToList();
+=======
+            if (id == 0)
+            {
+                ViewBag.assets = null;
+            }else
+            {
+                ViewBag.assets = db.Assets.Where(asset => asset.AssetTypeID == id).ToList();
+            }
+>>>>>>> 63eed39ee748d3cbac88ea19d0412d55c1826a25
             return View();
         }
 
@@ -207,44 +225,60 @@ namespace InventoryTracker.Controllers
          *  Save a new asset to the database or update an existing one
          */
         [HttpPost]
-        public string SaveAsset(AssetBare asset)
+        public string SaveAsset(AssetBare postAsset)
         {
-            // Check to see if the asset exists in the db of if this is a new asset
-            if (db.Assets.Find(asset.AssetID) == null)
+            // Try to find the postAsset in the db
+            Asset dbAsset = db.Assets.Find(postAsset.AssetID);
+            // If dbAsset is null, this is a new asset, add it to the db
+            if (dbAsset == null)
             {
-                Asset newDBAsset = new Asset();
-                newDBAsset.AssetTypeID = asset.AssetType.AssetTypeID;
-                db.Assets.Add(newDBAsset);
-                db.SaveChanges();
-                asset.AssetID = newDBAsset.AssetID;
+                // Create a new asset, add the AssetTypeID and DateAdded, add it to db
+                dbAsset = new Asset();
+                dbAsset.AssetTypeID = postAsset.AssetType.AssetTypeID;
+                dbAsset.DateAdded = DateTime.Now;
+                dbAsset.DateLastModified = DateTime.Now;
+                db.Assets.Add(dbAsset);
             }
-            foreach (var prop in asset.AssetType.Properties)
+            // Save the properties on the asset from the post data
+            foreach (var postProp in postAsset.AssetType.Properties)
             {
-                PropertyValue propVal = db.PropertyValues.Find(asset.AssetID, prop.PropertyID);
-                if (propVal != null)
+                // Find the PropertyValue from the dbAsset
+                PropertyValue dbProp = db.PropertyValues.Find(postAsset.AssetID, postProp.PropertyID);
+                // If the PropertyValue exists in the DB, edit it
+                if (dbProp != null)
                 {
-                    if (prop.Value != "" && prop.Value != null)
+                    // If the postProp is not an empty string, is not null, 
+                    // and is different than the dbProp, change it
+                    if (postProp.Value != "" && postProp.Value != null)
                     {
-                        propVal.Value = prop.Value;
+                        if (dbProp.Value != postProp.Value)
+                        {
+                            dbProp.Value = postProp.Value;
+                            dbAsset.DateLastModified = DateTime.Now;
+                        }
                     }
+                    // If the postProp is null or an empty string, remove it from the db
                     else
                     {
-                        db.PropertyValues.Remove(propVal);
+                        db.PropertyValues.Remove(dbProp);
+                        dbAsset.DateLastModified = DateTime.Now;
                     }
                 }
+                // If the postProp does not exist in the db, and is not an empty string or null, add it
                 else
                 {
-                    if (prop.Value != "" && prop.Value != null)
+                    if (postProp.Value != "" && postProp.Value != null)
                     {
-                        propVal = new PropertyValue();
-                        propVal.AssetID = asset.AssetID;
-                        propVal.PropertyID = prop.PropertyID;
-                        propVal.Value = prop.Value;
-                        db.PropertyValues.Add(propVal);
+                        PropertyValue newProp = new PropertyValue();
+                        // newProp.AssetID = postAsset.AssetID;
+                        newProp.PropertyID = postProp.PropertyID;
+                        newProp.Value = postProp.Value;
+                        dbAsset.PropertyValues.Add(newProp);
+                        dbAsset.DateLastModified = DateTime.Now;
                     }
                 }
-                db.SaveChanges();
             }
+            db.SaveChanges();
             return "";
         }
 

@@ -37,10 +37,11 @@ function addProp(prop) {
                         <option ${prop.type === 'Drop Down' ? 'selected':''}>Drop Down</option>
                     </select>
                 </div>
-                <div class="col-sm-3">
+                <div class="col-sm-1">
                     <input value="${prop.unit ? prop.unit:''}" class="form-control" onblur="assetType.setPropertyProperty('${prop.id}', 'unit', this.value)" />
                 </div>
-                <div class="col-sm-2 center" id="dropDownDiv-${prop.id}">${prop.type !== 'Drop Down' ? `--` : ``}</div>
+                <div class="col-sm-3 center" id="dropDownDiv-${prop.id}">${prop.type !== 'Drop Down' ? `--` : ``}</div>
+                <div class="col-sm-1 center"><input type="checkbox" ${prop.required ? 'checked' : ''} onclick="assetType.setPropertyProperty('${prop.id}', 'required', this.checked)"></div>
                 <div class="col-sm-1" onclick="deleteProp('${prop.id}')"><button>DELETE</button></div>
             </div>
         `);
@@ -147,11 +148,14 @@ function setPage() {
             <div class="col-sm-3">
                 <h4>Type: </h4>
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-1">
                 <h4>Unit: </h4>
             </div>
-            <div class="col-sm-2">
+            <div class="col-sm-3">
                 <h4>Drop Down: </h4>
+            </div>
+            <div class="col-sm-1">
+                <h4>Required: </h4>
             </div>
             <div class="col-sm-1">
                 <h4>Delete: </h4>

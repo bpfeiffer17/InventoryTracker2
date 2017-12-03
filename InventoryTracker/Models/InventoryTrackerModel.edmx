@@ -11,6 +11,8 @@
           </Key>
           <Property Name="AssetID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="AssetTypeID" Type="int" Nullable="false" />
+          <Property Name="DateAdded" Type="datetime" />
+          <Property Name="DateLastModified" Type="datetime" />
         </EntityType>
         <EntityType Name="AssetTypeProperties">
           <Key>
@@ -201,6 +203,8 @@
           <Property Name="AssetTypeID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="AssetType" Relationship="Self.FK_Assets_AssetTypes" FromRole="Assets" ToRole="AssetTypes" />
           <NavigationProperty Name="PropertyValues" Relationship="InventoryTrackerModel.FK_PropertyValues_Assets" FromRole="Asset" ToRole="PropertyValue" />
+          <Property Name="DateAdded" Type="DateTime" Precision="3" />
+          <Property Name="DateLastModified" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="AssetType">
           <Key>
@@ -365,6 +369,8 @@
           <EntitySetMapping Name="Assets">
             <EntityTypeMapping TypeName="InventoryTrackerModel.Asset">
               <MappingFragment StoreEntitySet="Assets">
+                <ScalarProperty Name="DateLastModified" ColumnName="DateLastModified" />
+                <ScalarProperty Name="DateAdded" ColumnName="DateAdded" />
                 <ScalarProperty Name="AssetID" ColumnName="AssetID" />
                 <ScalarProperty Name="AssetTypeID" ColumnName="AssetTypeID" />
               </MappingFragment>
