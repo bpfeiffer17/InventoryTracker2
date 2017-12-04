@@ -26,3 +26,12 @@ function createNewAsset() {
         window.location = `/Asset/Edit?id=0&assetTypeID=${assetTypeID}`;
     }
 }
+
+function createNewCsvFile() {
+
+    var assetTypeID = $('#assetType').val();
+    if (assetTypeID) {
+
+        window.location = `/Asset/CreateFile?id=${assetTypeID}`;
+    }
+}

@@ -21,21 +21,71 @@ namespace InventoryTracker.Controllers
         {
             return View("Browse");
         }
-
-        public ActionResult Browse(long id = 0)
+        
+        public ActionResult CreateFile(int id = 0)
         {
+            //Create CSV File based upon user asset selection
+
+            //https://stackoverflow.com/questions/1375486/how-to-create-file-and-return-it-via-fileresult-in-asp-net-mvc
+            //https://www.codeproject.com/Articles/325103/MVC-Grid-to-Excel-file-download
+
+
+            //Convert the rendering of the gridview to a string representation 
+            StringWriter sw = new StringWriter();
+
+            //var xxx =  db.Assets
+
+            // Create the csv file here but dont have access to the assettypeproperties in the database.
+            sw.WriteLine("Hello, MyNameIsEvelyn " + id.ToString() );
+
+            //Create a response stream to create and write the Excel file
+
+            this.HttpContext.Response.Clear();
+            this.HttpContext.Response.AddHeader("content-disposition", "attachment;filename=some.csv");
+            this.HttpContext.Response.Charset = "";
+            this.HttpContext.Response.Cache.SetCacheability(HttpCacheability.NoCache);
+            this.HttpContext.Response.ContentType = "application/vnd.ms-excel";
+
+            //Open a memory stream that you can use to write back to the response
+            byte[] byteArray = System.Text.Encoding.ASCII.GetBytes(sw.ToString());
+            MemoryStream s = new MemoryStream(byteArray);
+            StreamReader sr = new StreamReader(s, System.Text.Encoding.ASCII);
+
+            //Write the stream back to the response
+            this.HttpContext.Response.Write(sr.ReadToEnd());
+            this.HttpContext.Response.End();
+
+            return View("");
+        }
+        public ActionResult Browse(int id = 0)
+        {
+
+            ViewBag.assetTypes = db.AssetTypes.ToList();
+            if (id != 0)
+            {
+                Response.Cookies["UserSettings"]["AssetTypeToBrowseID"] = id.ToString();
+                ViewBag.assetTypeToBrowse = db.AssetTypes.Find(id);
+            }
+            else if (Request.Cookies["UserSettings"]["AssetTypeToBrowseID"] != null)
+            {
+                ViewBag.assetTypeToBrowse = db.AssetTypes.Find((Int64.Parse(Request.Cookies["UserSettings"]["AssetTypeToBrowseID"])));
+
+            }
             // Asset types for the drop down of asset types to browse through
             ViewBag.assetTypes = db.AssetTypes.Where(assetType => assetType.Active == 1).ToList();
             if (id != 0)
             {
                 ViewBag.assetTypeToBrowse = db.AssetTypes.Find(id);
+
             }
             else
             {
                 ViewBag.assetTypeToBrowse = null;
             }
-            
             //Gather a list of Assets from the database
+
+            ViewBag.assets = db.Assets.ToList();
+
             if (id == 0)
             {
                 ViewBag.assets = null;
@@ -43,6 +93,7 @@ namespace InventoryTracker.Controllers
             {
                 ViewBag.assets = db.Assets.Where(asset => asset.AssetTypeID == id).ToList();
             }
+
             return View();
         }
 
@@ -144,7 +195,7 @@ namespace InventoryTracker.Controllers
                                     string columnName = csvTable.Columns[col].ToString();
                                     string columnValue = row[col].ToString();
 
-                                    // Find the corresponding Property by looping thru all until we find it
+                                    // Find the corresponding Property by looping thru all until we find it ****
                                     foreach (Property propertyItem in findTheAssetType.Properties)
                                     {
                                         //System.Diagnostics.Debugger.Break();
@@ -299,20 +350,20 @@ namespace InventoryTracker.Controllers
                 String assetName = "";
                 foreach (var prop in asset.getAssetBare().AssetType.Properties)
                 {
-                    //48 is on hand, 47 is low tide, 46 is high tide
-                    if (prop.PropertyID == 48)
+                    //21 is on hand, 22 is low tide, 23 is high tide, 41 is assetName 
+                    if (prop.PropertyID == 21)
                     {
                         onHand = int.Parse(prop.Value);
                     }
-                    else if (prop.PropertyID == 47)
+                    else if (prop.PropertyID == 22)
                     {
                         lowTide = int.Parse(prop.Value);
                     }
-                    else if (prop.PropertyID == 46)
+                    else if (prop.PropertyID == 23)
                     {
                         highTide = int.Parse(prop.Value);
                     }
-                    else if (prop.Name == "Name")
+                    else if (prop.PropertyID == 41)
                     {
                         assetName = prop.Value;
                     }
@@ -342,12 +393,9 @@ namespace InventoryTracker.Controllers
 
         public void SendMail(String tide, String assetName)
         {
-            // Mail Notification 
+            //Mail Notification 
             MailMessage alert = new MailMessage();
-            // add recipients below here here
             alert.To.Add(new MailAddress("inventorytrackerJCU@gmail.com"));
-
-
             alert.Subject = tide;
             alert.Body = "You have reached " + tide + " for the " + assetName + " Asset";
             alert.From = new MailAddress("inventorytrackerjcu@gmail.com");
