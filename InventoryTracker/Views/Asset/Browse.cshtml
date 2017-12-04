@@ -31,9 +31,15 @@
         }
     }
 </select>
-<hr />
-<a onclick="createNewAsset()" class="btn">Create New</a>
-<hr />
+@if (ViewBag.assetTypeToBrowse != null)
+{
+    <hr />
+        <a onclick="createNewAsset()" class="btn">Create New</a>
+        <a onclick="createNewCsvFile()" class="btn">Create CSV</a>
+        <!-- Upload csv  go to upload on asset controller -->
+        @Html.ActionLink("Upload CSV File", "Upload", "Asset")
+    <hr />
+}
 <!--Begin Assets Table-->
 <table id="assetsTable">
     <thead>

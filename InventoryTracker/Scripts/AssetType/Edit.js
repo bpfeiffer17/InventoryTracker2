@@ -28,7 +28,7 @@ function addProp(prop) {
         $('#propertiesDiv').append(`
             <div class="row">
                 <div class="col-sm-3">
-                    <input value="${prop.name}" class="form-control" onblur="assetType.setPropertyProperty('${prop.id}', 'name', this.value)" />
+                    <input value="${prop.name}" class="form-control" onblur="setPropName('${prop.id}', 'name', this.value)" />
                 </div>
                 <div class="col-sm-3">
                     <select class="form-control" onchange="setType('${prop.id}', this.value)">
@@ -200,4 +200,21 @@ function deleteProp(propertID) {
         assetType.findProperty(propertID).active = false;
         setPage();
     });
+}
+
+function setPropName(propId, property, value) {
+    assetType.setPropertyProperty(propId, property, value);
+    var nameCount = 0;
+    for (let prop of assetType.properties) {
+        if (prop.name.toLowerCase() === value.toLowerCase()) {
+            nameCount++;
+        }
+    }
+    if (nameCount <= 1) {
+        assetType.setPropertyProperty(propId, property, value);
+    } else {
+        assetType.setPropertyProperty(propId, property, '');
+        alertModal.show(`There is already a property with the name "${value}"`);
+        setPage();
+    }
 }
