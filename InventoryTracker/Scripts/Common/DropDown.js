@@ -29,4 +29,16 @@ class DropDown {
         }
         return false;
     }
+
+    getSaveStructure() {
+        var structure = {
+            DropDownID: this.id,
+            Name: this.name,
+            Values: this.values
+        }
+        for (var value of this.values) {
+            structure.Values.push(value.getSaveStructure());
+        }
+        return structure;
+    }
 }
