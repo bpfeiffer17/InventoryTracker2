@@ -33,15 +33,17 @@ namespace InventoryTracker.Controllers
             //Convert the rendering of the gridview to a string representation 
             StringWriter sw = new StringWriter();
 
-            //var xxx =  db.Assets
-
-            // Create the csv file here but dont have access to the assettypeproperties in the database.
-            sw.WriteLine("Hello, MyNameIsEvelyn " + id.ToString() );
-
+            AssetType findTheAssetType = db.AssetTypes.Find(id);
+            //******** building a comma seperated string by going thru properties
+            foreach (Property prop in findTheAssetType.Properties)
+            {
+                sw.Write(prop.Name + ",");
+            }
+            
             //Create a response stream to create and write the Excel file
 
             this.HttpContext.Response.Clear();
-            this.HttpContext.Response.AddHeader("content-disposition", "attachment;filename=some.csv");
+            this.HttpContext.Response.AddHeader("content-disposition", "attachment;filename=" + findTheAssetType.Name +".csv");
             this.HttpContext.Response.Charset = "";
             this.HttpContext.Response.Cache.SetCacheability(HttpCacheability.NoCache);
             this.HttpContext.Response.ContentType = "application/vnd.ms-excel";
@@ -175,7 +177,9 @@ namespace InventoryTracker.Controllers
                                 // Get The asset type id
                                 int assetTypeId = int.Parse(row["AssetTypeID"].ToString());
 
-                                // Find the asset type according to the id
+                                // Find the asset type according to the id ****
+                                //assetTpe.properties
+                                //have an assetType find it from the db has an atribute called properties and can iterate thru that. Only doing that with an assetTypeID. Forget about the table.
                                 AssetType findTheAssetType = db.AssetTypes.Find(assetTypeId);
 
                                 // Create a new asset and give it the assetTypeId you just found
@@ -196,6 +200,7 @@ namespace InventoryTracker.Controllers
                                     string columnValue = row[col].ToString();
 
                                     // Find the corresponding Property by looping thru all until we find it ****
+                                    //grab assetType and iterte through to find name.
                                     foreach (Property propertyItem in findTheAssetType.Properties)
                                     {
                                         //System.Diagnostics.Debugger.Break();
