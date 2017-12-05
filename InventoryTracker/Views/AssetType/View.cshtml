@@ -20,7 +20,14 @@
             </div>
             <div class="col-sm-6">
                 <h4>Type:</h4>
-                @Html.DisplayFor(model => Model.Tracked)
+                @if (Convert.ToBoolean(Model.Tracked))
+                {
+                    <span>Tracked</span>
+                }
+                else
+                {
+                    <span>Non-Tracked</span>
+                }
             </div>
         </div>
     </div>
@@ -36,11 +43,14 @@
             <div class="col-sm-3">
                 <h4>Type</h4>
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-1">
                 <h4>Unit</h4>
             </div>
             <div class="col-sm-3">
                 <h4>Drop Down</h4>
+            </div>
+            <div class="col-sm-2">
+                <h4>Required</h4>
             </div>
         </div>
         @foreach (var property in Model.Properties)
@@ -54,14 +64,31 @@
                     <div class="col-sm-3">
                         @Html.DisplayFor(modelItem => property.Type)
                     </div>
-                    <div class="col-sm-3">
-                        @Html.DisplayFor(modelItem => property.Unit)
+                    <div class="col-sm-1">
+                        @if (property.Unit == "" || property.Unit == null)
+                        {
+                            <span>--</span>
+                        }
+                        else
+                        {
+                            @Html.DisplayFor(modelItem => property.Unit)
+                        }
                     </div>
                     <div class="col-sm-3">
                         @if (property.Type != "Drop Down") {
-                            <label>--</label>
+                            <span>--</span>
                         }else {
                             @Html.DisplayFor(modelItem => property.DropDown.Name)
+                        }
+                    </div>
+                    <div class="col-sm-1">
+                        @if (property.Required == 1)
+                        {
+                            <span>Yes</span>
+                        }
+                        else
+                        {
+                            <span>--</span>
                         }
                     </div>
                 </div>
