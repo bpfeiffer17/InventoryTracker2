@@ -32,6 +32,7 @@ namespace InventoryTracker.Controllers
 
             //Convert the rendering of the gridview to a string representation 
             StringWriter sw = new StringWriter();
+            sw.Write("AssetTypeID,");
 
             AssetType findTheAssetType = db.AssetTypes.Find(id);
             //******** building a comma seperated string by going thru properties
@@ -39,7 +40,10 @@ namespace InventoryTracker.Controllers
             {
                 sw.Write(prop.Name + ",");
             }
-            
+            //put in assetType ID so the user knows what number to enter for the rest of the columns.
+            sw.WriteLine("");
+            sw.WriteLine(findTheAssetType.AssetTypeID);
+
             //Create a response stream to create and write the Excel file
 
             this.HttpContext.Response.Clear();
