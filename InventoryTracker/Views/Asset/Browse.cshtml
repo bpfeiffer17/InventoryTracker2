@@ -36,8 +36,9 @@
     <hr />
         <a onclick="createNewAsset()" class="btn">Create New</a>
         <a onclick="createNewCsvFile()" class="btn">Create CSV</a>
-        <!-- Upload csv  go to upload on asset controller -->
-        @Html.ActionLink("Upload CSV File", "Upload", "Asset")
+        <!-- Upload csv  go to upload javascript function -->         
+        <a onclick = "uploadCsvFile()" class="btn">Upload a CSV File</a>
+
     <hr />
 }
 <!--Begin Assets Table-->

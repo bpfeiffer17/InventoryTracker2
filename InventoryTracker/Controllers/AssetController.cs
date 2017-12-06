@@ -32,7 +32,6 @@ namespace InventoryTracker.Controllers
 
             //Convert the rendering of the gridview to a string representation 
             StringWriter sw = new StringWriter();
-            sw.Write("AssetTypeID,");
 
             AssetType findTheAssetType = db.AssetTypes.Find(id);
             //******** building a comma seperated string by going thru properties
@@ -40,10 +39,7 @@ namespace InventoryTracker.Controllers
             {
                 sw.Write(prop.Name + ",");
             }
-            //put in assetType ID so the user knows what number to enter for the rest of the columns.
-            sw.WriteLine("");
-            sw.WriteLine(findTheAssetType.AssetTypeID);
-
+     
             //Create a response stream to create and write the Excel file
 
             this.HttpContext.Response.Clear();
@@ -137,17 +133,21 @@ namespace InventoryTracker.Controllers
             return View();
         }
 
-        public ActionResult Upload()
+        public ActionResult Upload(int id)
         {
+            //This gets called from the javascript.
+            //https://stackoverflow.com/questions/34223736/maintaining-viewbag-values-while-posting-data
+            
+            //put assetID in viewbag so it can be passed onto the csv upload.
+            ViewBag.AssetIdForUpload = id;
             return View();
         }
 
         
         [HttpPost]
         [ValidateAntiForgeryToken]
-
-        //pass in assetType
-        public ActionResult Upload(HttpPostedFileBase upload)
+        //The assetID comes from the hidden field on the upload.cshtml
+        public ActionResult Upload(HttpPostedFileBase upload, int assetId=0)
         {
             if (ModelState.IsValid)
             {
@@ -165,11 +165,11 @@ namespace InventoryTracker.Controllers
                             csvTable.Load(csvReader);
 
                             // Make sure that the csv has the right columns in it this needs to be dynamic based on the asset type
-                            // First three columns are fixed, assettypeid, name, description... variable fields after
-                            if (!csvTable.Columns.Contains("AssetTypeID") )
+                           
+                            if (assetId == 0)
                                 {
 
-                                ViewBag.ErrorMessage = "CSV file must contail Atlest the AssetTypeID and any other properies";
+                                ViewBag.ErrorMessage = "Error... Asset id not specified";
                                 return View("");
                                                                 
                             }
@@ -179,7 +179,7 @@ namespace InventoryTracker.Controllers
                             foreach (DataRow row in csvTable.Rows)
                             {
                                 // Get The asset type id
-                                int assetTypeId = int.Parse(row["AssetTypeID"].ToString());
+                                int assetTypeId = assetId;
 
                                 // Find the asset type according to the id ****
                                 //assetTpe.properties
@@ -199,7 +199,7 @@ namespace InventoryTracker.Controllers
                                 db.SaveChanges();
 
                                 // loop thru the rest of the columns to get the values
-                                for (int col=1; col < csvTable.Columns.Count; col++)
+                                for (int col=0; col < csvTable.Columns.Count; col++)
                                 {
                                     //get the column name and value
                                     string columnName = csvTable.Columns[col].ToString();

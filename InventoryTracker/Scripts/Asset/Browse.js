@@ -35,3 +35,13 @@ function createNewCsvFile() {
         window.location = `/Asset/CreateFile?id=${assetTypeID}`;
     }
 }
+
+function uploadCsvFile() {
+    //pull out assetTypeID and then pass it onto the controller method - assetUpload
+    var assetTypeID = $('#assetType').val();
+    
+    if (assetTypeID) {
+
+        window.location = `/Asset/Upload?id=${assetTypeID}`;
+    }
+}
