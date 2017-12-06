@@ -1,4 +1,4 @@
-﻿@model InventoryTracker.Models.AssetType
+﻿@model InventoryTracker.Models.ViewModels.AssetTypeViewModel
 
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -20,7 +20,7 @@
             </div>
             <div class="col-sm-6">
                 <h4>Type:</h4>
-                @if (Convert.ToBoolean(Model.Tracked))
+                @if (Model.Tracked)
                 {
                     <span>Tracked</span>
                 }
@@ -55,7 +55,7 @@
         </div>
         @foreach (var property in Model.Properties)
         {
-            if (property.Active == 1)
+            if (property.Active)
             {
                 <div class="row">
                     <div class="col-sm-3">
@@ -78,11 +78,11 @@
                         @if (property.Type != "Drop Down") {
                             <span>--</span>
                         }else {
-                            @Html.DisplayFor(modelItem => property.DropDown.Name)
+                            @Html.DisplayFor(modelItem => property.DropDownID)
                         }
                     </div>
                     <div class="col-sm-1">
-                        @if (property.Required == 1)
+                        @if (property.Required)
                         {
                             <span>Yes</span>
                         }

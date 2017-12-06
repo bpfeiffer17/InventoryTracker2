@@ -1,4 +1,6 @@
-﻿@{
+﻿@model InventoryTracker.Models.ViewModels.AssetTypeViewModel[]
+
+@{
     ViewBag.Title = "Browse Asset Types";
 }
 
@@ -28,21 +30,21 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in ViewBag.assetTypes)
+        @foreach (var assetType in Model)
         {
-            if (item.Active != 0)
+            if (assetType.Active)
             {
                 <tr>
                     <td>
-                        <a href="/AssetType/Edit/@item.AssetTypeID">Edit</a> |
-                        <a href="/AssetType/View/@item.AssetTypeID">View</a> |
-                        <a class="clickable" onclick="deleteAssetType(@item.AssetTypeID)">Delete</a>
+                        <a href="/AssetType/Edit/@assetType.AssetTypeID">Edit</a> |
+                        <a href="/AssetType/View/@assetType.AssetTypeID">View</a> |
+                        <a class="clickable" onclick="deleteAssetType(@assetType.AssetTypeID)">Delete</a>
                     </td>
                     <td>
-                        @item.Name
+                        @assetType.Name
                     </td>
                     <td>
-                        @item.Description
+                        @assetType.Description
                     </td>
                 </tr>
             }

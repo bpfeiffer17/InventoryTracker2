@@ -14,6 +14,7 @@ using System.Web.Mvc;
 using InventoryTracker.Models;
 using System.Web.Script.Serialization;
 using Newtonsoft.Json;
+using InventoryTracker.Models.ViewModels;
 
 namespace InventoryTracker.Controllers
 {
@@ -27,34 +28,34 @@ namespace InventoryTracker.Controllers
             return View("Browse");
         }
 
+        // Gather the AssetTypes from the database and generate an
+        // array of AssetTypeViewModels for the view
         public ActionResult Browse()
         {
-            //Gather a list of AssetTypes from the database 
-            ViewBag.assetTypes = db.AssetTypes.ToList();
-            return View();
+            IEnumerable<AssetType> dbAssetTypes = db.AssetTypes.ToList();
+            AssetTypeViewModel[] assetTypes = new AssetTypeViewModel[dbAssetTypes.Count()];
+            for (var i = 0; i < dbAssetTypes.Count(); i++)
+            {
+                assetTypes[i] = new AssetTypeViewModel(dbAssetTypes.ElementAt(i));
+            }
+            return View(assetTypes);
         }
 
-        public ActionResult Edit(int id)
+        // Return a JSON representation of the AssetTypeViewModel with the given id
+        // If the id is 0, return an empty AssetTypeViewModel
+        public string JSON(int id = 0)
         {
-            AssetType assetType;
-            if (id != 0)
-            {
-                assetType = db.AssetTypes.Find(id);
-            }
-            else
-            {
-                assetType = new AssetType();
-            }
-            ViewBag.assetTypeJSON = new JavaScriptSerializer().Serialize(assetType.getAssetTypeBare());
-            ViewBag.dropDowns = new JavaScriptSerializer().Serialize(this.getDropDowns());
-            return View();
+            return new JavaScriptSerializer().Serialize(this.getAssetTypeViewModel(id));
         }
 
-        public ActionResult View(int id)
+        public ActionResult Edit(int id = 0)
         {
-            AssetType assetType = db.AssetTypes.Find(id);
-            ViewBag.assetTypeJSON = new JavaScriptSerializer().Serialize(assetType.getAssetTypeBare());
-            return View(assetType);
+            return View(this.getAssetTypeViewModel(id));
+        }
+
+        public ActionResult View(int id = 0)
+        {
+            return View(this.getAssetTypeViewModel(id));
         }
 
         /**
@@ -177,6 +178,22 @@ namespace InventoryTracker.Controllers
                 db.SaveChanges();
             }
             return "";
+        }
+
+        private AssetTypeViewModel getAssetTypeViewModel(int id = 0)
+        {
+            AssetTypeViewModel assetType;
+
+            if (id == 0)
+            {
+                assetType = new AssetTypeViewModel(new AssetType());
+            }
+            else
+            {
+                assetType = new AssetTypeViewModel(db.AssetTypes.Find(id));
+            }
+
+            return assetType;
         }
     }
 }

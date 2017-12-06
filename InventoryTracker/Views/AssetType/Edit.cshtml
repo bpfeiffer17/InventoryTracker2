@@ -1,4 +1,6 @@
-﻿@{
+﻿@model InventoryTracker.Models.ViewModels.AssetTypeViewModel
+
+@{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -61,7 +63,7 @@
     </div>
 </div>
 <script>
-    var assetTypeJSON = @Html.Raw(ViewBag.assetTypeJSON);
+    var assetTypeID = '@Model.AssetTypeID';
 </script>
 
 

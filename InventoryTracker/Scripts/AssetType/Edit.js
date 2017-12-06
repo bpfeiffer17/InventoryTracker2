@@ -9,12 +9,13 @@ var assetType;
 
 //Code to be executed when the page is done loading.
 $(document).ready(function () {
-    $.get('/AssetType/DropDownHelper', function (data,status){
+    $.get('/AssetType/DropDownHelper', function (data) {
         dropDownHelper = new DropDownHelper(JSON.parse(data));
-        assetType = new AssetType(assetTypeJSON);
-        setPage();
-        //Set our event listeners on the page
-        setListeners();
+        $.get(`/AssetType/JSON/${assetTypeID ? assetTypeID : 0}`, function (data) {
+            assetType = new AssetType(JSON.parse(data));
+            setPage();
+            setListeners();
+        });
     });
 });
 
