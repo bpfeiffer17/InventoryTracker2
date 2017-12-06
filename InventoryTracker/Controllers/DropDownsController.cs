@@ -68,7 +68,7 @@ namespace InventoryTracker.Controllers
             DropDown dropDown = db.DropDowns.Find(id);
             if (dropDown == null)
             {
-                return HttpNotFound();
+                dropDown = new DropDown();
             }
             return View(dropDown);
         }

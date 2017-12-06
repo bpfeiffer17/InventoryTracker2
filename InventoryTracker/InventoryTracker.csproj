@@ -231,7 +231,6 @@
     <Content Include="Scripts\Common\Property.js" />
     <Content Include="Scripts\DataTables\datatables.css" />
     <Content Include="Scripts\DataTables\datatables.js" />
-    <Content Include="Scripts\DropDown\create.js" />
     <Content Include="Scripts\DropDown\edit.js" />
     <Content Include="Scripts\DropDown\index.js" />
     <Content Include="Scripts\DummyData\AssetTypes.json" />

@@ -30,14 +30,16 @@ class DropDown {
         return false;
     }
 
+        /**
+     * Get a structure that will mach the c# model
+     * 
+     * @returns - a json structure that resembles the c# DropDown model
+     */
     getSaveStructure() {
         var structure = {
             DropDownID: this.id,
             Name: this.name,
-            Values: this.values
-        }
-        for (var value of this.values) {
-            structure.Values.push(value.getSaveStructure());
+            Values: []
         }
         return structure;
     }

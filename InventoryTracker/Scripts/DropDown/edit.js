@@ -1,5 +1,6 @@
 ﻿/**
- * @author Emily Hansen <@ehansen18@jcu.dy>
+ * @author Emily Hansen <@ehansen18@jcu.edu>
+ * @author Bennett Lazor <@blazor18@jcu.edu>
  */
 //The following code will enable dropdownlists to work on the edit page of the dropdown controller.
 
@@ -7,7 +8,7 @@
 var dropDown;
 
 $(document).ready(function () {
-   
+    setpage();
 };
 
 
@@ -33,7 +34,7 @@ function setPage() {
 function save() {
     LoadingModal.show();
     var data = {
-        Dropdown: JSON.stringify()// need to insert stringify
+        Dropdown: JSON.stringify(dropDown.getSaveStrusture())
     }
     $.post('/DropDown/SaveDropDown', data, function (data, status) {
         LoadingModal.hide();
@@ -48,10 +49,3 @@ function deleteValue(valueID) {
     });
 }
 
-function dropDown(){
-    var values = ['test1','test2','test3','test4','test5','test6'​];
-
-    ​$.each(values,function(i,val){
-        $('<option />').text(val).val(val).appendTo('#drop');
-    });​
-}
