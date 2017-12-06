@@ -189,10 +189,12 @@ namespace InventoryTracker.Controllers
                                 // Create a new asset and give it the assetTypeId you just found
                                 Asset newAsset = new Asset()
                                 {
-                                    AssetTypeID = findTheAssetType.AssetTypeID
-                                };
+                                    AssetTypeID = findTheAssetType.AssetTypeID,
+                                    DateAdded = DateTime.Now,
+                                    DateLastModified = DateTime.Now
+                            };
 
-                                //Add the asset, save the changes so we can get the id to use for saving property values
+                                //Add the asset, save the changes so we can get the id to use for saving property values*****
                                 Asset addedAsset = db.Assets.Add(newAsset);                               
                                 db.SaveChanges();
 
