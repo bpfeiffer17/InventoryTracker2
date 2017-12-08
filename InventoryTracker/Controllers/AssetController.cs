@@ -315,6 +315,11 @@ namespace InventoryTracker.Controllers
                 }
             }
             db.SaveChanges();
+            // If this is a non tracked asset, check its on hand value
+            if (dbAsset.AssetType.Tracked == 0)
+            {
+                checkTide(dbAsset.AssetID);
+            }
             return "";
         }
 
@@ -338,7 +343,7 @@ namespace InventoryTracker.Controllers
             }
             return "";
         }
-        [HttpPost]
+
         public void checkTide(int id)
         {
             AssetViewModel asset = new AssetViewModel(db.Assets.Find(id));
@@ -348,6 +353,7 @@ namespace InventoryTracker.Controllers
                 int lowTide = 0;
                 int highTide = 0;
                 String assetName = "";
+                String[] emails = null;
                 foreach (var prop in asset.AssetType.Properties)
                 {
                     //21 is on hand, 22 is low tide, 23 is high tide, 41 is assetName 
@@ -367,16 +373,18 @@ namespace InventoryTracker.Controllers
                     {
                         assetName = prop.Value;
                     }
-
-
+                    else if (prop.Name == "Emails to Notify")
+                    {
+                        emails = prop.Value.Split(';');
+                    }
                 }
                 if (onHand < lowTide)
                 {
-                    SendMail("Low Tide", assetName);
+                    SendMail("Low Tide", assetName, emails);
                 }
                 if (onHand > highTide)
                 {
-                    SendMail("High Tide", assetName);
+                    SendMail("High Tide", assetName, emails);
                 }
 
             }
@@ -385,37 +393,39 @@ namespace InventoryTracker.Controllers
         [HttpPost]
         public void checkAllTides()
         {
-            for (int id = 0; id < 100; id++)
-            {
-                checkTide(id);
-            }
         }
 
-        public void SendMail(String tide, String assetName)
+        public void SendMail(String tide, String assetName, String[] emails)
         {
-            //Mail Notification 
-            MailMessage alert = new MailMessage();
-            alert.To.Add(new MailAddress("inventorytrackerJCU@gmail.com"));
-            alert.Subject = tide;
-            alert.Body = "You have reached " + tide + " for the " + assetName + " Asset";
-            alert.From = new MailAddress("inventorytrackerjcu@gmail.com");
-
-            //Email Address from there you send the mail 
-            var fromAddress = "inventorytrackerjcu@gmail.com";
-            //Password of your mail address 
-            const string fromPassword = "a11002233";
-
-            //stmp settings 
-            var smtp = new System.Net.Mail.SmtpClient();
+            if (emails != null)
             {
-                smtp.Host = "smtp.gmail.com";
-                smtp.EnableSsl = true;
-                smtp.DeliveryMethod = System.Net.Mail.SmtpDeliveryMethod.Network;
-                smtp.Credentials = new System.Net.NetworkCredential(fromAddress, fromPassword);
-                smtp.Timeout = 20000;
+                //Mail Notification 
+                MailMessage alert = new MailMessage();
+                foreach (var email in emails)
+                {
+                    alert.To.Add(new MailAddress(email));
+                }
+                alert.Subject = tide;
+                alert.Body = "You have reached " + tide + " for the " + assetName + " Asset";
+                alert.From = new MailAddress("inventorytrackerjcu@gmail.com");
+
+                //Email Address from there you send the mail 
+                var fromAddress = "inventorytrackerjcu@gmail.com";
+                //Password of your mail address 
+                const string fromPassword = "a11002233";
+
+                //stmp settings 
+                var smtp = new System.Net.Mail.SmtpClient();
+                {
+                    smtp.Host = "smtp.gmail.com";
+                    smtp.EnableSsl = true;
+                    smtp.DeliveryMethod = System.Net.Mail.SmtpDeliveryMethod.Network;
+                    smtp.Credentials = new System.Net.NetworkCredential(fromAddress, fromPassword);
+                    smtp.Timeout = 20000;
+                }
+                // Passing values to smtp object 
+                smtp.Send(alert);
             }
-            // Passing values to smtp object 
-            smtp.Send(alert);
         }
     }
 }
