@@ -9,6 +9,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using System.Net.Mail;
+using InventoryTracker.Models.ViewModels;
 
 namespace InventoryTracker.Controllers
 {
@@ -59,57 +60,43 @@ namespace InventoryTracker.Controllers
 
             return View("");
         }
+
+        // GET: Asset/Browse
         public ActionResult Browse(int id = 0)
         {
-
-            ViewBag.assetTypes = db.AssetTypes.ToList();
-            if (id != 0)
-            {
-                Response.Cookies["UserSettings"]["AssetTypeToBrowseID"] = id.ToString();
-                ViewBag.assetTypeToBrowse = db.AssetTypes.Find(id);
-            }
-            else if (Request.Cookies["UserSettings"]["AssetTypeToBrowseID"] != null)
-            {
-                ViewBag.assetTypeToBrowse = db.AssetTypes.Find((Int64.Parse(Request.Cookies["UserSettings"]["AssetTypeToBrowseID"])));
-
-            }
-            // Asset types for the drop down of asset types to browse through
+            // Gather a list of AssetTypes to fill in the drop down of AssetTypes to browse
             ViewBag.assetTypes = db.AssetTypes.Where(assetType => assetType.Active == 1).ToList();
+
+            // If an AssetTypeID was provided, gather the AssetType and Assets associated with it
             if (id != 0)
             {
                 ViewBag.assetTypeToBrowse = db.AssetTypes.Find(id);
-
+                IEnumerable<Asset> dbAssets = db.Assets.Where(asset => asset.AssetTypeID == id).ToList();
+                AssetViewModel[] assets = new AssetViewModel[dbAssets.Count()];
+                for (var i = 0; i < dbAssets.Count(); i++)
+                {
+                    assets[i] = new AssetViewModel(dbAssets.ElementAt(i));
+                }
+                ViewBag.assets = assets;
             }
             else
             {
                 ViewBag.assetTypeToBrowse = null;
-            }
-            //Gather a list of Assets from the database
-
-            ViewBag.assets = db.Assets.ToList();
-
-            if (id == 0)
-            {
                 ViewBag.assets = null;
-            }else
-            {
-                ViewBag.assets = db.Assets.Where(asset => asset.AssetTypeID == id).ToList();
             }
 
             return View();
         }
 
+        // GET: Asset/Edit
         public ActionResult Edit(int id, int assetTypeID = 0)
 		{
-            ViewBag.id = id;
+            ViewBag.assetID = id;
             ViewBag.assetTypeID = assetTypeID;
-            ViewBag.dropDowns = new JavaScriptSerializer().Serialize(this.getDropDowns());
             return View();
 		}
 
-        /**
-         * Get an array of DropDowns from the DB
-         */
+        // Get an array of DropDowns from the DB
         private DropDownBare[] getDropDowns()
         {
             List<DropDownBare> dropDowns = new List<DropDownBare>();
@@ -123,13 +110,12 @@ namespace InventoryTracker.Controllers
 
         public ActionResult View(int id)
         {
-            Asset asset = db.Assets.Find(id);
+            AssetViewModel asset = new AssetViewModel(db.Assets.Find(id));
             return View(asset);
         }
 
         public ActionResult BulkImport()
         {
-
             return View();
         }
 
@@ -250,29 +236,32 @@ namespace InventoryTracker.Controllers
             return View();
         }
 
+        // Gather a JSON representation of the Asset with the given id
         public string JSON(int id = 0, int assetTypeID = 0)
         {
-            Asset asset;
+            AssetViewModel asset;
             if (id != 0)
             {
-                asset = db.Assets.Find(id);
+                asset = new AssetViewModel(db.Assets.Find(id));
             }
             else
             {
                 // Create a new asset
-                asset = new Asset();
+                Asset newAsset = new Asset();
                 // Add AssetType info based on the given assetTypeID
-                asset.AssetTypeID = assetTypeID;
-                asset.AssetType = db.AssetTypes.Find(assetTypeID);
+                newAsset.AssetTypeID = assetTypeID;
+                newAsset.AssetType = db.AssetTypes.Find(assetTypeID);
+                // Convert the Asset to an AssetViewModel
+                asset = new AssetViewModel(newAsset);
             }
-            return ViewBag.assetTypeJSON = new JavaScriptSerializer().Serialize(asset.getAssetBare());
+            return ViewBag.assetTypeJSON = new JavaScriptSerializer().Serialize(asset);
         }
 
         /**
          *  Save a new asset to the database or update an existing one
          */
         [HttpPost]
-        public string SaveAsset(AssetBare postAsset)
+        public string SaveAsset(AssetViewModel postAsset)
         {
             // Try to find the postAsset in the db
             Asset dbAsset = db.Assets.Find(postAsset.AssetID);
@@ -352,29 +341,29 @@ namespace InventoryTracker.Controllers
         [HttpPost]
         public void checkTide(int id)
         {
-            Asset asset = db.Assets.Find(id);
+            AssetViewModel asset = new AssetViewModel(db.Assets.Find(id));
             if (asset != null)
             {
                 int onHand = 0;
                 int lowTide = 0;
                 int highTide = 0;
                 String assetName = "";
-                foreach (var prop in asset.getAssetBare().AssetType.Properties)
+                foreach (var prop in asset.AssetType.Properties)
                 {
                     //21 is on hand, 22 is low tide, 23 is high tide, 41 is assetName 
-                    if (prop.PropertyID == 21)
+                    if (prop.Name == "On Hand")
                     {
                         onHand = int.Parse(prop.Value);
                     }
-                    else if (prop.PropertyID == 22)
+                    else if (prop.Name == "Low Tide")
                     {
                         lowTide = int.Parse(prop.Value);
                     }
-                    else if (prop.PropertyID == 23)
+                    else if (prop.Name == "High Tide")
                     {
                         highTide = int.Parse(prop.Value);
                     }
-                    else if (prop.PropertyID == 41)
+                    else if (prop.Name == "Name")
                     {
                         assetName = prop.Value;
                     }

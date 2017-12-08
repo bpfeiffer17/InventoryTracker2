@@ -194,6 +194,7 @@
       <DependentUpon>InventoryTrackerModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ViewModels\AssetTypeViewModel.cs" />
+    <Compile Include="Models\ViewModels\AssetViewModel.cs" />
     <Compile Include="Models\ViewModels\PropertyViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
