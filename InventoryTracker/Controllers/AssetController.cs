@@ -182,8 +182,7 @@ namespace InventoryTracker.Controllers
                                 int assetTypeId = assetId;
 
                                 // Find the asset type according to the id ****
-                                //assetTpe.properties
-                                //have an assetType find it from the db has an atribute called properties and can iterate thru that. Only doing that with an assetTypeID. Forget about the table.
+                                
                                 AssetType findTheAssetType = db.AssetTypes.Find(assetTypeId);
 
                                 // Create a new asset and give it the assetTypeId you just found
