@@ -24,7 +24,9 @@ class Asset {
     getSaveStructure() {
         var structure = {
             AssetID: this.id,
-            AssetType: this.AssetType.getSaveStructure()
+            AssetType: this.AssetType.getSaveStructure(),
+            DateAdded: this.dateAdded,
+            DateLastModified: this.dateLastModified
         }
         return structure;
     }

@@ -15,7 +15,7 @@ function deleteAsset(assetId) {
         loadingModal.show();
         $.post('/Asset/DeleteAsset/' + assetId, function (data, status) {
             loadingModal.hide();
-            window.location = '/Asset/Browse';
+            window.location = '/Asset/Browse/' + $('#assetType').val();
         });
     });
 }

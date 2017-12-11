@@ -14,6 +14,8 @@ namespace InventoryTracker.Models.ViewModels
         public PropertyViewModel[] Properties { get; set; }
         public Boolean Active { get; set; }
 
+        public AssetTypeViewModel() { }
+
         public AssetTypeViewModel(AssetType entityAssetType)
         {
             this.AssetTypeID = entityAssetType.AssetTypeID;

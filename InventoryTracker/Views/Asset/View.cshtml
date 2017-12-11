@@ -1,11 +1,11 @@
-﻿@model InventoryTracker.Models.Asset
+﻿@model InventoryTracker.Models.ViewModels.AssetViewModel
 
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <div>
     <div id="propertiesDiv" class="container">
-        @foreach (var property in Model.getAssetBare().AssetType.Properties)
+        @foreach (var property in Model.AssetType.Properties)
         {
             if (property.Active)
             {

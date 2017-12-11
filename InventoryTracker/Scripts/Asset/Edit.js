@@ -3,7 +3,8 @@
 var dropDownHelper;
 var asset;
 
-$(document).ready(function(){
+$(document).ready(function () {
+    loadingModal.show();
     /*
     *Retreive asset from db and then add its properties to the page
     */
@@ -12,6 +13,7 @@ $(document).ready(function(){
         $.get(`/Asset/JSON/${assetId}${assetTypeId ? `?assetTypeID=${assetTypeId}`:''}`, function (data,status){
             asset = new Asset(JSON.parse(data));
             setPage();
+            loadingModal.hide();
         });
     });
 });
@@ -78,7 +80,7 @@ function save() {
         var data = {
             postAsset: asset.getSaveStructure()
         }
-        $.post('/Asset/SaveAsset/' + assetTypeId, data, function (data, status) {
+        $.post('/Asset/SaveAsset', data, function (data, status) {
             loadingModal.hide();
             window.location = '/Asset/Browse/' + asset.AssetType.id;
         });

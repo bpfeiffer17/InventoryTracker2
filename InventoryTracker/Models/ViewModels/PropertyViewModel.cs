@@ -18,6 +18,8 @@ namespace InventoryTracker.Models.ViewModels
         public Boolean Tracked { get; set; }
         public Boolean NonTracked { get; set; }
 
+        public PropertyViewModel() { }
+
         public PropertyViewModel(Property entityProperty)
         {
             this.PropertyID = entityProperty.PropertyID;

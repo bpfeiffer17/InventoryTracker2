@@ -31,13 +31,14 @@
         }
     }
 </select>
+<hr />
 @if (ViewBag.assetTypeToBrowse != null)
 {
-    <hr />
-        <a onclick="createNewAsset()" class="btn">Create New</a>
-        <a onclick="createNewCsvFile()" class="btn">Create CSV</a>
-        <!-- Upload csv  go to upload javascript function -->         
-        <a onclick = "uploadCsvFile()" class="btn">Upload a CSV File</a>
+    
+    <a onclick="createNewAsset()" class="btn">Create New</a>
+    <a onclick="createNewCsvFile()" class="btn">Create CSV</a>
+    <!-- Upload csv  go to upload javascript function -->         
+    <a onclick = "uploadCsvFile()" class="btn">Upload a CSV File</a>
 
     <hr />
 }
@@ -71,7 +72,7 @@
                             <a href="/Asset/View/@asset.AssetID">View</a> |
                             <a class="clickable" onclick="deleteAsset(@asset.AssetID)">Delete</a>
                         </td>
-                        @foreach (var prop in asset.getAssetBare().AssetType.Properties)
+                        @foreach (var prop in asset.AssetType.Properties)
                         {
                             if (prop.Active)
                             {

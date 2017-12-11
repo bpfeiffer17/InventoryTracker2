@@ -9,6 +9,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using System.Net.Mail;
+using InventoryTracker.Models.ViewModels;
 
 namespace InventoryTracker.Controllers
 {
@@ -59,57 +60,43 @@ namespace InventoryTracker.Controllers
 
             return View("");
         }
+
+        // GET: Asset/Browse
         public ActionResult Browse(int id = 0)
         {
-
-            ViewBag.assetTypes = db.AssetTypes.ToList();
-            if (id != 0)
-            {
-                Response.Cookies["UserSettings"]["AssetTypeToBrowseID"] = id.ToString();
-                ViewBag.assetTypeToBrowse = db.AssetTypes.Find(id);
-            }
-            else if (Request.Cookies["UserSettings"]["AssetTypeToBrowseID"] != null)
-            {
-                ViewBag.assetTypeToBrowse = db.AssetTypes.Find((Int64.Parse(Request.Cookies["UserSettings"]["AssetTypeToBrowseID"])));
-
-            }
-            // Asset types for the drop down of asset types to browse through
+            // Gather a list of AssetTypes to fill in the drop down of AssetTypes to browse
             ViewBag.assetTypes = db.AssetTypes.Where(assetType => assetType.Active == 1).ToList();
+
+            // If an AssetTypeID was provided, gather the AssetType and Assets associated with it
             if (id != 0)
             {
                 ViewBag.assetTypeToBrowse = db.AssetTypes.Find(id);
-
+                IEnumerable<Asset> dbAssets = db.Assets.Where(asset => asset.AssetTypeID == id).ToList();
+                AssetViewModel[] assets = new AssetViewModel[dbAssets.Count()];
+                for (var i = 0; i < dbAssets.Count(); i++)
+                {
+                    assets[i] = new AssetViewModel(dbAssets.ElementAt(i));
+                }
+                ViewBag.assets = assets;
             }
             else
             {
                 ViewBag.assetTypeToBrowse = null;
-            }
-            //Gather a list of Assets from the database
-
-            ViewBag.assets = db.Assets.ToList();
-
-            if (id == 0)
-            {
                 ViewBag.assets = null;
-            }else
-            {
-                ViewBag.assets = db.Assets.Where(asset => asset.AssetTypeID == id).ToList();
             }
 
             return View();
         }
 
+        // GET: Asset/Edit
         public ActionResult Edit(int id, int assetTypeID = 0)
 		{
-            ViewBag.id = id;
+            ViewBag.assetID = id;
             ViewBag.assetTypeID = assetTypeID;
-            ViewBag.dropDowns = new JavaScriptSerializer().Serialize(this.getDropDowns());
             return View();
 		}
 
-        /**
-         * Get an array of DropDowns from the DB
-         */
+        // Get an array of DropDowns from the DB
         private DropDownBare[] getDropDowns()
         {
             List<DropDownBare> dropDowns = new List<DropDownBare>();
@@ -123,13 +110,12 @@ namespace InventoryTracker.Controllers
 
         public ActionResult View(int id)
         {
-            Asset asset = db.Assets.Find(id);
+            AssetViewModel asset = new AssetViewModel(db.Assets.Find(id));
             return View(asset);
         }
 
         public ActionResult BulkImport()
         {
-
             return View();
         }
 
@@ -249,29 +235,32 @@ namespace InventoryTracker.Controllers
             return View();
         }
 
+        // Gather a JSON representation of the Asset with the given id
         public string JSON(int id = 0, int assetTypeID = 0)
         {
-            Asset asset;
+            AssetViewModel asset;
             if (id != 0)
             {
-                asset = db.Assets.Find(id);
+                asset = new AssetViewModel(db.Assets.Find(id));
             }
             else
             {
                 // Create a new asset
-                asset = new Asset();
+                Asset newAsset = new Asset();
                 // Add AssetType info based on the given assetTypeID
-                asset.AssetTypeID = assetTypeID;
-                asset.AssetType = db.AssetTypes.Find(assetTypeID);
+                newAsset.AssetTypeID = assetTypeID;
+                newAsset.AssetType = db.AssetTypes.Find(assetTypeID);
+                // Convert the Asset to an AssetViewModel
+                asset = new AssetViewModel(newAsset);
             }
-            return ViewBag.assetTypeJSON = new JavaScriptSerializer().Serialize(asset.getAssetBare());
+            return ViewBag.assetTypeJSON = new JavaScriptSerializer().Serialize(asset);
         }
 
         /**
          *  Save a new asset to the database or update an existing one
          */
         [HttpPost]
-        public string SaveAsset(AssetBare postAsset)
+        public string SaveAsset(AssetViewModel postAsset)
         {
             // Try to find the postAsset in the db
             Asset dbAsset = db.Assets.Find(postAsset.AssetID);
@@ -325,6 +314,11 @@ namespace InventoryTracker.Controllers
                 }
             }
             db.SaveChanges();
+            // If this is a non tracked asset, check its on hand value
+            if (dbAsset.AssetType.Tracked == 0)
+            {
+                checkTide(dbAsset.AssetID);
+            }
             return "";
         }
 
@@ -348,45 +342,48 @@ namespace InventoryTracker.Controllers
             }
             return "";
         }
-        [HttpPost]
+
         public void checkTide(int id)
         {
-            Asset asset = db.Assets.Find(id);
+            AssetViewModel asset = new AssetViewModel(db.Assets.Find(id));
             if (asset != null)
             {
                 int onHand = 0;
                 int lowTide = 0;
                 int highTide = 0;
                 String assetName = "";
-                foreach (var prop in asset.getAssetBare().AssetType.Properties)
+                String[] emails = null;
+                foreach (var prop in asset.AssetType.Properties)
                 {
                     //21 is on hand, 22 is low tide, 23 is high tide, 41 is assetName 
-                    if (prop.PropertyID == 21)
+                    if (prop.Name == "On Hand")
                     {
                         onHand = int.Parse(prop.Value);
                     }
-                    else if (prop.PropertyID == 22)
+                    else if (prop.Name == "Low Tide")
                     {
                         lowTide = int.Parse(prop.Value);
                     }
-                    else if (prop.PropertyID == 23)
+                    else if (prop.Name == "High Tide")
                     {
                         highTide = int.Parse(prop.Value);
                     }
-                    else if (prop.PropertyID == 41)
+                    else if (prop.Name == "Name")
                     {
                         assetName = prop.Value;
                     }
-
-
+                    else if (prop.Name == "Emails to Notify")
+                    {
+                        emails = prop.Value.Split(';');
+                    }
                 }
                 if (onHand < lowTide)
                 {
-                    SendMail("Low Tide", assetName);
+                    SendMail("Low Tide", assetName, emails);
                 }
                 if (onHand > highTide)
                 {
-                    SendMail("High Tide", assetName);
+                    SendMail("High Tide", assetName, emails);
                 }
 
             }
@@ -395,37 +392,39 @@ namespace InventoryTracker.Controllers
         [HttpPost]
         public void checkAllTides()
         {
-            for (int id = 0; id < 100; id++)
-            {
-                checkTide(id);
-            }
         }
 
-        public void SendMail(String tide, String assetName)
+        public void SendMail(String tide, String assetName, String[] emails)
         {
-            //Mail Notification 
-            MailMessage alert = new MailMessage();
-            alert.To.Add(new MailAddress("inventorytrackerJCU@gmail.com"));
-            alert.Subject = tide;
-            alert.Body = "You have reached " + tide + " for the " + assetName + " Asset";
-            alert.From = new MailAddress("inventorytrackerjcu@gmail.com");
-
-            //Email Address from there you send the mail 
-            var fromAddress = "inventorytrackerjcu@gmail.com";
-            //Password of your mail address 
-            const string fromPassword = "a11002233";
-
-            //stmp settings 
-            var smtp = new System.Net.Mail.SmtpClient();
+            if (emails != null)
             {
-                smtp.Host = "smtp.gmail.com";
-                smtp.EnableSsl = true;
-                smtp.DeliveryMethod = System.Net.Mail.SmtpDeliveryMethod.Network;
-                smtp.Credentials = new System.Net.NetworkCredential(fromAddress, fromPassword);
-                smtp.Timeout = 20000;
+                //Mail Notification 
+                MailMessage alert = new MailMessage();
+                foreach (var email in emails)
+                {
+                    alert.To.Add(new MailAddress(email));
+                }
+                alert.Subject = tide;
+                alert.Body = "You have reached " + tide + " for the " + assetName + " Asset";
+                alert.From = new MailAddress("inventorytrackerjcu@gmail.com");
+
+                //Email Address from there you send the mail 
+                var fromAddress = "inventorytrackerjcu@gmail.com";
+                //Password of your mail address 
+                const string fromPassword = "a11002233";
+
+                //stmp settings 
+                var smtp = new System.Net.Mail.SmtpClient();
+                {
+                    smtp.Host = "smtp.gmail.com";
+                    smtp.EnableSsl = true;
+                    smtp.DeliveryMethod = System.Net.Mail.SmtpDeliveryMethod.Network;
+                    smtp.Credentials = new System.Net.NetworkCredential(fromAddress, fromPassword);
+                    smtp.Timeout = 20000;
+                }
+                // Passing values to smtp object 
+                smtp.Send(alert);
             }
-            // Passing values to smtp object 
-            smtp.Send(alert);
         }
     }
 }
