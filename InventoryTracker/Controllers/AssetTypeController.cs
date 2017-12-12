@@ -48,11 +48,13 @@ namespace InventoryTracker.Controllers
             return new JavaScriptSerializer().Serialize(this.getAssetTypeViewModel(id));
         }
 
+        // GET: AssetType/Edit/{id}
         public ActionResult Edit(int id = 0)
         {
             return View(this.getAssetTypeViewModel(id));
         }
 
+        // GET: AssetType/View/{id}
         public ActionResult View(int id = 0)
         {
             return View(this.getAssetTypeViewModel(id));

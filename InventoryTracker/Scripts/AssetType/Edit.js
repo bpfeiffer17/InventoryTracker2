@@ -222,9 +222,7 @@ function setPropName(propId, property, value) {
             nameCount++;
         }
     }
-    if (nameCount <= 1) {
-        assetType.setPropertyProperty(propId, property, value);
-    } else {
+    if (nameCount > 1) {
         assetType.setPropertyProperty(propId, property, '');
         alertModal.show(`There is already a property with the name "${value}"`);
         setPage();

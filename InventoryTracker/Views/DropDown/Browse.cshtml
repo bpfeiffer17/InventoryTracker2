@@ -1,0 +1,47 @@
+﻿@model InventoryTracker.Models.ViewModels.DropDownViewModel[]
+
+@{
+    ViewBag.Title = "Browse Drop Downs";
+}
+
+@section Scripts
+{
+    <script src="@Url.Content("~/Scripts/DropDown/Browse.js")"></script>
+    <script src="@Url.Content("~/Scripts/DataTables/datatables.js")"></script>
+    <script src="@Url.Content("~/Scripts/Common/ConfirmModal.js")"></script>
+    <script src="@Url.Content("~/Scripts/Common/LoadingModal.js")"></script>
+}
+
+@section Styles {
+    <link href="@Url.Content("~/Scripts/DataTables/datatables.css")" rel="stylesheet" type="text/css" />
+}
+
+<h1>Browse Drop Downs</h1>
+<hr />
+@Html.ActionLink("Create New", "Edit", new { id = 0 })
+<hr />
+
+<!--Begin Drop Downs Table-->
+<table id="dropDownsTable">
+    <thead>
+        <tr>
+            <th>Options</th>
+            <th>Name</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var dropDown in Model)
+        {
+            <tr>
+                <td>
+                    <a href="/DropDown/Edit/@dropDown.DropDownID">Edit</a> |
+                    <a class="clickable" onclick="deleteDropDown(@dropDown.DropDownID)">Delete</a>
+                </td>
+                <td>
+                    @dropDown.Name
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<!--End Drop Downs Table-->
