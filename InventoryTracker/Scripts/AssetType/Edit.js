@@ -9,12 +9,14 @@ var assetType;
 
 //Code to be executed when the page is done loading.
 $(document).ready(function () {
+    loadingModal.show();
     $.get('/AssetType/DropDownHelper', function (data) {
         dropDownHelper = new DropDownHelper(JSON.parse(data));
         $.get(`/AssetType/JSON/${assetTypeID ? assetTypeID : 0}`, function (data) {
             assetType = new AssetType(JSON.parse(data));
             setPage();
             setListeners();
+            loadingModal.hide();
         });
     });
 });
@@ -166,6 +168,15 @@ function setPage() {
     for (var prop of assetType.properties) {
         addProp(prop);
     }
+    if (assetType.tracked) {
+        $('#tracked').prop('checked', true);
+    } else {
+        $('#nontracked').prop('checked', true);
+    }
+    if (assetType.id) {
+        $('#tracked').prop('disabled', true);
+        $('#nontracked').prop('disabled', true);
+    }
 }
 
 /**
@@ -207,7 +218,7 @@ function setPropName(propId, property, value) {
     assetType.setPropertyProperty(propId, property, value);
     var nameCount = 0;
     for (let prop of assetType.properties) {
-        if (prop.name.toLowerCase() === value.toLowerCase()) {
+        if (prop.name.toLowerCase() === value.toLowerCase() && prop.active) {
             nameCount++;
         }
     }

@@ -20,6 +20,7 @@ class Property {
         this.required = options.Required;
         this.tracked = options.Tracked;
         this.nonTracked = options.NonTracked;
+        this.order = options.Order;
     }
 
      /**
@@ -36,7 +37,8 @@ class Property {
             DropDownID: this.dropDownId,
             Value: this.value,
             Active: this.active,
-            Required: this.required ? 1:0
+            Required: this.required ? 1 : 0,
+            Order: this.order
         }
         return structure;
     }

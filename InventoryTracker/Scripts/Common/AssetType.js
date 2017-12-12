@@ -70,7 +70,8 @@ class AssetType {
             Type: 'String',
             Unit: '',
             DropDownID: '',
-            Active: true
+            Active: true,
+            Order: this.properties.length
         }));
         return newID;
     }

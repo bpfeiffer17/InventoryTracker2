@@ -11,8 +11,8 @@
           </Key>
           <Property Name="AssetID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="AssetTypeID" Type="int" Nullable="false" />
-          <Property Name="DateAdded" Type="datetime" />
-          <Property Name="DateLastModified" Type="datetime" />
+          <Property Name="DateAdded" Type="datetime" Nullable="false" />
+          <Property Name="DateLastModified" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="AssetTypeProperties">
           <Key>
@@ -60,6 +60,7 @@
           <Property Name="Required" Type="tinyint" Nullable="false" />
           <Property Name="Tracked" Type="tinyint" Nullable="false" />
           <Property Name="NonTracked" Type="tinyint" Nullable="false" />
+          <Property Name="Order" Type="int" />
         </EntityType>
         <EntityType Name="PropertyValues">
           <Key>
@@ -70,18 +71,6 @@
           <Property Name="PropertyID" Type="int" Nullable="false" />
           <Property Name="Value" Type="nvarchar" MaxLength="300" />
         </EntityType>
-        <Association Name="FK_Assets_AssetTypes">
-          <End Role="AssetTypes" Type="Self.AssetTypes" Multiplicity="1" />
-          <End Role="Assets" Type="Self.Assets" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AssetTypes">
-              <PropertyRef Name="AssetTypeID" />
-            </Principal>
-            <Dependent Role="Assets">
-              <PropertyRef Name="AssetTypeID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_AssetTypeProperties_AssetTypes">
           <End Role="AssetTypes" Type="Self.AssetTypes" Multiplicity="1" />
           <End Role="AssetTypeProperties" Type="Self.AssetTypeProperties" Multiplicity="*" />
@@ -162,10 +151,6 @@
           <EntitySet Name="DropDownValues" EntityType="Self.DropDownValues" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Properties" EntityType="Self.Properties" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PropertyValues" EntityType="Self.PropertyValues" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK_Assets_AssetTypes" Association="Self.FK_Assets_AssetTypes">
-            <End Role="AssetTypes" EntitySet="AssetTypes" />
-            <End Role="Assets" EntitySet="Assets" />
-          </AssociationSet>
           <AssociationSet Name="FK_AssetTypeProperties_AssetTypes" Association="Self.FK_AssetTypeProperties_AssetTypes">
             <End Role="AssetTypes" EntitySet="AssetTypes" />
             <End Role="AssetTypeProperties" EntitySet="AssetTypeProperties" />
@@ -203,8 +188,8 @@
           <Property Name="AssetTypeID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="AssetType" Relationship="Self.FK_Assets_AssetTypes" FromRole="Assets" ToRole="AssetTypes" />
           <NavigationProperty Name="PropertyValues" Relationship="InventoryTrackerModel.FK_PropertyValues_Assets" FromRole="Asset" ToRole="PropertyValue" />
-          <Property Name="DateAdded" Type="DateTime" Precision="3" />
-          <Property Name="DateLastModified" Type="DateTime" Precision="3" />
+          <Property Name="DateAdded" Type="DateTime" Precision="3" Nullable="false" />
+          <Property Name="DateLastModified" Type="DateTime" Precision="3" Nullable="false" />
         </EntityType>
         <EntityType Name="AssetType">
           <Key>
@@ -252,6 +237,7 @@
           <Property Name="Tracked" Type="Byte" Nullable="false" />
           <Property Name="NonTracked" Type="Byte" Nullable="false" />
           <NavigationProperty Name="AssetTypes" Relationship="InventoryTrackerModel.AssetTypeProperties" FromRole="Property" ToRole="AssetType" />
+          <Property Name="Order" Type="Int32" />
         </EntityType>
         <Association Name="FK_Assets_AssetTypes">
           <End Role="AssetTypes" Type="Self.AssetType" Multiplicity="1" />
@@ -407,6 +393,7 @@
           <EntitySetMapping Name="Properties">
             <EntityTypeMapping TypeName="InventoryTrackerModel.Property">
               <MappingFragment StoreEntitySet="Properties">
+                <ScalarProperty Name="Order" ColumnName="Order" />
                 <ScalarProperty Name="NonTracked" ColumnName="NonTracked" />
                 <ScalarProperty Name="Tracked" ColumnName="Tracked" />
                 <ScalarProperty Name="Required" ColumnName="Required" />

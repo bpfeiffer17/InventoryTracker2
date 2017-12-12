@@ -17,6 +17,7 @@ namespace InventoryTracker.Models.ViewModels
         public Boolean Required { get; set; }
         public Boolean Tracked { get; set; }
         public Boolean NonTracked { get; set; }
+        public Nullable<int> Order { get; set; }
 
         public PropertyViewModel() { }
 
@@ -32,9 +33,10 @@ namespace InventoryTracker.Models.ViewModels
             this.Required = Convert.ToBoolean(entityProperty.Required);
             this.Tracked = Convert.ToBoolean(entityProperty.Tracked);
             this.NonTracked = Convert.ToBoolean(entityProperty.NonTracked);
+            this.Order = entityProperty.Order;
         }
 
-        public Property getProperty()
+        public Property getEntityProperty()
         {
             return new Property
             {
@@ -46,7 +48,8 @@ namespace InventoryTracker.Models.ViewModels
                 Active = Convert.ToByte(this.Active),
                 Required = Convert.ToByte(this.Required),
                 Tracked = Convert.ToByte(this.Tracked),
-                NonTracked = Convert.ToByte(this.NonTracked)
+                NonTracked = Convert.ToByte(this.NonTracked),
+                Order = this.Order
             };
         }
     }

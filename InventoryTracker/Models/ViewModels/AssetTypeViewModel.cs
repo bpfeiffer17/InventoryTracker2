@@ -28,6 +28,7 @@ namespace InventoryTracker.Models.ViewModels
             {
                 this.Properties[i] = new PropertyViewModel(entityAssetType.Properties.ElementAt(i));
             }
+            this.Properties = this.Properties.OrderBy(prop => prop.Order).ToArray();
         }
     }
 }
