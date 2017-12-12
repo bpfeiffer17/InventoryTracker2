@@ -271,6 +271,7 @@ namespace InventoryTracker.Controllers
                 // Create a new asset, add the AssetTypeID and DateAdded, add it to db
                 dbAsset = new Asset();
                 dbAsset.AssetTypeID = postAsset.AssetType.AssetTypeID;
+                dbAsset.AssetType = db.AssetTypes.Find(postAsset.AssetType.AssetTypeID);
                 dbAsset.DateAdded = DateTime.Now;
                 dbAsset.DateLastModified = DateTime.Now;
                 db.Assets.Add(dbAsset);
